@@ -92,7 +92,7 @@ Check out the [roadmap](https://github.com/users/Acylation/projects/6) to see wh
 
 The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) as the parsing and drawing core, and uses [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as an example of how to integrate the package.
 
-During the whole process of development, I found the [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) super helpful. Massive thanks to @marcusolssonfor leading this project!
+During the whole process of development, I found the [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) super helpful. Massive thanks to @marcusolsson for leading this project!
 
 The plugin is motivated by forum requests for including chemical structures in Obsidian. Thank you for the inspiration and great ideas!
 
