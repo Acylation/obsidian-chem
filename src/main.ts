@@ -43,7 +43,7 @@ export default class ChemPlugin extends Plugin {
 			width: string
 		) => {
 			// can put options in calling the drawer
-			let drawer = new SmilesDrawer.SmiDrawer();
+			const drawer = new SmilesDrawer.SmiDrawer();
 
 			// different behavior in live preview and view mode
 			// under view mode, an extra '\n' is appended
@@ -80,17 +80,17 @@ export default class ChemPlugin extends Plugin {
 					target.classList.value.contains('theme-light')
 				) {
 					//console.log('trigger light');
-					let blocks = Array.from(
-						document.getElementsByClassName('block-language-smiles')
-					);
+					// const blocks = Array.from(
+					// 	document.getElementsByClassName('block-language-smiles')
+					// );
 				} else if (
 					mutation.oldValue?.contains('theme-light') &&
 					target.classList.value.contains('theme-dark')
 				) {
 					//console.log('trigger dark');
-					let blocks = Array.from(
-						document.getElementsByClassName('block-language-smiles')
-					);
+					// const blocks = Array.from(
+					// 	document.getElementsByClassName('block-language-smiles')
+					// );
 				}
 			});
 		}).observe(document.body, {
@@ -218,7 +218,7 @@ class ChemSettingTab extends PluginSettingTab {
 					})
 			);
 
-		let drawer = new SmilesDrawer.SmiDrawer();
+		const drawer = new SmilesDrawer.SmiDrawer();
 
 		const div = containerEl.createEl('div');
 		div.style.display = 'grid';
