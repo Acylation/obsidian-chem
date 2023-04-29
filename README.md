@@ -6,7 +6,7 @@
 
 ### Render SMILES strings as chemical structures
 
-You can use this plugin to render chemical structures from SMILES strings. Just type the SMILES strings in a code block with `smiles` as the language. Each line should have only one string.
+You can use this plugin to render chemical structures from SMILES strings. Just type the SMILES strings in a code block with `smiles` as the language. Each line should contain only one string.
 
 The data is stored as plain text, so you won’t lose it. The renderer will always work, even if the plugin changes its cheminfo core.
 
@@ -17,7 +17,7 @@ You can adjust the image size and configure light themes and dark themes of the 
 ![Image](https://user-images.githubusercontent.com/73122375/235232505-08386ce2-bc44-4fd6-96b4-22fa9c8c6fbf.jpg)
 
 > **Note**  
-> For now, you need to refresh the file containing SMILES blocks, or refresh the blocks themselves by edit & quit the blocks to apply the new settings, as well as adapting the Obsidian light/dark theme changes.
+> For now, you need to reopen the file containing SMILES blocks, or refresh the blocks themselves by edit & quit the blocks to apply the new settings, as well as adapting the Obsidian light/dark theme changes.
 
 #### What is SMILES?
 
@@ -36,11 +36,8 @@ Using SMILES strings to represent molecules is easier and more widely supported 
 The plugin is not available in the official plugin market for now. Please follow the steps below to install it manually.
 
 1. Go to the repo's latest [release page](https://github.com/Acylation/obsidian-chem/releases), and download the `main.js`, `style.css`, and `manifest.json`. Alternatively, you can download the latest zip file and then unzip it to get the three files.
-
 2. Copy these files to your local path `[yourvault]/.obsidian/plugins/obsidian-chem/`. You may need to create the folder `obsidian-chem` by yourself.
-
 3. Launch/restart Obsidian, or refresh the plugin list, you will see this plugin. (Make sure that you are not in restricted mode).
-
 4. In the plugin list, enable `Chem` and enjoy!
 
 ## Plugin Scope
