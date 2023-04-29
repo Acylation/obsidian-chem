@@ -16,7 +16,7 @@ You can adjust the image size and configure light themes and dark themes of the 
 
 ![Image](https://user-images.githubusercontent.com/73122375/235232505-08386ce2-bc44-4fd6-96b4-22fa9c8c6fbf.jpg)
 
-> **Notice**  
+> **Note**  
 > For now, you need to refresh the file containing SMILES blocks, or refresh the blocks themselves by edit & quit the blocks to apply the new settings, as well as adapting the Obsidian light/dark theme changes.
 
 #### What is SMILES?
