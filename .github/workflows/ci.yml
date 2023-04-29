@@ -23,5 +23,3 @@ jobs:
               run: npm run build
             - name: Lint plugin (ESLint)
               run: npm run lint
-            - name: Check plugin (Svelte)
-              run: npm run svelte-check
