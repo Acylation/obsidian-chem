@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-chem",
+	"name": "Chem",
+	"version": "0.1.0",
+	"minAppVersion": "1.0.0",
+	"description": "Chemistry support for Obsidian.",
+	"author": "Acylation",
+	"authorUrl": "https://github.com/Acylation",
+	"isDesktopOnly": false
+}
