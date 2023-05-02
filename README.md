@@ -14,14 +14,14 @@ The data is stored as plain text, so you won’t lose it. The renderer will alwa
 
 You can adjust the image size and configure light themes and dark themes of the molecule pictures in the plugin’s settings page.
 
-![Image](https://user-images.githubusercontent.com/73122375/235232505-08386ce2-bc44-4fd6-96b4-22fa9c8c6fbf.jpg)
-
 > **Note**  
 > For now, you need to reopen the file containing SMILES blocks, or refresh the blocks themselves by edit & quit the blocks to apply the new settings, as well as adapting the Obsidian light/dark theme changes.
 
+![Image](https://user-images.githubusercontent.com/73122375/235232505-08386ce2-bc44-4fd6-96b4-22fa9c8c6fbf.jpg)
+
 #### What is SMILES?
 
-SMILES stands for Simplified Molecular-Input Line-Entry System. It is a specification to describe chemical structures using linear ASCII strings. You can learn more about SMILES from the [official website](http://opensmiles.org/opensmiles.html) or [Wikipedia](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system).
+SMILES stands for Simplified Molecular-Input Line-Entry System. It is a specification to describe chemical structures using linear ASCII strings. You can learn more about it from the [official website](http://opensmiles.org/opensmiles.html) or [Wikipedia](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system).
 
 #### Why using SMILES?
 
@@ -29,7 +29,7 @@ Using SMILES strings to represent molecules is easier and more widely supported 
 
 #### How to generate SMILES strings?
 
- For simple structures, you can type them in by yourself, but for more complex ones, you may want to use structure editors, such as ChemDraw, [ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#), [MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) and [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html).
+ For simple structures, you can type them in by yourself, but for more complex ones, you may want to use **structure editors**, such as ChemDraw, [ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#), [MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) and [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html).
 
 ## Installation
 
@@ -51,7 +51,7 @@ I have a lot of ideas for this plugin, but my coding skills and resources are li
 - Shortcuts for physicochemical formulas in LaTeX.
 - ......
 
-I would love to hear your feedback and suggestions. Actually, the first feature of the plugin, to render SMILES strings, was suggested by community users! I’m very grateful for their input. (See the [acknowledgment](https://github.com/Acylation/obsidian-chem#acknowledgment) section for more details)
+I would love to hear your feedback and suggestions. Actually, the first feature of the plugin, to render SMILES strings, was suggested by community users! I’m very grateful for their input. (See the [acknowledgment](https://github.com/Acylation/obsidian-chem#acknowledgment) section for details)
 
 Before working on a new feature, I will consider the following criteria. The feature should meet at least one of them to be useful.
 
@@ -90,13 +90,14 @@ Check out the [roadmap](https://github.com/users/Acylation/projects/6) to see wh
 
 ## Acknowledgement
 
-The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) as the parsing and drawing core, and uses [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as an example of how to integrate the package.
+The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) as the parsing and drawing core, and uses [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as an example on how to integrate the package.
 
 During the whole process of development, I found the [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) super helpful. Massive thanks to @marcusolsson for leading this project!
 
-The plugin is motivated by forum requests for including chemical structures in Obsidian. Thank you for the inspiration and great ideas!
+The plugin is motivated by forum requests for including chemical structures in Obsidian. Thank you for the inspiring discussions and the great ideas!
 
 - <https://forum.obsidian.md/t/smiles-in-obsidian/35974>
 - <https://forum.obsidian.md/t/structural-formulas-for-chemistry/29366>
 - <https://forum.obsidian.md/t/chemistry-formulas-in-obsidian/25772>
 - <https://forum.obsidian.md/t/obsidian-for-chemistry/33491>
+- <https://forum.obsidian.md/t/how-to-write-chemical-formulas/12249>
