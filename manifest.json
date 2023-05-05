@@ -1,9 +1,9 @@
 {
 	"id": "chem",
 	"name": "Chem",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"minAppVersion": "1.0.0",
-	"description": "Chemistry support for Obsidian.",
+	"description": "Rendering SMILES strings into chemistry structures.",
 	"author": "Acylation",
 	"authorUrl": "https://github.com/Acylation",
 	"isDesktopOnly": false
