@@ -1,7 +1,5 @@
 # Obsidian Chem
 
-- [ ] todo: 整理manifest，package和仓库简介，修改背景色，发布一版，回复审核意见
-
 [English](README.md) | [简体中文](README-ZH.md)
 
 **Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)）
