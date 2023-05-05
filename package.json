@@ -1,7 +1,7 @@
 {
 	"name": "chem",
 	"version": "0.1.2",
-	"description": "Rendering SMILES strings into chemistry structures.",
+	"description": "Providing chemistry supports. Rendering SMILES strings into chemistry structures.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
