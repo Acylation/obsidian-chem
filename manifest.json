@@ -3,7 +3,7 @@
 	"name": "Chem",
 	"version": "0.1.2",
 	"minAppVersion": "1.0.0",
-	"description": "Rendering SMILES strings into chemistry structures.",
+	"description": "Providing chemistry supports. Rendering SMILES strings into chemistry structures.",
 	"author": "Acylation",
 	"authorUrl": "https://github.com/Acylation",
 	"isDesktopOnly": false
