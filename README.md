@@ -35,10 +35,12 @@ Using SMILES strings to represent molecules is easier and more widely supported 
 
 ## Installation
 
-The plugin is not available in the official plugin market for now, you may use [BRAT](https://github.com/TfTHacker/obsidian42-brat) plugin to install it. Or, you can follow the steps below to install the plugin manually.
-
 > **Note**  
-> Make sure that you are not in restricted mode.
+> Make sure that you are not in the **Restricted mode**.
+
+The plugin is available in the official plugin market. You can go to Settings → Community plugins → Browse, and search for the `Chem` plugin by Acylation. After installing, you need to enable the plugin to use it.
+
+You can also follow the steps below to install the plugin manually.
 
 1. Go to the repo's latest [release page](https://github.com/Acylation/obsidian-chem/releases/latest), and download the `main.js`, `style.css`, and `manifest.json`. Alternatively, you can download the latest zip file and then unzip it to get the three files.
 2. Copy these files to your local path `[yourvault]/.obsidian/plugins/obsidian-chem/`. You may need to create the folder `obsidian-chem` by yourself.
