@@ -17,7 +17,7 @@ const DEFAULT_SETTINGS: ChemPluginSettings = {
 	sample: sample_smiles,
 };
 
-let options = {
+const options = {
 	scale: 0,
 	bondThickness: 1,
 	shortBondLength: 0.8,
