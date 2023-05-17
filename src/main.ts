@@ -242,6 +242,29 @@ const options = {
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
 
+	themeObserver = new MutationObserver(function (mutations) {
+		mutations.forEach(function (mutation) {
+			const target = mutation.target as HTMLElement;
+			if (
+				mutation.oldValue?.contains('theme-dark') &&
+				target.classList.value.contains('theme-light')
+			) {
+				// console.log('trigger light');
+				// const blocks = Array.from(
+				// 	document.getElementsByClassName('block-language-smiles')
+				// );
+			} else if (
+				mutation.oldValue?.contains('theme-light') &&
+				target.classList.value.contains('theme-dark')
+			) {
+				// console.log('trigger dark');
+				// const blocks = Array.from(
+				// 	document.getElementsByClassName('block-language-smiles')
+				// );
+			}
+		});
+	});
+
 	//TODO: update blocks after wrapping them
 	//watch Obsidian theme changes
 	//watch settings tab close
@@ -294,35 +317,16 @@ export default class ChemPlugin extends Plugin {
 			);
 		});
 
-		new MutationObserver(function (mutations) {
-			mutations.forEach(function (mutation) {
-				const target = mutation.target as HTMLElement;
-				if (
-					mutation.oldValue?.contains('theme-dark') &&
-					target.classList.value.contains('theme-light')
-				) {
-					//console.log('trigger light');
-					// const blocks = Array.from(
-					// 	document.getElementsByClassName('block-language-smiles')
-					// );
-				} else if (
-					mutation.oldValue?.contains('theme-light') &&
-					target.classList.value.contains('theme-dark')
-				) {
-					//console.log('trigger dark');
-					// const blocks = Array.from(
-					// 	document.getElementsByClassName('block-language-smiles')
-					// );
-				}
-			});
-		}).observe(document.body, {
+		this.themeObserver.observe(document.body, {
 			attributes: true,
 			attributeOldValue: true,
 			attributeFilter: ['class'],
 		});
 	}
 
-	onunload() {}
+	async onunload() {
+		this.themeObserver.disconnect();
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign(
