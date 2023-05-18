@@ -246,7 +246,9 @@ export default class ChemPlugin extends Plugin {
 		mutations.forEach(function (mutation) {
 			const target = mutation.target as HTMLElement;
 			if (
+				// dark -> dark & light -> light
 				mutation.oldValue?.contains('theme-dark') &&
+				!mutation.oldValue?.contains('theme-light') && // key line, avoid calling twice
 				target.classList.value.contains('theme-light')
 			) {
 				// console.log('trigger light');
@@ -254,7 +256,9 @@ export default class ChemPlugin extends Plugin {
 				// 	document.getElementsByClassName('block-language-smiles')
 				// );
 			} else if (
-				mutation.oldValue?.contains('theme-light') &&
+				// light -> empty -> dark
+				mutation.oldValue?.contains('theme-light') && // key line, avoid calling twice
+				!mutation.oldValue?.contains('theme-dark') &&
 				target.classList.value.contains('theme-dark')
 			) {
 				// console.log('trigger dark');
