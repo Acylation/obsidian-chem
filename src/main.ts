@@ -249,6 +249,7 @@ export default class ChemPlugin extends Plugin {
 				// dark -> dark & light -> light
 				mutation.oldValue?.contains('theme-dark') &&
 				!mutation.oldValue?.contains('theme-light') && // key line, avoid calling twice
+				mutation.oldValue?.contains('theme-dark') &&
 				target.classList.value.contains('theme-light')
 			) {
 				// console.log('trigger light');
@@ -328,7 +329,7 @@ export default class ChemPlugin extends Plugin {
 		});
 	}
 
-	onunload() {
+	async onunload() {
 		this.themeObserver.disconnect();
 	}
 

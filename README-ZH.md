@@ -1,5 +1,7 @@
 # Obsidian Chem
 
+![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22chem%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)
+
 [English](README.md) | [简体中文](README-ZH.md)
 
 **Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)）
@@ -108,9 +110,9 @@ SMILES 使用 ASCII 字符串表示化学结构的特性与 Obsidian 的纯文�
 
 ## 致谢
 
-本插件依赖 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) 实现 SMILES 字符串的解析以及结构式绘制的功能，导入这个包的例子来源于 [Mathpix](https://github.com/Mathpix/mathpix-markdown-it)
+本插件依赖 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) 实现 SMILES 字符串的解析以及结构式绘制的功能，导入这个包的例子来源于 [Mathpix](https://github.com/Mathpix/mathpix-markdown-it)。在此向这些杰出的工作表示感谢!
 
-在整个开发过程中，官方[开发者文档](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)提供了非常详细的指引，感谢 @marcusolsson 的早期非官方文档，以及对官方开发者文档整理工作的领导!
+在整个开发过程中，官方[开发者文档](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)提供了非常详细的指引，感谢 [@marcusolsson](https://github.com/marcusolsson) 的早期非官方文档，以及对官方开发者文档整理工作的领导!
 
 本插件是在关于“在笔记中包含化学结构式”的论坛讨论的驱动下产生的，感谢论坛成员的启发性讨论！
 

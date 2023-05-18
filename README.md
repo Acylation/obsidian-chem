@@ -1,5 +1,7 @@
 # Obsidian Chem
 
+![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22chem%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)
+
 [简体中文](README-ZH.md) | [English](README.md)
 
 **Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)).
@@ -36,7 +38,7 @@ Using SMILES strings to represent molecules is easier and more widely supported 
 ## Installation
 
 > **Note**  
-> Make sure that you are not in the **Restricted mode**.
+> Make sure that you are not in the **Restricted Mode**.
 
 The plugin is available in the official plugin market. You can go to Settings → Community plugins → Browse, and search for the `Chem` plugin by Acylation. After installing, you need to enable the plugin to use it.
 
@@ -105,9 +107,9 @@ Check out the [roadmap](https://github.com/users/Acylation/projects/6) to see wh
 
 ## Acknowledgement
 
-The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) as the parsing and drawing core, and uses [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as an example on how to integrate the package.
+The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) as the parsing and drawing core, and uses [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as an example on how to integrate the package. Thank you very much!
 
-During the whole process of development, I found the [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) super helpful. Massive thanks to @marcusolsson for leading this project!
+During the whole process of development, I found the [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) super helpful. Massive thanks to [@marcusolsson](https://github.com/marcusolsson) for leading this project!
 
 The plugin is motivated by forum requests for including chemical structures in Obsidian. Thank you for the inspiring discussions and the great ideas!
 
