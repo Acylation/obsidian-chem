@@ -66,15 +66,80 @@ export default class ChemPlugin extends Plugin {
 			theme: string,
 			width: string
 		) => {
-			// can put options in calling the drawer
-			const drawer = new SmilesDrawer.SmiDrawer(options);
-
 			// different behavior in live preview and view mode
 			// under view mode, an extra '\n' is appended
 			const rows = source.split('\n').filter((row) => row.length > 0);
 
+			// can put options in calling the drawer
+			var drawer = new SmilesDrawer.SmiDrawer(options);
+
+			// Weird hack to allow in-line config overrides via this syntax:
+			/* ```smiles
+				!{"atomVisualization": "default", "terminalCarbons": true}!
+				S[Ll][Ba]NCOC
+				CC12CCC3C(C1CCC2O)CCC4=C3C=CC(=C4)O
+				!{
+					"atomVisualization": "default",
+					"terminalCarbons": false,
+					"COMMENT42069": "Any unknown key is ignored and can be used as a comment",
+					"DumbComment": "This is the default config btw, you can also put an empty cfg (e.g '!{}!')...",
+					"DumberCmmnt": "here to reset all the values instead of manually reseting the ones you changed"
+				}!
+				S[Ll][Ba]NCOC
+				CC12CCC3C(C1CCC2O)CCC4=C3C=CC(=C4)O
+				!{ "atomVisualization" : "balls"
+				, "terminalCarbons"   : true
+				, "//0": "As long as '!{' starts a line, and the '}!' ends a line..."
+				, "//1": "the whitespace in the JSON is ignored and you can format how u wish"
+				}!
+				S[Ll][Ba]NCOC
+				CC12CCC3C(C1CCC2O)CCC4=C3C=CC(=C4)O
+				``` */
+			var inCfg = false;
+			var currCfgStr = "";
+
 			for (let i = 0; i < rows.length; i++) {
+				if (rows[i].startsWith("!")) {
+					currCfgStr = "";
+					var e = rows[i].slice(1);
+					if (e.length > 0) {
+						if (e.endsWith("!")) {
+							e = e.slice(0,-1);
+							inCfg = !inCfg;
+						}
+						currCfgStr += e;
+					}
+
+					inCfg = !inCfg;
+					continue;
+				} else if (inCfg) {
+					var e = rows[i];
+					if (e.endsWith("!")) {
+						e = e.slice(0,-1);
+						inCfg = !inCfg;
+					}
+					currCfgStr += e;
+					continue;
+				}
+
+				if (currCfgStr != "") {
+					currCfgStr.replace("\n", "");
+					console.log(currCfgStr);
+					var cfgOverrides = JSON.parse(currCfgStr);
+					var newOptsJs = JSON.parse(JSON.stringify(options));
+
+					for (const k in newOptsJs) {
+						if (cfgOverrides.hasOwnProperty(k)) {
+							newOptsJs[k] = cfgOverrides[k];
+						}
+					}
+	
+					drawer = new SmilesDrawer.SmiDrawer(newOptsJs);
+				}
+				// End of in-line config override hack lol
+
 				const img = container.createEl('img') as HTMLImageElement;
+
 				img.width = parseInt(width);
 				drawer.draw(
 					rows[i].trim(), // handle spaces in front of the string
