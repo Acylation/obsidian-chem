@@ -71,7 +71,7 @@ export default class ChemPlugin extends Plugin {
 			const rows = source.split('\n').filter((row) => row.length > 0);
 
 			// can put options in calling the drawer
-			var drawer = new SmilesDrawer.SmiDrawer(options);
+			let drawer = new SmilesDrawer.SmiDrawer(options);
 
 			// Weird hack to allow in-line config overrides via this syntax:
 			/* ```smiles
@@ -95,13 +95,13 @@ export default class ChemPlugin extends Plugin {
 				S[Ll][Ba]NCOC
 				CC12CCC3C(C1CCC2O)CCC4=C3C=CC(=C4)O
 				``` */
-			var inCfg = false;
-			var currCfgStr = "";
+			let inCfg = false;
+			let currCfgStr = "";
 
 			for (let i = 0; i < rows.length; i++) {
 				if (rows[i].startsWith("!")) {
 					currCfgStr = "";
-					var e = rows[i].slice(1);
+					let e = rows[i].slice(1);
 					if (e.length > 0) {
 						if (e.endsWith("!")) {
 							e = e.slice(0,-1);
@@ -113,7 +113,7 @@ export default class ChemPlugin extends Plugin {
 					inCfg = !inCfg;
 					continue;
 				} else if (inCfg) {
-					var e = rows[i];
+					let e = rows[i];
 					if (e.endsWith("!")) {
 						e = e.slice(0,-1);
 						inCfg = !inCfg;
@@ -124,9 +124,8 @@ export default class ChemPlugin extends Plugin {
 
 				if (currCfgStr != "") {
 					currCfgStr.replace("\n", "");
-					console.log(currCfgStr);
-					var cfgOverrides = JSON.parse(currCfgStr);
-					var newOptsJs = JSON.parse(JSON.stringify(options));
+					const cfgOverrides = JSON.parse(currCfgStr);
+					const newOptsJs = JSON.parse(JSON.stringify(options));
 
 					for (const k in newOptsJs) {
 						if (cfgOverrides.hasOwnProperty(k)) {
