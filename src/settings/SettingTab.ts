@@ -6,8 +6,6 @@ import ChemPlugin from '../main';
 import { DEFAULT_SD_OPTIONS, SAMPLE_SMILES, themeList } from './base';
 //Reference: https://smilesdrawer.surge.sh/playground.html
 
-import { createRoot } from 'react-dom/client';
-
 export class ChemSettingTab extends PluginSettingTab {
 	plugin: ChemPlugin;
 
@@ -15,8 +13,6 @@ export class ChemSettingTab extends PluginSettingTab {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
-
-	root = createRoot(this.containerEl);
 
 	display(): void {
 		const { containerEl } = this;
