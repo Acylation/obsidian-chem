@@ -1,18 +1,11 @@
 import { Plugin } from 'obsidian';
 import {
-	options,
+	DEFAULT_SETTINGS,
 	ChemPluginSettings,
-	ChemSettingTab,
-	sample_smiles,
-} from './settings';
+	DEFAULT_SD_OPTIONS,
+} from './settings/base';
+import { ChemSettingTab } from './settings/SettingTab';
 import SmilesDrawer from 'smiles-drawer';
-
-const DEFAULT_SETTINGS: ChemPluginSettings = {
-	width: '300',
-	darkTheme: 'dark',
-	lightTheme: 'light',
-	sample: sample_smiles,
-};
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
@@ -58,7 +51,7 @@ export default class ChemPlugin extends Plugin {
 
 		//this.addRibbonIcon('hexagon', 'This is Chem Plugin', () => {});
 
-		this.addSettingTab(new ChemSettingTab(this.app, this));
+		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 
 		const renderBlocks = (
 			source: string,
@@ -67,7 +60,7 @@ export default class ChemPlugin extends Plugin {
 			width: string
 		) => {
 			// can put options in calling the drawer
-			const drawer = new SmilesDrawer.SmiDrawer(options);
+			const drawer = new SmilesDrawer.SmiDrawer(DEFAULT_SD_OPTIONS);
 
 			// different behavior in live preview and view mode
 			// under view mode, an extra '\n' is appended
