@@ -57,10 +57,14 @@ export default class ChemPlugin extends Plugin {
 			source: string,
 			container: HTMLElement,
 			theme: string,
-			width: string
+			width: string,
+			options?: object
 		) => {
 			// can put options in calling the drawer
-			const drawer = new SmilesDrawer.SmiDrawer(DEFAULT_SD_OPTIONS);
+			const drawer = new SmilesDrawer.SmiDrawer({
+				...DEFAULT_SD_OPTIONS,
+				...options,
+			});
 
 			// different behavior in live preview and view mode
 			// under view mode, an extra '\n' is appended
@@ -68,7 +72,7 @@ export default class ChemPlugin extends Plugin {
 
 			for (let i = 0; i < rows.length; i++) {
 				const img = container.createEl('img') as HTMLImageElement;
-				img.width = parseInt(width);
+				//img.width = parseInt(width);
 				drawer.draw(
 					rows[i].trim(), // handle spaces in front of the string
 					img,
@@ -85,7 +89,8 @@ export default class ChemPlugin extends Plugin {
 					!document.body.hasClass('theme-light')
 					? this.settings.darkTheme
 					: this.settings.lightTheme,
-				this.settings.width
+				this.settings.width,
+				this.settings.options
 			);
 		});
 
