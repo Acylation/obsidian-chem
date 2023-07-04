@@ -1,6 +1,5 @@
 import { DEFAULT_SD_OPTIONS, SMILES_DRAWER_OPTIONS } from './settings/base';
 import SmilesDrawer from 'smiles-drawer';
-import ChemPlugin from './main';
 
 export let gDrawer = new SmilesDrawer.SmiDrawer(DEFAULT_SD_OPTIONS);
 
