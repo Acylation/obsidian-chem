@@ -1,11 +1,8 @@
 import { Plugin } from 'obsidian';
-import {
-	DEFAULT_SETTINGS,
-	ChemPluginSettings,
-	DEFAULT_SD_OPTIONS,
-} from './settings/base';
+import { DEFAULT_SETTINGS, ChemPluginSettings } from './settings/base';
 import { ChemSettingTab } from './settings/SettingTab';
-import SmilesDrawer from 'smiles-drawer';
+
+import { gDrawer } from './drawer';
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
@@ -53,6 +50,7 @@ export default class ChemPlugin extends Plugin {
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 
+		//TODO: wrap-up
 		const renderBlocks = (
 			source: string,
 			container: HTMLElement,
@@ -60,20 +58,14 @@ export default class ChemPlugin extends Plugin {
 			width: string,
 			options?: object
 		) => {
-			// can put options in calling the drawer
-			const drawer = new SmilesDrawer.SmiDrawer({
-				...DEFAULT_SD_OPTIONS,
-				...options,
-			});
-
 			// different behavior in live preview and view mode
 			// under view mode, an extra '\n' is appended
 			const rows = source.split('\n').filter((row) => row.length > 0);
 
 			for (let i = 0; i < rows.length; i++) {
 				const img = container.createEl('img') as HTMLImageElement;
-				//img.width = parseInt(width);
-				drawer.draw(
+				img.width = parseInt(width);
+				gDrawer.draw(
 					rows[i].trim(), // handle spaces in front of the string
 					img,
 					theme
