@@ -7,6 +7,7 @@ export interface ChemPluginSettings {
 	darkTheme: string;
 	lightTheme: string;
 	sample: string;
+	options: Partial<SMILES_DRAWER_OPTIONS>; //TODO: reduce interface exposure.
 }
 
 export const DEFAULT_SETTINGS: ChemPluginSettings = {
@@ -14,6 +15,7 @@ export const DEFAULT_SETTINGS: ChemPluginSettings = {
 	darkTheme: 'dark',
 	lightTheme: 'light',
 	sample: SAMPLE_SMILES,
+	options: {},
 };
 
 // Smiles-drawer options
@@ -44,7 +46,7 @@ export interface SMILES_DRAWER_OPTIONS {
 }
 
 export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {
-	scale: 0,
+	scale: 1,
 	bondThickness: 1,
 	shortBondLength: 0.8,
 	bondSpacing: 5.1,
@@ -55,7 +57,7 @@ export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {
 	explicitHydrogens: true,
 	overlapSensitivity: 0.42,
 	overlapResolutionIterations: 1,
-	compactDrawing: true,
+	compactDrawing: false,
 	fontFamily: 'Arial, Helvetica, sans-serif',
 	fontSizeLarge: 11,
 	fontSizeSmall: 3,
