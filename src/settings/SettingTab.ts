@@ -99,24 +99,43 @@ export class ChemSettingTab extends PluginSettingTab {
 		const lightCard = div.createEl('div', { cls: 'chemcard theme-light' });
 		const darkCard = div.createEl('div', { cls: 'chemcard theme-dark' });
 
-		// TODO: fill advance
-		// dealing with performance problem
-		containerEl.createEl('h2', { text: 'Advanced Settings' });
+		new Setting(containerEl)
+			.setName('Advanced Settings')
+			.setDesc('Configure smiles drawer options.')
+			.setHeading();
 
 		new Setting(containerEl)
 			.setName('Scale')
-			.setDesc('Adjust the scale of the molecule image.')
-			.addText((text) =>
-				text
-					.setValue(
-						this.plugin.settings.options.scale?.toString() ?? '1'
-					)
-					.setPlaceholder('1')
+			.setDesc('Adjust the global molecule scale.')
+			.addButton((button) =>
+				button.setIcon('rotate-ccw').onClick(async () => {
+					this.plugin.settings.options.scale = 1;
+					await this.plugin.saveSettings();
+					onOptionChange();
+				})
+			)
+			.addSlider((slider) =>
+				slider
+					.setValue(this.plugin.settings.options.scale ?? 1)
+					.setLimits(0, 5, 1)
+					.setDynamicTooltip()
 					.onChange(async (value) => {
-						if (value == '') {
-							value = '1';
-						}
-						this.plugin.settings.options.scale = parseInt(value);
+						this.plugin.settings.options.scale = value;
+						await this.plugin.saveSettings();
+						onOptionChange();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName('Compact Drawing')
+			.setDesc('Enable to linearize simple structures. (Unrecommanded)')
+			.addToggle((toggle) =>
+				toggle
+					.setValue(
+						this.plugin.settings.options.compactDrawing ?? false
+					)
+					.onChange(async (value) => {
+						this.plugin.settings.options.compactDrawing = value;
 						await this.plugin.saveSettings();
 						onOptionChange();
 					})
