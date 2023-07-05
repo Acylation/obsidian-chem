@@ -7,7 +7,7 @@ export interface ChemPluginSettings {
 	darkTheme: string;
 	lightTheme: string;
 	sample: string;
-	options: Partial<SMILES_DRAWER_OPTIONS>; //TODO: reduce interface exposure.
+	options: Partial<SMILES_DRAWER_OPTIONS>;
 }
 
 export const DEFAULT_SETTINGS: ChemPluginSettings = {
@@ -20,6 +20,8 @@ export const DEFAULT_SETTINGS: ChemPluginSettings = {
 
 // Smiles-drawer options
 export interface SMILES_DRAWER_OPTIONS {
+	width: number;
+	height: number;
 	scale: number;
 	bondThickness: number;
 	shortBondLength: number;
@@ -46,7 +48,9 @@ export interface SMILES_DRAWER_OPTIONS {
 }
 
 export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {
-	scale: 1,
+	width: 300,
+	height: 300,
+	scale: 1.0,
 	bondThickness: 1,
 	shortBondLength: 0.8,
 	bondSpacing: 5.1,
