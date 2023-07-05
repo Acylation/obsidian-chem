@@ -2,7 +2,8 @@ import { App, PluginSettingTab, Setting } from 'obsidian';
 
 import ChemPlugin from '../main';
 import { DEFAULT_SD_OPTIONS, SAMPLE_SMILES, themeList } from './base';
-import { gDrawer, updateDrawer } from 'src/drawer';
+import { gDrawer, setDrawer } from 'src/drawer';
+import { refreshBlocks } from 'src/blocks';
 
 //Reference: https://smilesdrawer.surge.sh/playground.html
 
@@ -138,7 +139,7 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		const onOptionsChange = () => {
-			updateDrawer({
+			setDrawer({
 				...DEFAULT_SD_OPTIONS,
 				...this.plugin.settings.options,
 			});
@@ -243,6 +244,7 @@ export class ChemSettingTab extends PluginSettingTab {
 		);
 	}
 
-	//hide
-	//draft - async logic
+	hide(): void {
+		refreshBlocks();
+	}
 }
