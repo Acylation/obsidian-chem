@@ -5,7 +5,7 @@ import { SmilesBlock } from './SmilesBlock';
 import { setBlocks } from './blocks';
 
 import { setDrawer } from './drawer';
-import { detachObserver, setObserver, themeObserver } from './themeObserver';
+import { setObserver, detachObserver } from './themeObserver';
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
