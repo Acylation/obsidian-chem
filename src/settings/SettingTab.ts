@@ -29,15 +29,18 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setDesc('Adjust the width of the molecule image.')
 			.addText((text) =>
 				text
-					.setValue(this.plugin.settings.width)
+					.setValue(
+						this.plugin.settings.options?.width?.toString() ?? '300'
+					)
 					.setPlaceholder('300')
 					.onChange(async (value) => {
 						if (value == '') {
 							value = '300';
 						}
-						this.plugin.settings.width = value;
+						this.plugin.settings.options.width = parseInt(value);
+						this.plugin.settings.options.height = parseInt(value);
 						await this.plugin.saveSettings();
-						onWidthChange(value);
+						onOptionsChange();
 					})
 			);
 
@@ -114,7 +117,6 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addSlider((slider) =>
 				slider
 					.setValue(this.plugin.settings.options.scale ?? 1)
-					.setLimits(0, 5, 1)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
 						this.plugin.settings.options.scale = value;
@@ -146,7 +148,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 			lightCard.empty();
 			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			lightImg.width = parseInt(this.plugin.settings.width);
+			// lightImg.width = parseInt(this.plugin.settings.width);
 			gDrawer.draw(
 				this.plugin.settings.sample,
 				lightImg,
@@ -155,29 +157,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 			darkCard.empty();
 			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			darkImg.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(
-				this.plugin.settings.sample,
-				darkImg,
-				this.plugin.settings.darkTheme
-			);
-		};
-
-		const onWidthChange = (width: string) => {
-			div.style.gridTemplateColumns = `repeat(auto-fill, minmax(${width}px, 1fr)`;
-
-			lightCard.empty();
-			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			lightImg.width = parseInt(width);
-			gDrawer.draw(
-				this.plugin.settings.sample,
-				lightImg,
-				this.plugin.settings.lightTheme
-			);
-
-			darkCard.empty();
-			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			darkImg.width = parseInt(width);
+			// darkImg.width = parseInt(this.plugin.settings.width);
 			gDrawer.draw(
 				this.plugin.settings.sample,
 				darkImg,
@@ -188,39 +168,39 @@ export class ChemSettingTab extends PluginSettingTab {
 		const onLightStyleChange = (style: string) => {
 			lightCard.empty();
 			const img = lightCard.createEl('img') as HTMLImageElement;
-			img.width = parseInt(this.plugin.settings.width);
+			// img.width = parseInt(this.plugin.settings.width);
 			gDrawer.draw(this.plugin.settings.sample, img, style);
 		};
 
 		const onDarkStyleChange = (style: string) => {
 			darkCard.empty();
 			const img = darkCard.createEl('img') as HTMLImageElement;
-			img.width = parseInt(this.plugin.settings.width);
+			// img.width = parseInt(this.plugin.settings.width);
 			gDrawer.draw(this.plugin.settings.sample, img, style);
 		};
 
 		const onSampleChange = (example: string) => {
 			lightCard.empty();
 			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			lightImg.width = parseInt(this.plugin.settings.width);
+			// lightImg.width = parseInt(this.plugin.settings.width);
 			gDrawer.draw(example, lightImg, this.plugin.settings.lightTheme);
 
 			darkCard.empty();
 			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			darkImg.width = parseInt(this.plugin.settings.width);
+			// darkImg.width = parseInt(this.plugin.settings.width);
 			gDrawer.draw(example, darkImg, this.plugin.settings.darkTheme);
 		};
 
 		// initialize
 		const initialize = (
 			sample: string,
-			width: string,
+			// width: string,
 			lightTheme: string,
 			darkTheme: string
 		) => {
 			lightCard.empty();
 			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			lightImg.width = parseInt(width == '' ? '300' : width);
+			// lightImg.width = parseInt(width == '' ? '300' : width);
 			gDrawer.draw(
 				sample == '' ? SAMPLE_SMILES : sample,
 				lightImg,
@@ -229,7 +209,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 			darkCard.empty();
 			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			darkImg.width = parseInt(width == '' ? '300' : width);
+			// darkImg.width = parseInt(width == '' ? '300' : width);
 			gDrawer.draw(
 				sample == '' ? SAMPLE_SMILES : sample,
 				darkImg,
@@ -238,7 +218,7 @@ export class ChemSettingTab extends PluginSettingTab {
 		};
 		initialize(
 			this.plugin.settings.sample,
-			this.plugin.settings.width,
+			// this.plugin.settings.width,
 			this.plugin.settings.lightTheme,
 			this.plugin.settings.darkTheme
 		);
