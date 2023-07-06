@@ -22,3 +22,14 @@ If your plugin does not need CSS, delete this file.
     justify-content: center;
     align-items: center;
 }
+
+.chem-table {
+    border-collapse: collapse;
+    display: grid;
+    place-items: center;
+}
+
+.chem-table-cell {
+    width: fit-content;
+    padding: 15px 30px;
+}
