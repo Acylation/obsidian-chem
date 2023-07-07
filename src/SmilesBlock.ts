@@ -1,4 +1,5 @@
 import { MarkdownRenderChild, MarkdownPostProcessorContext } from 'obsidian';
+import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from './drawer';
 import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './blocks';
@@ -33,15 +34,17 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 		if (rows.length == 1) {
 			const div = this.el.createDiv({ cls: 'chem-table-cell' });
-			const img = div.createEl('img') as HTMLImageElement;
-			gDrawer.draw(
-				rows[0], // handle spaces in front of the string
-				img,
-				document.body.hasClass('theme-dark') &&
-					!document.body.hasClass('theme-light')
-					? this.settings.darkTheme
-					: this.settings.lightTheme
-			);
+			const svg = div.createSvg('svg');
+			SmilesDrawer.parse(rows[0], (tree: any) => {
+				gDrawer.draw(
+					tree,
+					svg,
+					document.body.hasClass('theme-dark') &&
+						!document.body.hasClass('theme-light')
+						? this.settings.darkTheme
+						: this.settings.lightTheme
+				);
+			});
 		} else {
 			const table = this.el.createDiv({ cls: 'chem-table' });
 			table.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
@@ -50,15 +53,17 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 			for (let i = 0; i < rows.length; i++) {
 				const cell = table.createDiv({ cls: 'chem-table-cell' });
-				const imgcell = cell.createEl('img') as HTMLImageElement;
-				gDrawer.draw(
-					rows[i], // handle spaces in front of the string
-					imgcell,
-					document.body.hasClass('theme-dark') &&
-						!document.body.hasClass('theme-light')
-						? this.settings.darkTheme
-						: this.settings.lightTheme
-				);
+				const svgcell = cell.createSvg('svg');
+				SmilesDrawer.parse(rows[i], (tree: any) => {
+					gDrawer.draw(
+						tree,
+						svgcell,
+						document.body.hasClass('theme-dark') &&
+							!document.body.hasClass('theme-light')
+							? this.settings.darkTheme
+							: this.settings.lightTheme
+					);
+				});
 			}
 		}
 	}
