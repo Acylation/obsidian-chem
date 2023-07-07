@@ -35,6 +35,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 		if (rows.length == 1) {
 			const div = this.el.createDiv({ cls: 'chem-table-cell' });
 			const svg = div.createSvg('svg');
+			svg.style.userSelect = `none`;
 			SmilesDrawer.parse(rows[0], (tree: any) => {
 				gDrawer.draw(
 					tree,
@@ -47,14 +48,12 @@ export class SmilesBlock extends MarkdownRenderChild {
 			});
 		} else {
 			const table = this.el.createDiv({ cls: 'chem-table' });
-			table.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
-				this.settings.options.width?.toString() ?? '200'
-			}px, 1fr)`;
 
-			for (let i = 0; i < rows.length; i++) {
+			rows.forEach((row) => {
 				const cell = table.createDiv({ cls: 'chem-table-cell' });
+				cell.style.userSelect = `none`;
 				const svgcell = cell.createSvg('svg');
-				SmilesDrawer.parse(rows[i], (tree: any) => {
+				SmilesDrawer.parse(row, (tree: any) => {
 					gDrawer.draw(
 						tree,
 						svgcell,
@@ -64,7 +63,13 @@ export class SmilesBlock extends MarkdownRenderChild {
 							: this.settings.lightTheme
 					);
 				});
-			}
+			});
+
+			table.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
+				this.settings.options.width?.toString() ?? '200'
+			}px, 1fr)`;
+
+			console.log(table.childElementCount);
 		}
 	}
 
