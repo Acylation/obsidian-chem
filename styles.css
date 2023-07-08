@@ -30,7 +30,6 @@ If your plugin does not need CSS, delete this file.
 }
 
 .chem-cell {
-    width: fit-content;
     padding: 15px 30px;
     user-select: none;
 }

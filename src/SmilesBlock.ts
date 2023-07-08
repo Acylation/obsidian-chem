@@ -67,6 +67,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 					: this.settings.lightTheme
 			);
 		});
+		console.log(this.settings.options.scale);
 	};
 
 	async onload() {

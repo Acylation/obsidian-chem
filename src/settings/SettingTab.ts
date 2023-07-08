@@ -1,10 +1,4 @@
-import {
-	App,
-	PluginSettingTab,
-	Setting,
-	SliderComponent,
-	TextComponent,
-} from 'obsidian';
+import { App, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
 
 import ChemPlugin from '../main';
 import { DEFAULT_SD_OPTIONS, SAMPLE_SMILES, themeList } from './base';
@@ -110,41 +104,36 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setDesc('Configure smiles drawer options.')
 			.setHeading();
 
-		// Scaling config
 		const scaleSetting = new Setting(containerEl)
 			.setName('Scale')
 			.setDesc('Adjust the global molecule scale.')
+			// for reset
 			.addExtraButton((button) => {
-				button.setIcon('rotate-ccw').onClick(async () => {
-					this.plugin.settings.options.scale = 1;
-					scaleSlider.setValue(50);
-					scaleText.setValue('1.0');
-					await this.plugin.saveSettings();
-					onOptionsChange();
-				});
+				button
+					.setIcon('rotate-ccw')
+					.setTooltip('Restore default')
+					.onClick(async () => {
+						this.plugin.settings.options.scale = 1;
+						scaleSlider.setValue(50);
+						await this.plugin.saveSettings();
+						onOptionsChange();
+					});
 			});
+
+		const scaleLabel = scaleSetting.controlEl.createDiv('slider-readout');
+		scaleLabel.setText(
+			(this.plugin.settings.options.scale ?? 1.0).toFixed(2).toString()
+		);
 
 		const scaleSlider = new SliderComponent(scaleSetting.controlEl)
 			.setValue(50 * (this.plugin.settings.options.scale ?? 1.0))
 			.setLimits(0.0, 100, 0.5)
-			.setDynamicTooltip()
 			.onChange(async (value) => {
 				this.plugin.settings.options.scale = value / 50;
-				scaleText.setValue((value / 50).toString());
+				scaleLabel.setText((value / 50).toFixed(2).toString());
 				await this.plugin.saveSettings();
 				onOptionsChange();
 			});
-
-		const scaleText = new TextComponent(scaleSetting.controlEl)
-			.setValue((this.plugin.settings.options.scale ?? 1.0).toString())
-			.setPlaceholder('1.0')
-			.onChange(async (text) => {
-				this.plugin.settings.options.scale = parseFloat(text);
-				scaleSlider.setValue(50 * parseFloat(text));
-				await this.plugin.saveSettings();
-				onOptionsChange();
-			})
-			.setDisabled(true);
 
 		new Setting(containerEl)
 			.setName('Compact Drawing')
