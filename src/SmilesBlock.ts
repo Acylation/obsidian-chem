@@ -26,52 +26,48 @@ export class SmilesBlock extends MarkdownRenderChild {
 		//TODO: catching render error
 
 		this.el.empty();
-
 		const rows = this.markdownSource
 			.split('\n')
 			.filter((row) => row.length > 0)
 			.map((row) => row.trim());
 
 		if (rows.length == 1) {
-			const div = this.el.createDiv({ cls: 'chem-table-cell' });
-			const svg = div.createSvg('svg');
-			svg.style.userSelect = `none`;
-			SmilesDrawer.parse(rows[0], (tree: any) => {
-				gDrawer.draw(
-					tree,
-					svg,
-					document.body.hasClass('theme-dark') &&
-						!document.body.hasClass('theme-light')
-						? this.settings.darkTheme
-						: this.settings.lightTheme
-				);
-			});
+			const div = this.el.createDiv({ cls: 'chem-cell' });
+			const svgcell = div.createSvg('svg');
+			this.renderCell(rows[0], svgcell);
 		} else {
 			const table = this.el.createDiv({ cls: 'chem-table' });
+			const maxWidth = this.settings.options?.width ?? 300;
 
 			rows.forEach((row) => {
-				const cell = table.createDiv({ cls: 'chem-table-cell' });
-				cell.style.userSelect = `none`;
+				const cell = table.createDiv({ cls: 'chem-cell' });
 				const svgcell = cell.createSvg('svg');
-				SmilesDrawer.parse(row, (tree: any) => {
-					gDrawer.draw(
-						tree,
-						svgcell,
-						document.body.hasClass('theme-dark') &&
-							!document.body.hasClass('theme-light')
-							? this.settings.darkTheme
-							: this.settings.lightTheme
-					);
-				});
+				this.renderCell(row, svgcell);
+
+				// option1: keep the original size, according to the max
+				// option2: resize and limiting this
+				if (parseFloat(svgcell.style.width) > maxWidth)
+					svgcell.style.width = `${maxWidth.toString()}px`;
 			});
 
 			table.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
-				this.settings.options.width?.toString() ?? '200'
+				this.settings.options.width?.toString() ?? '300'
 			}px, 1fr)`;
-
-			console.log(table.childElementCount);
 		}
 	}
+
+	private renderCell = (source: string, target: SVGSVGElement) => {
+		SmilesDrawer.parse(source, (tree: any) => {
+			gDrawer.draw(
+				tree,
+				target,
+				document.body.hasClass('theme-dark') &&
+					!document.body.hasClass('theme-light')
+					? this.settings.darkTheme
+					: this.settings.lightTheme
+			);
+		});
+	};
 
 	async onload() {
 		this.render();
