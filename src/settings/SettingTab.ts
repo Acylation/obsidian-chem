@@ -1,9 +1,10 @@
-import { App, PluginSettingTab, Setting } from 'obsidian';
+import { App, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
 
 import ChemPlugin from '../main';
 import { DEFAULT_SD_OPTIONS, SAMPLE_SMILES, themeList } from './base';
 import { gDrawer, setDrawer } from 'src/drawer';
 import { refreshBlocks } from 'src/blocks';
+import SmilesDrawer from 'smiles-drawer';
 
 //Reference: https://smilesdrawer.surge.sh/playground.html
 
@@ -103,27 +104,36 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setDesc('Configure smiles drawer options.')
 			.setHeading();
 
-		new Setting(containerEl)
+		const scaleSetting = new Setting(containerEl)
 			.setName('Scale')
 			.setDesc('Adjust the global molecule scale.')
-			// reactivity
-			.addButton((button) =>
-				button.setIcon('rotate-ccw').onClick(async () => {
-					this.plugin.settings.options.scale = 1;
-					await this.plugin.saveSettings();
-					onOptionsChange();
-				})
-			)
-			.addSlider((slider) =>
-				slider
-					.setValue(this.plugin.settings.options.scale ?? 1)
-					.setDynamicTooltip()
-					.onChange(async (value) => {
-						this.plugin.settings.options.scale = value;
+			// for reset
+			.addExtraButton((button) => {
+				button
+					.setIcon('rotate-ccw')
+					.setTooltip('Restore default')
+					.onClick(async () => {
+						this.plugin.settings.options.scale = 1;
+						scaleSlider.setValue(50);
 						await this.plugin.saveSettings();
 						onOptionsChange();
-					})
-			);
+					});
+			});
+
+		const scaleLabel = scaleSetting.controlEl.createDiv('slider-readout');
+		scaleLabel.setText(
+			(this.plugin.settings.options.scale ?? 1.0).toFixed(2).toString()
+		);
+
+		const scaleSlider = new SliderComponent(scaleSetting.controlEl)
+			.setValue(50 * (this.plugin.settings.options.scale ?? 1.0))
+			.setLimits(0.0, 100, 0.5)
+			.onChange(async (value) => {
+				this.plugin.settings.options.scale = value / 50;
+				scaleLabel.setText((value / 50).toFixed(2).toString());
+				await this.plugin.saveSettings();
+				onOptionsChange();
+			});
 
 		new Setting(containerEl)
 			.setName('Compact Drawing')
@@ -147,78 +157,82 @@ export class ChemSettingTab extends PluginSettingTab {
 			});
 
 			lightCard.empty();
-			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			// lightImg.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(
-				this.plugin.settings.sample,
-				lightImg,
-				this.plugin.settings.lightTheme
-			);
+			const lightSvg = lightCard.createSvg('svg');
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
+				gDrawer.draw(tree, lightSvg, this.plugin.settings.lightTheme);
+			});
 
 			darkCard.empty();
-			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			// darkImg.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(
-				this.plugin.settings.sample,
-				darkImg,
-				this.plugin.settings.darkTheme
-			);
+			const darkSvg = darkCard.createSvg('svg');
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
+				gDrawer.draw(tree, darkSvg, this.plugin.settings.darkTheme);
+			});
 		};
 
 		const onLightStyleChange = (style: string) => {
 			lightCard.empty();
-			const img = lightCard.createEl('img') as HTMLImageElement;
-			// img.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(this.plugin.settings.sample, img, style);
+			const lightSvg = lightCard.createSvg('svg');
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
+				gDrawer.draw(tree, lightSvg, style);
+			});
 		};
 
 		const onDarkStyleChange = (style: string) => {
 			darkCard.empty();
-			const img = darkCard.createEl('img') as HTMLImageElement;
-			// img.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(this.plugin.settings.sample, img, style);
+			const darkSvg = darkCard.createSvg('svg');
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
+				gDrawer.draw(tree, darkSvg, style);
+			});
 		};
 
 		const onSampleChange = (example: string) => {
 			lightCard.empty();
-			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			// lightImg.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(example, lightImg, this.plugin.settings.lightTheme);
+			const lightSvg = lightCard.createSvg('svg');
+			SmilesDrawer.parse(example, (tree: object) => {
+				gDrawer.draw(tree, lightSvg, this.plugin.settings.lightTheme);
+			});
 
 			darkCard.empty();
-			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			// darkImg.width = parseInt(this.plugin.settings.width);
-			gDrawer.draw(example, darkImg, this.plugin.settings.darkTheme);
+			const darkSvg = darkCard.createSvg('svg');
+			SmilesDrawer.parse(example, (tree: object) => {
+				gDrawer.draw(tree, darkSvg, this.plugin.settings.darkTheme);
+			});
 		};
 
 		// initialize
 		const initialize = (
 			sample: string,
-			// width: string,
 			lightTheme: string,
 			darkTheme: string
 		) => {
 			lightCard.empty();
-			const lightImg = lightCard.createEl('img') as HTMLImageElement;
-			// lightImg.width = parseInt(width == '' ? '300' : width);
-			gDrawer.draw(
+			const lightSvg = lightCard.createSvg('svg');
+			SmilesDrawer.parse(
 				sample == '' ? SAMPLE_SMILES : sample,
-				lightImg,
-				lightTheme == '' ? 'light' : lightTheme
+				(tree: object) => {
+					gDrawer.draw(
+						tree,
+						lightSvg,
+						lightTheme == '' ? 'light' : lightTheme
+					);
+				}
 			);
 
 			darkCard.empty();
-			const darkImg = darkCard.createEl('img') as HTMLImageElement;
-			// darkImg.width = parseInt(width == '' ? '300' : width);
-			gDrawer.draw(
+			const darkSvg = darkCard.createSvg('svg');
+			SmilesDrawer.parse(
 				sample == '' ? SAMPLE_SMILES : sample,
-				darkImg,
-				darkTheme == '' ? 'dark' : darkTheme
+				(tree: object) => {
+					gDrawer.draw(
+						tree,
+						darkSvg,
+						darkTheme == '' ? 'dark' : darkTheme
+					);
+				}
 			);
 		};
 		initialize(
 			this.plugin.settings.sample,
-			// this.plugin.settings.width,
 			this.plugin.settings.lightTheme,
 			this.plugin.settings.darkTheme
 		);

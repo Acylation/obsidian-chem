@@ -29,7 +29,7 @@ If your plugin does not need CSS, delete this file.
     place-items: center;
 }
 
-.chem-table-cell {
-    width: fit-content;
+.chem-cell {
     padding: 15px 30px;
+    user-select: none;
 }
