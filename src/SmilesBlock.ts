@@ -57,7 +57,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 	}
 
 	private renderCell = (source: string, target: SVGSVGElement) => {
-		SmilesDrawer.parse(source, (tree: any) => {
+		SmilesDrawer.parse(source, (tree: object) => {
 			gDrawer.draw(
 				tree,
 				target,

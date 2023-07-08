@@ -158,13 +158,13 @@ export class ChemSettingTab extends PluginSettingTab {
 
 			lightCard.empty();
 			const lightSvg = lightCard.createSvg('svg');
-			SmilesDrawer.parse(this.plugin.settings.sample, (tree: any) => {
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
 				gDrawer.draw(tree, lightSvg, this.plugin.settings.lightTheme);
 			});
 
 			darkCard.empty();
 			const darkSvg = darkCard.createSvg('svg');
-			SmilesDrawer.parse(this.plugin.settings.sample, (tree: any) => {
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
 				gDrawer.draw(tree, darkSvg, this.plugin.settings.darkTheme);
 			});
 		};
@@ -172,7 +172,7 @@ export class ChemSettingTab extends PluginSettingTab {
 		const onLightStyleChange = (style: string) => {
 			lightCard.empty();
 			const lightSvg = lightCard.createSvg('svg');
-			SmilesDrawer.parse(this.plugin.settings.sample, (tree: any) => {
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
 				gDrawer.draw(tree, lightSvg, style);
 			});
 		};
@@ -180,7 +180,7 @@ export class ChemSettingTab extends PluginSettingTab {
 		const onDarkStyleChange = (style: string) => {
 			darkCard.empty();
 			const darkSvg = darkCard.createSvg('svg');
-			SmilesDrawer.parse(this.plugin.settings.sample, (tree: any) => {
+			SmilesDrawer.parse(this.plugin.settings.sample, (tree: object) => {
 				gDrawer.draw(tree, darkSvg, style);
 			});
 		};
@@ -188,13 +188,13 @@ export class ChemSettingTab extends PluginSettingTab {
 		const onSampleChange = (example: string) => {
 			lightCard.empty();
 			const lightSvg = lightCard.createSvg('svg');
-			SmilesDrawer.parse(example, (tree: any) => {
+			SmilesDrawer.parse(example, (tree: object) => {
 				gDrawer.draw(tree, lightSvg, this.plugin.settings.lightTheme);
 			});
 
 			darkCard.empty();
 			const darkSvg = darkCard.createSvg('svg');
-			SmilesDrawer.parse(example, (tree: any) => {
+			SmilesDrawer.parse(example, (tree: object) => {
 				gDrawer.draw(tree, darkSvg, this.plugin.settings.darkTheme);
 			});
 		};
@@ -209,7 +209,7 @@ export class ChemSettingTab extends PluginSettingTab {
 			const lightSvg = lightCard.createSvg('svg');
 			SmilesDrawer.parse(
 				sample == '' ? SAMPLE_SMILES : sample,
-				(tree: any) => {
+				(tree: object) => {
 					gDrawer.draw(
 						tree,
 						lightSvg,
@@ -222,7 +222,7 @@ export class ChemSettingTab extends PluginSettingTab {
 			const darkSvg = darkCard.createSvg('svg');
 			SmilesDrawer.parse(
 				sample == '' ? SAMPLE_SMILES : sample,
-				(tree: any) => {
+				(tree: object) => {
 					gDrawer.draw(
 						tree,
 						darkSvg,
