@@ -27,100 +27,11 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		// TODO: Check styling instructions and remove this
-		containerEl.createEl('h2', { text: 'Style Preferences' });
-
-		new Setting(containerEl)
-			.setName('Light Theme')
-			.setDesc('Active when Obsidian is under light mode.')
-			.addDropdown((dropdown) =>
-				dropdown
-					.addOptions(themeList)
-					.setValue(this.plugin.settings.lightTheme)
-					.onChange(async (value) => {
-						this.plugin.settings.lightTheme = value;
-						await this.plugin.saveSettings();
-						onSettingsChange();
-					})
-			);
-
-		new Setting(containerEl)
-			.setName('Dark Theme')
-			.setDesc('Active when Obsidian is under dark mode.')
-			.addDropdown((dropdown) =>
-				dropdown
-					.addOptions(themeList)
-					.setValue(this.plugin.settings.darkTheme)
-					.onChange(async (value) => {
-						this.plugin.settings.darkTheme = value;
-						await this.plugin.saveSettings();
-						onSettingsChange();
-					})
-			);
-
-		containerEl.createEl('h2', { text: 'Live Preview' });
-
-		new Setting(containerEl)
-			.setName('Sample Smiles 1')
-			.setDesc('Input smiles strings to see the styled structure.')
-			.addText((text) =>
-				text
-					.setPlaceholder(SAMPLE_SMILES_1)
-					.setValue(this.plugin.settings.sample1)
-					.onChange(async (value) => {
-						if (value == '') {
-							value = SAMPLE_SMILES_1;
-						}
-						this.plugin.settings.sample1 = value;
-						await this.plugin.saveSettings();
-						onSettingsChange();
-					})
-			);
-
-		new Setting(containerEl)
-			.setName('Sample Smiles 2')
-			.setDesc('Input smiles strings to see the styled structure.')
-			.addText((text) =>
-				text
-					.setPlaceholder(SAMPLE_SMILES_2)
-					.setValue(this.plugin.settings.sample2)
-					.onChange(async (value) => {
-						if (value == '') {
-							value = SAMPLE_SMILES_2;
-						}
-						this.plugin.settings.sample2 = value;
-						await this.plugin.saveSettings();
-						onSettingsChange();
-					})
-			);
-
-		const preview = new LivePreview(containerEl, this.plugin.settings);
-		preview.render(); //initialize
-
-		new Setting(containerEl)
-			.setName('Advanced Settings')
-			.setDesc('Configure smiles drawer options.')
-			.setHeading();
-
-		new Setting(containerEl)
-			.setName('Image Width')
-			.setDesc('Adjust the width of the molecule image.')
-			.addText((text) => {
-				text.setValue(this.plugin.settings?.imgWidth ?? '300')
-					.setPlaceholder('300')
-					.onChange(async (value) => {
-						if (value == '') {
-							value = '300';
-						}
-						this.plugin.settings.imgWidth = value;
-						await this.plugin.saveSettings();
-						onSettingsChange();
-					});
-			});
-
 		const scaleSetting = new Setting(containerEl)
 			.setName('Scale')
-			.setDesc('Adjust the global molecule scale.')
+			.setDesc(
+				'Adjust the global molecule scale. Set to zero to unify image widths, otherwise the structures will share the same bond length.'
+			)
 			.addExtraButton((button) => {
 				button
 					.setIcon('rotate-ccw')
@@ -134,6 +45,7 @@ export class ChemSettingTab extends PluginSettingTab {
 							...this.plugin.settings.options,
 						});
 						onSettingsChange();
+						unifyBondLength();
 					});
 			});
 
@@ -154,22 +66,86 @@ export class ChemSettingTab extends PluginSettingTab {
 					...this.plugin.settings.options,
 				});
 				onSettingsChange();
+				if (value == 0) unifyImageWidth();
+				else unifyBondLength();
 			});
 
+		const widthSettings = new Setting(containerEl);
+
 		new Setting(containerEl)
-			.setName('Max width in table') // width limitation
-			.setDesc('Maximum width in multiline')
+			.setName('Light theme')
+			.setDesc('Active when Obsidian is under light mode.')
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions(themeList)
+					.setValue(this.plugin.settings.lightTheme)
+					.onChange(async (value) => {
+						this.plugin.settings.lightTheme = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName('Dark theme')
+			.setDesc('Active when Obsidian is under dark mode.')
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions(themeList)
+					.setValue(this.plugin.settings.darkTheme)
+					.onChange(async (value) => {
+						this.plugin.settings.darkTheme = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl).setName('Live Preview').setHeading();
+
+		new Setting(containerEl)
+			.setName('Sample SMILES strings')
+			.setDesc('Input smiles strings to see the styled structure.')
 			.addText((text) =>
 				text
-					.setValue(
-						this.plugin.settings.options.width?.toString() ?? '300'
-					)
+					.setPlaceholder(SAMPLE_SMILES_1)
+					.setValue(this.plugin.settings.sample1)
 					.onChange(async (value) => {
 						if (value == '') {
-							value = '300';
+							value = SAMPLE_SMILES_1;
 						}
-						this.plugin.settings.options.width = parseInt(value);
-						this.plugin.settings.options.height = parseInt(value);
+						this.plugin.settings.sample1 = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			)
+			.addText((text) =>
+				text
+					.setPlaceholder(SAMPLE_SMILES_2)
+					.setValue(this.plugin.settings.sample2)
+					.onChange(async (value) => {
+						if (value == '') {
+							value = SAMPLE_SMILES_2;
+						}
+						this.plugin.settings.sample2 = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
+		const preview = new LivePreview(containerEl, this.plugin.settings);
+
+		new Setting(containerEl).setName('Advanced Settings').setHeading();
+
+		new Setting(containerEl)
+			.setName('Compact drawing')
+			.setDesc('Linearize simple structures and functional groups.')
+			.addToggle((toggle) =>
+				toggle
+					.setValue(
+						this.plugin.settings.options?.compactDrawing ?? false
+					)
+					.onChange(async (value) => {
+						this.plugin.settings.options.compactDrawing = value;
 						await this.plugin.saveSettings();
 						setDrawer({
 							...DEFAULT_SD_OPTIONS,
@@ -180,15 +156,15 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Compact Drawing')
-			.setDesc('Linearize simple structures and functional groups.')
+			.setName('Show terminal carbons')
+			.setDesc('Explictly draw terminal carbons.')
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options.compactDrawing ?? false
+						this.plugin.settings.options?.terminalCarbons ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.compactDrawing = value;
+						this.plugin.settings.options.terminalCarbons = value;
 						await this.plugin.saveSettings();
 						setDrawer({
 							...DEFAULT_SD_OPTIONS,
@@ -202,6 +178,63 @@ export class ChemSettingTab extends PluginSettingTab {
 			preview.updateSettings(this.plugin.settings);
 			preview.render();
 		};
+
+		const unifyBondLength = () => {
+			widthSettings.controlEl.empty();
+			widthSettings
+				.setName('Maximum width')
+				.setDesc(
+					'Crop structure images that are too large in a multiline block.'
+				)
+				.addText((text) =>
+					text
+						.setValue(
+							this.plugin.settings.options.width?.toString() ??
+								'300'
+						)
+						.onChange(async (value) => {
+							if (value == '') {
+								value = '300';
+							}
+							this.plugin.settings.options.width =
+								parseInt(value);
+							this.plugin.settings.options.height =
+								parseInt(value);
+							await this.plugin.saveSettings();
+							setDrawer({
+								...DEFAULT_SD_OPTIONS,
+								...this.plugin.settings.options,
+							});
+							onSettingsChange();
+						})
+				);
+		};
+
+		const unifyImageWidth = () => {
+			widthSettings.controlEl.empty();
+			widthSettings
+				.setName('Image width')
+				.setDesc(
+					"Adjust the width of the molecule image. Only valid when 'scale' is set to zero."
+				)
+				.addText((text) => {
+					text.setValue(this.plugin.settings?.imgWidth ?? '300')
+						.setPlaceholder('300')
+						.onChange(async (value) => {
+							if (value == '') {
+								value = '300';
+							}
+							this.plugin.settings.imgWidth = value;
+							await this.plugin.saveSettings();
+							onSettingsChange();
+						});
+				});
+		};
+
+		// initialize
+		preview.render();
+		if ((this.plugin.settings.options?.scale ?? 1) == 0) unifyImageWidth();
+		else unifyBondLength();
 	}
 
 	hide(): void {
