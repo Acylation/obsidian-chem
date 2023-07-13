@@ -2,9 +2,9 @@ import { Plugin, MarkdownPostProcessorContext } from 'obsidian';
 import { DEFAULT_SETTINGS, ChemPluginSettings } from './settings/base';
 import { ChemSettingTab } from './settings/SettingTab';
 import { SmilesBlock } from './SmilesBlock';
-import { setBlocks } from './blocks';
 
-import { setDrawer } from './drawer';
+import { setBlocks, clearBlocks } from './blocks';
+import { setDrawer, clearDrawer } from './drawer';
 import { setObserver, detachObserver } from './themeObserver';
 
 export default class ChemPlugin extends Plugin {
@@ -29,6 +29,8 @@ export default class ChemPlugin extends Plugin {
 
 	async onunload() {
 		detachObserver();
+		clearBlocks();
+		clearDrawer();
 	}
 
 	async loadSettings() {
