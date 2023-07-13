@@ -1,5 +1,5 @@
 // Global consts
-export const SAMPLE_SMILES_1 = 'OC(=O)C=CC1=CC=CC=C1';
+export const SAMPLE_SMILES_1 = 'OC(=O)C(C)=CC1=CC=CC=C1';
 export const SAMPLE_SMILES_2 =
 	'OC(C(=O)O[C@H]1C[N+]2(CCCOC3=CC=CC=C3)CCC1CC2)(C1=CC=CS1)C1=CC=CS1';
 
