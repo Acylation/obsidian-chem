@@ -43,9 +43,6 @@ export class SmilesBlock extends MarkdownRenderChild {
 				const cell = table.createDiv({ cls: 'chem-cell' });
 				const svgcell = cell.createSvg('svg');
 				this.renderCell(row, svgcell);
-
-				// option1: keep the original size, according to the max
-				// option2: resize and limiting this
 				if (parseFloat(svgcell.style.width) > maxWidth)
 					svgcell.style.width = `${maxWidth.toString()}px`;
 			});
@@ -57,6 +54,8 @@ export class SmilesBlock extends MarkdownRenderChild {
 	}
 
 	private renderCell = (source: string, target: SVGSVGElement) => {
+		if (this.settings.options.scale == 0)
+			target.style.width = `${this.settings.imgWidth}px`;
 		SmilesDrawer.parse(source, (tree: object) => {
 			gDrawer.draw(
 				tree,
@@ -67,7 +66,6 @@ export class SmilesBlock extends MarkdownRenderChild {
 					: this.settings.lightTheme
 			);
 		});
-		console.log(this.settings.options.scale);
 	};
 
 	async onload() {
