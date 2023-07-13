@@ -65,7 +65,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 			);
 		});
 		if (this.settings.options.scale == 0)
-			target.style.width = `${this.settings.imgWidth}px`;
+			target.style.width = `${this.settings.width}px`;
 	};
 
 	async onload() {
