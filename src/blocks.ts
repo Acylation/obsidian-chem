@@ -23,3 +23,9 @@ export const refreshBlocks = () => {
 		block.render();
 	});
 };
+
+export const clearBlocks = () => {
+	gBlocks.forEach((block) => {
+		removeBlock(block);
+	});
+};
