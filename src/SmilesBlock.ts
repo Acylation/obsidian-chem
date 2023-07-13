@@ -54,8 +54,6 @@ export class SmilesBlock extends MarkdownRenderChild {
 	}
 
 	private renderCell = (source: string, target: SVGSVGElement) => {
-		if (this.settings.options.scale == 0)
-			target.style.width = `${this.settings.imgWidth}px`;
 		SmilesDrawer.parse(source, (tree: object) => {
 			gDrawer.draw(
 				tree,
@@ -66,6 +64,8 @@ export class SmilesBlock extends MarkdownRenderChild {
 					: this.settings.lightTheme
 			);
 		});
+		if (this.settings.options.scale == 0)
+			target.style.width = `${this.settings.imgWidth}px`;
 	};
 
 	async onload() {
