@@ -1,5 +1,4 @@
 import { App, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
-import { LivePreview } from './LivePreview';
 
 import ChemPlugin from '../main';
 import {
@@ -8,9 +7,10 @@ import {
 	SAMPLE_SMILES_2,
 	themeList,
 } from './base';
-import { gDrawer, setDrawer } from 'src/drawer';
+
+import { setDrawer } from 'src/drawer';
 import { refreshBlocks } from 'src/blocks';
-import SmilesDrawer from 'smiles-drawer';
+import { LivePreview } from './LivePreview';
 
 //Reference: https://smilesdrawer.surge.sh/playground.html
 
