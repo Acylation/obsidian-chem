@@ -1,7 +1,7 @@
 import { ChemPluginSettings } from '../settings/base';
 
 import SmilesDrawer from 'smiles-drawer';
-import { gDrawer } from '../drawer';
+import { gDrawer } from 'src/global/drawer';
 
 /**
  * Refer to plugin abcjs
