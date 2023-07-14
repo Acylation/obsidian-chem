@@ -1,4 +1,4 @@
-import { SmilesBlock } from './SmilesBlock';
+import { SmilesBlock } from '../SmilesBlock';
 
 export let gBlocks: SmilesBlock[];
 

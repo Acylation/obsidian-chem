@@ -8,8 +8,8 @@ import {
 	themeList,
 } from './base';
 
-import { setDrawer } from 'src/drawer';
-import { refreshBlocks } from 'src/blocks';
+import { setDrawer } from 'src/global/drawer';
+import { refreshBlocks } from 'src/global/blocks';
 import { LivePreview } from './LivePreview';
 
 //Reference: https://smilesdrawer.surge.sh/playground.html

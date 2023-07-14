@@ -1,8 +1,8 @@
 import { MarkdownRenderChild, MarkdownPostProcessorContext } from 'obsidian';
 import SmilesDrawer from 'smiles-drawer';
-import { gDrawer } from './drawer';
+import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
-import { addBlock, removeBlock } from './blocks';
+import { addBlock, removeBlock } from './global/blocks';
 
 /**
  * Refer to plugin abcjs

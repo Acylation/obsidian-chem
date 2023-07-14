@@ -3,15 +3,12 @@ import { DEFAULT_SETTINGS, ChemPluginSettings } from './settings/base';
 import { ChemSettingTab } from './settings/SettingTab';
 import { SmilesBlock } from './SmilesBlock';
 
-import { setBlocks, clearBlocks } from './blocks';
-import { setDrawer, clearDrawer } from './drawer';
+import { setBlocks, clearBlocks } from './global/blocks';
+import { setDrawer, clearDrawer } from './global/drawer';
 import { setObserver, detachObserver } from './themeObserver';
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
-
-	// TODO: use svg
-	// https://github.com/reymond-group/smilesDrawer/issues/167
 
 	async onload() {
 		await this.loadSettings();
@@ -22,6 +19,8 @@ export default class ChemPlugin extends Plugin {
 		setDrawer(this.settings.options);
 		setBlocks();
 		setObserver();
+
+		//update settings
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 		this.registerMarkdownCodeBlockProcessor('smiles', this.smilesProcessor);
