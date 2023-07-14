@@ -1,17 +1,19 @@
 import { Plugin, MarkdownPostProcessorContext } from 'obsidian';
-import { DEFAULT_SETTINGS, ChemPluginSettings } from './settings/base';
+import {
+	DEFAULT_SETTINGS,
+	ChemPluginSettings,
+	SETTINGS_VERSION,
+} from './settings/base';
 import { ChemSettingTab } from './settings/SettingTab';
+import { updateSettingsVersion } from './settings/update';
 import { SmilesBlock } from './SmilesBlock';
 
-import { setBlocks, clearBlocks } from './blocks';
-import { setDrawer, clearDrawer } from './drawer';
+import { setBlocks, clearBlocks } from './global/blocks';
+import { setDrawer, clearDrawer } from './global/drawer';
 import { setObserver, detachObserver } from './themeObserver';
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
-
-	// TODO: use svg
-	// https://github.com/reymond-group/smilesDrawer/issues/167
 
 	async onload() {
 		await this.loadSettings();
@@ -34,11 +36,15 @@ export default class ChemPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.loadData()
-		);
+		const candidate = Object.assign({}, await this.loadData());
+		if ('version' in candidate && candidate.version == SETTINGS_VERSION)
+			this.settings = Object.assign({}, DEFAULT_SETTINGS, candidate);
+		else
+			this.settings = Object.assign(
+				{},
+				DEFAULT_SETTINGS,
+				updateSettingsVersion(candidate)
+			);
 	}
 
 	async saveSettings() {

@@ -8,8 +8,8 @@ import {
 	themeList,
 } from './base';
 
-import { setDrawer } from 'src/drawer';
-import { refreshBlocks } from 'src/blocks';
+import { setDrawer } from 'src/global/drawer';
+import { refreshBlocks } from 'src/global/blocks';
 import { LivePreview } from './LivePreview';
 
 //Reference: https://smilesdrawer.surge.sh/playground.html
@@ -30,7 +30,7 @@ export class ChemSettingTab extends PluginSettingTab {
 		const scaleSetting = new Setting(containerEl)
 			.setName('Scale')
 			.setDesc(
-				'Adjust the global molecule scale. Set to zero to unify image widths, otherwise the structures will share the same bond length.'
+				'Adjust the global molecule scale. If set to zero, the image widths will be unified. Otherwise, the structures will share the same bond length, but the image widths will vary.'
 			)
 			.addExtraButton((button) => {
 				button
@@ -104,7 +104,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Sample SMILES strings')
-			.setDesc('Input smiles strings to see the styled structure.')
+			.setDesc('Input SMILES strings to see the styled structures.')
 			.addText((text) =>
 				text
 					.setPlaceholder(SAMPLE_SMILES_1)
@@ -134,7 +134,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		const preview = new LivePreview(containerEl, this.plugin.settings);
 
-		new Setting(containerEl).setName('Advanced Settings').setHeading();
+		new Setting(containerEl).setName('Advanced').setHeading();
 
 		new Setting(containerEl)
 			.setName('Compact drawing')
@@ -157,7 +157,9 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Show terminal carbons')
-			.setDesc('Explictly draw terminal carbons.')
+			.setDesc(
+				'Explictly draw terminal carbons like methyl or methylene.'
+			)
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
@@ -215,16 +217,18 @@ export class ChemSettingTab extends PluginSettingTab {
 			widthSettings
 				.setName('Image width')
 				.setDesc(
-					"Adjust the width of the molecule image. Only valid when 'scale' is set to zero."
+					"Adjust the width of the molecule images. Only valid when 'scale' is set to zero."
 				)
 				.addText((text) => {
-					text.setValue(this.plugin.settings?.imgWidth ?? '300')
+					text.setValue(
+						this.plugin.settings?.imgWidth.toString() ?? '300'
+					)
 						.setPlaceholder('300')
 						.onChange(async (value) => {
 							if (value == '') {
 								value = '300';
 							}
-							this.plugin.settings.imgWidth = value;
+							this.plugin.settings.imgWidth = parseInt(value);
 							await this.plugin.saveSettings();
 							onSettingsChange();
 						});

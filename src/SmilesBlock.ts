@@ -1,8 +1,8 @@
 import { MarkdownRenderChild, MarkdownPostProcessorContext } from 'obsidian';
 import SmilesDrawer from 'smiles-drawer';
-import { gDrawer } from './drawer';
+import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
-import { addBlock, removeBlock } from './blocks';
+import { addBlock, removeBlock } from './global/blocks';
 
 /**
  * Refer to plugin abcjs
@@ -65,7 +65,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 			);
 		});
 		if (this.settings.options.scale == 0)
-			target.style.width = `${this.settings.imgWidth}px`;
+			target.style.width = `${this.settings.imgWidth.toString()}px`;
 	};
 
 	async onload() {

@@ -1,4 +1,4 @@
-import { DEFAULT_SD_OPTIONS, SMILES_DRAWER_OPTIONS } from './settings/base';
+import { DEFAULT_SD_OPTIONS, SMILES_DRAWER_OPTIONS } from 'src/settings/base';
 import SmilesDrawer from 'smiles-drawer';
 
 export let gDrawer = new SmilesDrawer.SvgDrawer(DEFAULT_SD_OPTIONS);
