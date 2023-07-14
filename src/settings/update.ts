@@ -36,7 +36,6 @@ export const migrate = (stale: ChemPluginSettingsV1 & ChemPluginSettingsV2) => {
 	result.darkTheme = stale.darkTheme;
 	result.lightTheme = stale.lightTheme;
 	result.options = stale.options;
-	//检查存在性
 	result.sample1 = stale.sample;
 	result.width = stale.width;
 	return result;

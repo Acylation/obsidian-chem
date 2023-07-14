@@ -51,7 +51,7 @@ export class LivePreview {
 
 		if (this.settings.options.scale == 0)
 			this.container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
-				this.settings?.width ?? '300'
+				this.settings?.imgWidth.toString() ?? '300'
 			}px, 1fr)`;
 		else
 			this.container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${(lightWidth >
@@ -75,7 +75,9 @@ export class LivePreview {
 			gDrawer.draw(tree, svg, style);
 		});
 		if (this.settings.options.scale == 0)
-			svg.style.width = `${this.settings?.width ?? '300'}px`;
+			svg.style.width = `${
+				this.settings?.imgWidth.toString() ?? '300'
+			}px`;
 		else if (
 			parseFloat(svg.style.width) > (this.settings.options?.width ?? 300)
 		) {

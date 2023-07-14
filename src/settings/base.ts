@@ -9,7 +9,7 @@ export interface ChemPluginSettings {
 	lightTheme: string;
 	sample1: string;
 	sample2: string;
-	width: string;
+	imgWidth: number;
 	options: Partial<SMILES_DRAWER_OPTIONS>;
 }
 
@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: ChemPluginSettings = {
 	lightTheme: 'light',
 	sample1: SAMPLE_SMILES_1,
 	sample2: SAMPLE_SMILES_2,
-	width: '300',
+	imgWidth: 300,
 	options: {},
 };
 

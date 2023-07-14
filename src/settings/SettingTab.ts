@@ -220,13 +220,15 @@ export class ChemSettingTab extends PluginSettingTab {
 					"Adjust the width of the molecule images. Only valid when 'scale' is set to zero."
 				)
 				.addText((text) => {
-					text.setValue(this.plugin.settings?.width ?? '300')
+					text.setValue(
+						this.plugin.settings?.imgWidth.toString() ?? '300'
+					)
 						.setPlaceholder('300')
 						.onChange(async (value) => {
 							if (value == '') {
 								value = '300';
 							}
-							this.plugin.settings.width = value;
+							this.plugin.settings.imgWidth = parseInt(value);
 							await this.plugin.saveSettings();
 							onSettingsChange();
 						});
