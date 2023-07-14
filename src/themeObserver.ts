@@ -1,4 +1,4 @@
-import { refreshBlocks } from './global/blocks';
+import { refreshBlocks } from 'src/global/blocks';
 
 export const themeObserver = new MutationObserver(function (mutations) {
 	mutations.forEach(function (mutation) {

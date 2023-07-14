@@ -2,9 +2,11 @@
 export const SAMPLE_SMILES_1 = 'OC(=O)C(C)=CC1=CC=CC=C1';
 export const SAMPLE_SMILES_2 =
 	'OC(C(=O)O[C@H]1C[N+]2(CCCOC3=CC=CC=C3)CCC1CC2)(C1=CC=CS1)C1=CC=CS1';
+export const SETTINGS_VERSION = 'v2';
 
 // Plugin settings
 export interface ChemPluginSettings {
+	version: string;
 	darkTheme: string;
 	lightTheme: string;
 	sample1: string;
@@ -14,6 +16,7 @@ export interface ChemPluginSettings {
 }
 
 export const DEFAULT_SETTINGS: ChemPluginSettings = {
+	version: SETTINGS_VERSION,
 	darkTheme: 'dark',
 	lightTheme: 'light',
 	sample1: SAMPLE_SMILES_1,
