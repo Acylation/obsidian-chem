@@ -33,10 +33,7 @@ const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
 	options: {},
 };
 
-export const updateSettingsVersion = (
-	// stale: ChemPluginSettingsV1 & ChemPluginSettingsV2
-	stale: ChemPluginSettingsV1
-) => {
+export const updateSettingsVersion = (stale: ChemPluginSettingsV1) => {
 	const result = { ...DEFAULT_SETTINGS_V2 };
 	result.darkTheme = stale.darkTheme;
 	result.lightTheme = stale.lightTheme;

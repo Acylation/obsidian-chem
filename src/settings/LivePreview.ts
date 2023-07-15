@@ -71,9 +71,15 @@ export class LivePreview {
 		style: string
 	) => {
 		const svg = target.createSvg('svg') as SVGSVGElement;
-		SmilesDrawer.parse(source, (tree: object) => {
-			gDrawer.draw(tree, svg, style);
-		});
+		SmilesDrawer.parse(
+			source,
+			(tree: object) => {
+				gDrawer.draw(tree, svg, style);
+			},
+			(error: object & { name: string; message: string }) => {
+				console.log(error.name + ': ' + error.message);
+			}
+		);
 		if (this.settings.options.scale == 0)
 			svg.style.width = `${
 				this.settings?.imgWidth.toString() ?? '300'

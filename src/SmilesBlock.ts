@@ -4,12 +4,6 @@ import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
 
-/**
- * Refer to plugin abcjs
- * This class abstraction is needed to support load/unload hooks
- * "If your post processor requires lifecycle management, for example, to clear an interval, kill a subprocess, etc when this element is removed from the app..."
- * https://marcus.se.net/obsidian-plugin-docs/reference/typescript/interfaces/MarkdownPostProcessorContext#addchild
- */
 export class SmilesBlock extends MarkdownRenderChild {
 	constructor(
 		private readonly el: HTMLElement,
@@ -23,7 +17,6 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 	render() {
 		//TODO: rendering animation
-		//TODO: catching render error
 
 		this.el.empty();
 		const rows = this.markdownSource
@@ -54,16 +47,22 @@ export class SmilesBlock extends MarkdownRenderChild {
 	}
 
 	private renderCell = (source: string, target: SVGSVGElement) => {
-		SmilesDrawer.parse(source, (tree: object) => {
-			gDrawer.draw(
-				tree,
-				target,
-				document.body.hasClass('theme-dark') &&
-					!document.body.hasClass('theme-light')
-					? this.settings.darkTheme
-					: this.settings.lightTheme
-			);
-		});
+		SmilesDrawer.parse(
+			source,
+			(tree: object) => {
+				gDrawer.draw(
+					tree,
+					target,
+					document.body.hasClass('theme-dark') &&
+						!document.body.hasClass('theme-light')
+						? this.settings.darkTheme
+						: this.settings.lightTheme
+				);
+			},
+			(error: object & { name: string; message: string }) => {
+				console.log(error.name + ': ' + error.message);
+			}
+		);
 		if (this.settings.options.scale == 0)
 			target.style.width = `${this.settings.imgWidth.toString()}px`;
 	};
