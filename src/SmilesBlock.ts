@@ -60,14 +60,34 @@ export class SmilesBlock extends MarkdownRenderChild {
 			},
 			(error: object & { name: string; message: string }) => {
 				target.empty();
-				target
-					.createDiv('error-source')
-					.setText('Source SMILES: ' + source);
-				target.createEl('br');
-				const ErrorInfo = target.createEl('details');
+				const ErrorContainer = target.createEl('div');
+				ErrorContainer.createDiv('error-source').setText(
+					'Source SMILES: ' + source
+				);
+				ErrorContainer.createEl('br');
+				const ErrorInfo = ErrorContainer.createEl('details');
 				ErrorInfo.createEl('summary').setText(error.name);
 				ErrorInfo.createEl('div').setText(error.message);
-				target.style.userSelect = `text`;
+
+				ErrorContainer.style.wordBreak = `break-word`;
+				ErrorContainer.style.userSelect = `text`;
+
+				//TODO: in multiline block, keep the width sync with the grid setting
+				if (this.settings.options.scale == 0)
+					ErrorContainer.style.width = `${
+						this.settings?.imgWidth.toString() ?? '300'
+					}px`;
+				else if (
+					ErrorContainer.offsetWidth >
+					(this.settings.options?.width ?? 300)
+				) {
+					ErrorContainer.style.width = `${(
+						this.settings.options?.width ?? 300
+					).toString()}px`;
+					ErrorContainer.style.height = `${(
+						this.settings.options?.height ?? 300
+					).toString()}px`;
+				}
 			}
 		);
 		if (this.settings.options.scale == 0)
