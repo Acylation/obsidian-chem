@@ -3,12 +3,6 @@ import { ChemPluginSettings } from '../settings/base';
 import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from 'src/global/drawer';
 
-/**
- * Refer to plugin abcjs
- * This class abstraction is needed to support load/unload hooks
- * "If your post processor requires lifecycle management, for example, to clear an interval, kill a subprocess, etc when this element is removed from the app..."
- * https://marcus.se.net/obsidian-plugin-docs/reference/typescript/interfaces/MarkdownPostProcessorContext#addchild
- */
 export class LivePreview {
 	container: HTMLDivElement;
 	lightCard: HTMLDivElement;
@@ -70,14 +64,24 @@ export class LivePreview {
 		target: HTMLElement,
 		style: string
 	) => {
-		const svg = target.createSvg('svg') as SVGSVGElement;
+		const svg = target.createSvg('svg');
 		SmilesDrawer.parse(
 			source,
 			(tree: object) => {
 				gDrawer.draw(tree, svg, style);
 			},
 			(error: object & { name: string; message: string }) => {
-				console.log(error.name + ': ' + error.message);
+				target.empty();
+				const ErrorContainer = target.createEl('div', {
+					cls: 'chemcard-err',
+				});
+				ErrorContainer.createDiv('error-source').setText(
+					'Source SMILES: ' + source
+				);
+				ErrorContainer.createEl('br');
+				const ErrorInfo = ErrorContainer.createEl('details');
+				ErrorInfo.createEl('summary').setText(error.name);
+				ErrorInfo.createEl('div').setText(error.message);
 			}
 		);
 		if (this.settings.options.scale == 0)
