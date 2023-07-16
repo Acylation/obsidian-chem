@@ -18,9 +18,9 @@ export default class ChemPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		//this.addRibbonIcon('hexagon', 'This is Chem Plugin', () => {});
+		// this.addRibbonIcon('hexagon', 'This is Chem Plugin', () => {});
 
-		//initialize global variables
+		// initialize global variables
 		setDrawer(this.settings.options);
 		setBlocks();
 		setObserver();

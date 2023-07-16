@@ -12,7 +12,7 @@ import { setDrawer } from 'src/global/drawer';
 import { refreshBlocks } from 'src/global/blocks';
 import { LivePreview } from './LivePreview';
 
-//Reference: https://smilesdrawer.surge.sh/playground.html
+// Reference: https://smilesdrawer.surge.sh/playground.html
 
 export class ChemSettingTab extends PluginSettingTab {
 	plugin: ChemPlugin;

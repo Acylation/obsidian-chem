@@ -3,12 +3,6 @@ import { ChemPluginSettings } from '../settings/base';
 import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from 'src/global/drawer';
 
-/**
- * Refer to plugin abcjs
- * This class abstraction is needed to support load/unload hooks
- * "If your post processor requires lifecycle management, for example, to clear an interval, kill a subprocess, etc when this element is removed from the app..."
- * https://marcus.se.net/obsidian-plugin-docs/reference/typescript/interfaces/MarkdownPostProcessorContext#addchild
- */
 export class LivePreview {
 	container: HTMLDivElement;
 	lightCard: HTMLDivElement;
@@ -70,10 +64,44 @@ export class LivePreview {
 		target: HTMLElement,
 		style: string
 	) => {
-		const svg = target.createSvg('svg') as SVGSVGElement;
-		SmilesDrawer.parse(source, (tree: object) => {
-			gDrawer.draw(tree, svg, style);
-		});
+		const svg = target.createSvg('svg');
+		SmilesDrawer.parse(
+			source,
+			(tree: object) => {
+				gDrawer.draw(tree, svg, style);
+			},
+			(error: object & { name: string; message: string }) => {
+				target.empty();
+				const ErrorContainer = target.createEl('div');
+				ErrorContainer.createDiv('error-source').setText(
+					'Source SMILES: ' + source
+				);
+				ErrorContainer.createEl('br');
+				const ErrorInfo = ErrorContainer.createEl('details');
+				ErrorInfo.createEl('summary').setText(error.name);
+				ErrorInfo.createEl('div').setText(error.message);
+
+				ErrorContainer.style.wordBreak = `break-word`;
+				ErrorContainer.style.userSelect = `text`;
+				ErrorContainer.style.display = `grid`;
+				ErrorContainer.style.alignContent = `center`;
+				if (this.settings.options.scale == 0)
+					ErrorContainer.style.width = `${
+						this.settings?.imgWidth.toString() ?? '300'
+					}px`;
+				else if (
+					ErrorContainer.offsetWidth >
+					(this.settings.options?.width ?? 300)
+				) {
+					ErrorContainer.style.width = `${(
+						this.settings.options?.width ?? 300
+					).toString()}px`;
+					ErrorContainer.style.height = `${(
+						this.settings.options?.height ?? 300
+					).toString()}px`;
+				}
+			}
+		);
 		if (this.settings.options.scale == 0)
 			svg.style.width = `${
 				this.settings?.imgWidth.toString() ?? '300'
