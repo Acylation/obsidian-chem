@@ -14,7 +14,8 @@
 		"cheminformatics",
 		"obsidian",
 		"obsidian-plugin",
-		"obsidian-md"
+		"obsidian-md",
+		"obsidian-community"
 	],
 	"author": "Acylation",
 	"license": "MIT",
