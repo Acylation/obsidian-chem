@@ -6,6 +6,10 @@
 
 **Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)).
 
+> **Info**  
+> Latest release: 0.2.0  
+> Document version: 0.2.0
+
 ## Features & Usage
 
 ### Render SMILES strings as chemical structures
@@ -14,14 +18,11 @@ You can use this plugin to render chemical structures from SMILES strings. Just 
 
 The data is stored as plain text, so you won’t lose it. The renderer will always work, even if the plugin changes its cheminfo core.
 
-![Image](https://user-images.githubusercontent.com/73122375/235232368-614cb591-a19a-4e1e-94df-781a317d25d0.jpg)
+![Image](https://github.com/Acylation/obsidian-chem/assets/73122375/a9f9a440-dc66-4689-ab1a-1ef265242778)
 
-You can adjust the image size and configure light themes and dark themes of the molecule pictures in the plugin’s settings page.
+You can adjust the structure scale or the image size and configure light/dark themes of the structure images in the plugin’s settings page. The structures in open notes will be automatically updated when the plugin settings or Obsidian color scheme are changed.
 
-> **Note**  
-> For now, you need to reopen the active notes containing SMILES blocks to apply the new settings, as well as adapting the Obsidian light/dark theme changes.
-
-![Image](https://user-images.githubusercontent.com/73122375/235232505-08386ce2-bc44-4fd6-96b4-22fa9c8c6fbf.jpg)
+![Image](https://github.com/Acylation/obsidian-chem/assets/73122375/fde8d0a4-2c9c-458c-b357-78952480b755)
 
 #### What is SMILES?
 
@@ -78,28 +79,7 @@ As an Obsidian plugin, this project adheres to the following principles:
 
 ## Contributing
 
-Thank you for your interest in contributing to this project! We welcome bug reports, feature requests, and pull requests from anyone.
-
-### How to report a bug or suggest a feature
-
-- Please use the [issue tracker](https://github.com/Acylation/obsidian-chem/issues) to report any problems or suggest new features.
-- Before creating a new issue, please search for existing issues to avoid duplicates.
-- When creating a new issue, please follow the templates to provide necessary information.
-- You can also vote for existing issues by adding a 👍 reaction to show your support.
-
-### How to submit a pull request
-
-- If you want to contribute code, please fork the repository and create a new branch for your work.
-- If you are a beginner in plugin development, you can check the official [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin).
-- Please include a clear and concise description of your changes in the pull request title and body.
-- Please reference any related issues in the pull request body using keywords like `fixes #123` or `closes #456`.
-- Please wait for a review before merging your pull request.
-
-### How to get help
-
-- If you have any questions or need help with using or developing this project, please join our [Discussions](https://github.com/Acylation/obsidian-chem/discussions) right here in the repo.
-
-Thank you for being a part of this project! 🙌
+Thank you for your interest in contributing to this project! We welcome bug reports, feature requests, and pull requests from anyone. For more information on how to contribute to Projects, check out [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## Roadmap
 
