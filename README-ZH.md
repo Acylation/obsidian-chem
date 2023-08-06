@@ -6,20 +6,21 @@
 
 **Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)）
 
+> **Info**  
+> 最新插件版本: 0.2.0  
+> 文档版本: 0.2.0
+
 ## 功能介绍和使用说明
 
 ### 渲染 SMILES 字符串为化学结构式
 
 如图所示，本插件能够识别语言被标记为 `smiles` 的代码块，并将其中的 SMILES 字符串逐行转化为化学结构式。得益于 SMILES 的纯文本特性，数据能够持久保存，该功能将得到稳定支持；此外，由于 SMILES 是一个通用标准，即使本插件换用了其他化学信息学工具包，SMILES 字符串仍能够被正确解析和渲染
 
-![Image](https://user-images.githubusercontent.com/73122375/235232368-614cb591-a19a-4e1e-94df-781a317d25d0.jpg)
+![Image](https://github.com/Acylation/obsidian-chem/assets/73122375/a9f9a440-dc66-4689-ab1a-1ef265242778)
 
-在插件设置页中，您可以调整全局化学结构式图像的大小，并分别调整浅色模式/深色模式下对应的结构式颜色主题
+您可以在插件设置页面调整化学结构式的尺寸比例，或指定图像大小，并分别调整浅色模式/深色模式下对应的结构式颜色主题。插件设置发生更改，或浅色/深色模式切换后，图像样式会自动更新
 
-> **Note**  
-> 目前，您可以在设置页中实时预览设置效果，但需要重新打开当前含有 SMILES 代码块的标签页以在笔记中应用这些设置。当您调整了浅色模式/深色模式后，笔记中的结构式也暂时无法实时更新，您同样需要关闭再打开笔记标签页后才能应用新的主题样式
-
-![Image](https://user-images.githubusercontent.com/73122375/235232505-08386ce2-bc44-4fd6-96b4-22fa9c8c6fbf.jpg)
+![Image](https://github.com/Acylation/obsidian-chem/assets/73122375/fde8d0a4-2c9c-458c-b357-78952480b755)
 
 #### SMILES 是什么？
 
@@ -77,32 +78,10 @@ SMILES 使用 ASCII 字符串表示化学结构的特性与 Obsidian 的纯文�
 
 ## 贡献指南
 
-首先感谢您考虑为本项目添砖加瓦！欢迎任何错误报告（bug report）、功能请求（feature request）和合并请求（pull request）
+首先感谢您考虑为本项目添砖加瓦！本插件欢迎任何错误报告（bug report）、功能请求（feature request）和合并请求（pull request）。更多细节请参见[贡献指南](docs/CONTRIBUTING-ZH.md)
 
 > **Note**  
 > 您可以直接使用中文提交内容，但能力允许时，希望您能够附上对应的英文关键词/标题，以便潜在的国际用户和开发者检索和阅读。您使用中文提交的内容将由我翻译
-
-### 通过 Issue 提交错误报告和功能请求
-
-- 您可以使用 [issue tracker](https://github.com/Acylation/obsidian-chem/issues) 报告本插件的任何错误，或提交您希望实现的功能
-- 在创建新 issue 前，请先行搜索相关 issue，以避免重复提交（请同时搜索英文关键词）
-- 本仓库提供了 issue 模板，请按照模板指引填写，以提供必要的内容
-- 您可以使用 👍 reaction 来为你需要的功能投票，投票人数更多的功能请求将被优先考虑
-
-### 提交PR
-
-- 若您希望向本仓库提交代码，请将本仓库 fork 一份，并在新 branch 上开发
-- 如果您对 Obsidian 插件开发比较陌生，您可以参考官方[开发者文档](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)，您将学到如何配置所需环境，并了解如何与 Obsidian 交互
-- 请使用简明的标题和内容描述您的PR中作出的变化
-- 请使用 `fixes #123` 或 `closes #456` 的方式引用相关 issue
-- 您提交的PR将在审核后被合并，或被要求修改
-
-### 获取帮助
-
-- 如果您有任何疑问，或需要帮助，请在本仓库下的 [Discussions](https://github.com/Acylation/obsidian-chem/discussions) 栏目中发帖询问
-- 若您希望展示您的使用案例，也欢迎前往 [Discussions](https://github.com/Acylation/obsidian-chem/discussions) 栏目
-
-感谢您成为本项目的一份子！🙌
 
 ## 路线图
 
