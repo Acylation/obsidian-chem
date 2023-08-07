@@ -12,6 +12,8 @@ import { setDrawer } from 'src/global/drawer';
 import { refreshBlocks } from 'src/global/blocks';
 import { LivePreview } from './LivePreview';
 
+import { i18n } from 'src/lib/i18n';
+
 // Reference: https://smilesdrawer.surge.sh/playground.html
 
 export class ChemSettingTab extends PluginSettingTab {
@@ -28,14 +30,12 @@ export class ChemSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		const scaleSetting = new Setting(containerEl)
-			.setName('Scale')
-			.setDesc(
-				'Adjust the global molecule scale. If set to zero, the image widths will be unified. Otherwise, the structures will share the same bond length, but the image widths will vary.'
-			)
+			.setName(i18n.t('settings.scale.name'))
+			.setDesc(i18n.t('settings.scale.description'))
 			.addExtraButton((button) => {
 				button
 					.setIcon('rotate-ccw')
-					.setTooltip('Restore default')
+					.setTooltip(i18n.t('settings.scale.description'))
 					.onClick(async () => {
 						this.plugin.settings.options.scale = 1;
 						scaleSlider.setValue(50);
@@ -73,8 +73,8 @@ export class ChemSettingTab extends PluginSettingTab {
 		const widthSettings = new Setting(containerEl);
 
 		new Setting(containerEl)
-			.setName('Light theme')
-			.setDesc('Active when Obsidian is under light mode.')
+			.setName(i18n.t('settings.theme.light.name'))
+			.setDesc(i18n.t('settings.theme.light.description'))
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions(themeList)
@@ -87,8 +87,8 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Dark theme')
-			.setDesc('Active when Obsidian is under dark mode.')
+			.setName(i18n.t('settings.theme.dark.name'))
+			.setDesc(i18n.t('settings.theme.dark.description'))
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions(themeList)
@@ -100,11 +100,13 @@ export class ChemSettingTab extends PluginSettingTab {
 					})
 			);
 
-		new Setting(containerEl).setName('Live Preview').setHeading();
+		new Setting(containerEl)
+			.setName(i18n.t('settings.preview.title'))
+			.setHeading();
 
 		new Setting(containerEl)
-			.setName('Sample SMILES strings')
-			.setDesc('Input SMILES strings to see the styled structures.')
+			.setName(i18n.t('settings.preview.sample.name'))
+			.setDesc(i18n.t('settings.preview.sample.description'))
 			.addText((text) =>
 				text
 					.setPlaceholder(SAMPLE_SMILES_1)
@@ -134,11 +136,13 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		const preview = new LivePreview(containerEl, this.plugin.settings);
 
-		new Setting(containerEl).setName('Advanced').setHeading();
+		new Setting(containerEl)
+			.setName(i18n.t('settings.advanced.title'))
+			.setHeading();
 
 		new Setting(containerEl)
-			.setName('Compact drawing')
-			.setDesc('Linearize simple structures and functional groups.')
+			.setName(i18n.t('settings.advanced.compact-drawing.name'))
+			.setDesc(i18n.t('settings.advanced.compact-drawing.description'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
@@ -156,10 +160,8 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Show terminal carbons')
-			.setDesc(
-				'Explictly draw terminal carbons like methyl or methylene.'
-			)
+			.setName(i18n.t('settings.advanced.terminal-carbons.name'))
+			.setDesc(i18n.t('settings.advanced.terminal-carbons.description'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
@@ -184,10 +186,8 @@ export class ChemSettingTab extends PluginSettingTab {
 		const unifyBondLength = () => {
 			widthSettings.controlEl.empty();
 			widthSettings
-				.setName('Maximum width')
-				.setDesc(
-					'Crop structure images that are too large in a multiline block.'
-				)
+				.setName(i18n.t('settings.unify-bond-length.name'))
+				.setDesc(i18n.t('settings.unify-bond-length.description'))
 				.addText((text) =>
 					text
 						.setValue(
@@ -215,10 +215,8 @@ export class ChemSettingTab extends PluginSettingTab {
 		const unifyImageWidth = () => {
 			widthSettings.controlEl.empty();
 			widthSettings
-				.setName('Image width')
-				.setDesc(
-					"Adjust the width of the molecule images. Only valid when 'scale' is set to zero."
-				)
+				.setName(i18n.t('settings.unify-bond-length.name'))
+				.setDesc(i18n.t('settings.unify-bond-length.description'))
 				.addText((text) => {
 					text.setValue(
 						this.plugin.settings?.imgWidth.toString() ?? '300'

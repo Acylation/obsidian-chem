@@ -4,6 +4,8 @@ import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
 
+import { i18n } from 'src/lib/i18n';
+
 export class SmilesBlock extends MarkdownRenderChild {
 	constructor(
 		private readonly el: HTMLElement,
@@ -62,7 +64,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 				target.empty();
 				const ErrorContainer = target.createEl('div');
 				ErrorContainer.createDiv('error-source').setText(
-					'Source SMILES: ' + source
+					i18n.t('errors.source.title', { source: source })
 				);
 				ErrorContainer.createEl('br');
 				const ErrorInfo = ErrorContainer.createEl('details');
