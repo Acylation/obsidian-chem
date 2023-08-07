@@ -6,7 +6,12 @@
 
 **Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)）
 
-> **Info**  
+<!--https://github.com/Mqxx/GitHub-Markdown-->
+> <picture>
+>   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/info.svg">
+>   <img alt="Info" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/info.svg">
+> </picture><br>
+>
 > 最新插件版本: 0.2.0  
 > 文档版本: 0.2.0
 
