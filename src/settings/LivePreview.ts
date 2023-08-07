@@ -1,8 +1,5 @@
 import { ChemPluginSettings } from '../settings/base';
-
-import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from 'src/global/drawer';
-
 import { i18n } from 'src/lib/i18n';
 
 export class LivePreview {

@@ -1,5 +1,4 @@
 import { MarkdownRenderChild, MarkdownPostProcessorContext } from 'obsidian';
-import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
