@@ -9,6 +9,7 @@ If your plugin does not need CSS, delete this file.
 
 .chemcard {
     background-color: var(--background-secondary-alt);
+    color: var(--color-base-100);
     border-radius: var(--radius-m);
     border: 1px solid var(--background-modifier-border);
     margin: 0 10px;
