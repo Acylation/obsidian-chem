@@ -3,6 +3,8 @@ import { ChemPluginSettings } from '../settings/base';
 import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from 'src/global/drawer';
 
+import { i18n } from 'src/lib/i18n';
+
 export class LivePreview {
 	container: HTMLDivElement;
 	lightCard: HTMLDivElement;
@@ -74,7 +76,7 @@ export class LivePreview {
 				target.empty();
 				const ErrorContainer = target.createEl('div');
 				ErrorContainer.createDiv('error-source').setText(
-					'Source SMILES: ' + source
+					i18n.t('errors.source.title', { source: source })
 				);
 				ErrorContainer.createEl('br');
 				const ErrorInfo = ErrorContainer.createEl('details');

@@ -1,0 +1,52 @@
+{
+    "translation": {
+        "errors": {
+            "source": {
+                "title": "Source SMILES: \"{{source}}\""
+            }
+        },
+        "settings": {
+            "scale": {
+                "name": "Scale",
+                "description": "Adjust the global molecule scale. If set to zero, the image widths will be unified. Otherwise, the structures will share the same bond length, but the image widths will vary.",
+                "tooltip": "Restore default"
+            },
+            "unify-bond-length": {
+                "name": "Maximum width",
+                "description": "Crop structure images that are too large in a multiline block."
+            },
+            "unify-image-width": {
+                "name": "Image width",
+                "description": "Adjust the width of the molecule images. Only valid when 'scale' is set to zero."
+            },
+            "theme": {
+                "light": {
+                    "name": "Light theme",
+                    "description": "Active when Obsidian is under light mode."
+                },
+                "dark": {
+                    "name": "Dark theme",
+                    "description": "Active when Obsidian is under dark mode."
+                }
+            },
+            "preview": {
+                "title": "Live Preview",
+                "sample": {
+                    "name": "Sample SMILES strings",
+                    "description": "Input SMILES strings to see the styled structures."
+                }
+            },
+            "advanced": {
+                "title": "Advanced",
+                "compact-drawing": {
+                    "name": "Compact drawing",
+                    "description": "Linearize simple structures and functional groups."
+                },
+                "terminal-carbons": {
+                    "name": "Show terminal carbons",
+                    "description": "Explictly draw terminal carbons like methyl or methylene."
+                }
+            }
+        }
+    }
+}

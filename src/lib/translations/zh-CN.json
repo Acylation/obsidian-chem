@@ -1,0 +1,52 @@
+{
+    "translation": {
+        "errors": {
+            "source": {
+                "title": "原始 SMILES ： {{source}}"
+            }
+        },
+        "settings": {
+            "scale": {
+                "name": "图像比例",
+                "description": "调整全局图像比例。该值为 0 时，所有图像将具有相同的大小；若非 0，所有结构将具有相同的键长，但图像尺寸将随结构式的大小变化。",
+                "tooltip": "恢复默认"
+            },
+            "unify-bond-length": {
+                "name": "最大宽度",
+                "description": "代码块中有多行 SMILES 字符串时，结构图像的最大宽度。"
+            },
+            "unify-image-width": {
+                "name": "图像宽度",
+                "description": "调整全局图像宽度。仅在'图像比例'值为 0 时生效。"
+            },
+            "theme": {
+                "light": {
+                    "name": "浅色主题",
+                    "description": "调整结构式配色方案，在浅色模式下生效。"
+                },
+                "dark": {
+                    "name": "深色主题",
+                    "description": "调整结构式配色方案，在深色模式下生效。"
+                }
+            },
+            "preview": {
+                "title": "实时预览",
+                "sample": {
+                    "name": "示例 SMILES 字符串",
+                    "description": "输入 SMILES 字符串以预览渲染效果。"
+                }
+            },
+            "advanced": {
+                "title": "高级",
+                "compact-drawing": {
+                    "name": "紧凑绘制",
+                    "description": "简化羧基、硝基、磺酸基等简单官能团的绘制。"
+                },
+                "terminal-carbons": {
+                    "name": "端基碳",
+                    "description": "显式绘出末端甲基、亚甲基等端基碳。"
+                }
+            }
+        }
+    }
+}
