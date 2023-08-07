@@ -1,5 +1,4 @@
 import { MarkdownRenderChild, MarkdownPostProcessorContext } from 'obsidian';
-import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
@@ -48,18 +47,14 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 	private renderCell = (source: string, target: HTMLElement) => {
 		const svg = target.createSvg('svg');
-		SmilesDrawer.parse(
+		gDrawer.draw(
 			source,
-			(tree: object) => {
-				gDrawer.draw(
-					tree,
-					svg,
-					document.body.hasClass('theme-dark') &&
-						!document.body.hasClass('theme-light')
-						? this.settings.darkTheme
-						: this.settings.lightTheme
-				);
-			},
+			svg,
+			document.body.hasClass('theme-dark') &&
+				!document.body.hasClass('theme-light')
+				? this.settings.darkTheme
+				: this.settings.lightTheme,
+			null,
 			(error: object & { name: string; message: string }) => {
 				target.empty();
 				const ErrorContainer = target.createEl('div');

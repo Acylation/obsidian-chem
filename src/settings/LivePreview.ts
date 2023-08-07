@@ -1,8 +1,5 @@
 import { ChemPluginSettings } from '../settings/base';
-
-import SmilesDrawer from 'smiles-drawer';
 import { gDrawer } from 'src/global/drawer';
-
 import { i18n } from 'src/lib/i18n';
 
 export class LivePreview {
@@ -67,11 +64,11 @@ export class LivePreview {
 		style: string
 	) => {
 		const svg = target.createSvg('svg');
-		SmilesDrawer.parse(
+		gDrawer.draw(
 			source,
-			(tree: object) => {
-				gDrawer.draw(tree, svg, style);
-			},
+			svg,
+			style,
+			null,
 			(error: object & { name: string; message: string }) => {
 				target.empty();
 				const ErrorContainer = target.createEl('div');
