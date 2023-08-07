@@ -67,11 +67,11 @@ export class LivePreview {
 		style: string
 	) => {
 		const svg = target.createSvg('svg');
-		SmilesDrawer.parse(
+		gDrawer.draw(
 			source,
-			(tree: object) => {
-				gDrawer.draw(tree, svg, style);
-			},
+			svg,
+			style,
+			null,
 			(error: object & { name: string; message: string }) => {
 				target.empty();
 				const ErrorContainer = target.createEl('div');
