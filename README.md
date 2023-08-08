@@ -6,14 +6,9 @@
 
 **Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)).
 
-<!--https://github.com/Mqxx/GitHub-Markdown-->
-> <picture>
->   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/info.svg">
->   <img alt="Info" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/info.svg">
-> </picture><br>
->
-> Latest release: 0.2.0  
-> Document version: 0.2.0
+> **Note**  
+> Latest release: 0.2.1  
+> Document version: 0.2.1  
 
 ## Features & Usage
 
