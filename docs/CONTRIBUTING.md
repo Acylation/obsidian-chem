@@ -50,7 +50,7 @@ npm run dev
 > This command will listen for changes to the source code and provide a new build when you save changes.  
 > Download and enable the [Hot-Reload](https://github.com/pjeby/hot-reload) plugin to experience a smooth debugging workflow.  
 
-### Linting and Building
+### Linting and building
 
 ```cmd
 npm run lint

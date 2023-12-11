@@ -44,7 +44,7 @@ SMILES 使用 ASCII 字符串表示化学结构的特性与 Obsidian 的纯文�
 由于网络问题无法浏览插件市场时，请按照以下步骤手动安装
 
 1. 在本仓库的最新 [release](https://github.com/Acylation/obsidian-chem/releases/latest) 页面中下载 `main.js`，`style.css` 和 `manifest.json` 三个文件，或者下载压缩包后解压
-2. 将上述文件复制到您本地的笔记库的插件路径，如 `[yourvault]/.obsidian/plugins/obsidian-chem/`。您可能需要自行新建 `obsidian-chem` 这个文件夹
+2. 将上述文件复制到您本地的笔记库的插件路径，如 `[yourvault]/.obsidian/plugins/chem/`。您可能需要自行新建 `chem` 这个文件夹
 3. 打开/重启 Obsidian 或刷新插件列表，您将看到 `Chem` 插件，点击启用，安装完成！
 
 后续会在中文论坛建立面向墙内的发布方法
