@@ -46,7 +46,7 @@ The plugin is available in the official plugin market. You can go to Settings â†
 You can also follow the steps below to install the plugin manually.
 
 1. Go to the repo's latest [release page](https://github.com/Acylation/obsidian-chem/releases/latest), and download the `main.js`, `style.css`, and `manifest.json`. Alternatively, you can download the latest zip file and then unzip it to get the three files.
-2. Copy these files to your local path `[yourvault]/.obsidian/plugins/obsidian-chem/`. You may need to create the folder `obsidian-chem` by yourself.
+2. Copy these files to your local path `[yourvault]/.obsidian/plugins/chem/`. You may need to create the folder `chem` by yourself.
 3. Launch/restart Obsidian, or refresh the plugin list, you will see this plugin.
 4. In the plugin list, enable `Chem` and enjoy!
 
@@ -79,7 +79,7 @@ As an Obsidian plugin, this project adheres to the following principles:
 
 ## Contributing
 
-Thank you for your interest in contributing to this project! We welcome bug reports, feature requests, and pull requests from anyone. For more information on how to contribute to Projects, check out [CONTRIBUTING.md](docs/CONTRIBUTING.md).
+Thank you for your interest in contributing to this project! We welcome bug reports, feature requests, and pull requests from anyone. For more information on how to contribute to Chem, check out [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## Roadmap
 

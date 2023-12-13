@@ -24,6 +24,8 @@ export class ChemSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
+	//TODO: Caching proposed
+
 	display(): void {
 		const { containerEl } = this;
 
@@ -215,8 +217,8 @@ export class ChemSettingTab extends PluginSettingTab {
 		const unifyImageWidth = () => {
 			widthSettings.controlEl.empty();
 			widthSettings
-				.setName(i18n.t('settings.unify-bond-length.name'))
-				.setDesc(i18n.t('settings.unify-bond-length.description'))
+				.setName(i18n.t('settings.unify-image-width.name'))
+				.setDesc(i18n.t('settings.unify-image-width.description'))
 				.addText((text) => {
 					text.setValue(
 						this.plugin.settings?.imgWidth.toString() ?? '300'
