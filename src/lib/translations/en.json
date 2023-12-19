@@ -5,6 +5,13 @@
                 "title": "Source SMILES: \"{{source}}\""
             }
         },
+        "menus": {
+            "copy": {
+                "title": "Copy",
+                "message": "Copied",
+                "error": "Failed"
+            }
+        },
         "settings": {
             "scale": {
                 "name": "Scale",

@@ -1,9 +1,16 @@
-import { MarkdownRenderChild, MarkdownPostProcessorContext } from 'obsidian';
+import {
+	MarkdownRenderChild,
+	MarkdownPostProcessorContext,
+	Menu,
+	Notice,
+} from 'obsidian';
 import { gDrawer } from './global/drawer';
 import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
 
 import { i18n } from 'src/lib/i18n';
+
+import { svgToPng } from './utils';
 
 export class SmilesBlock extends MarkdownRenderChild {
 	constructor(
@@ -89,7 +96,75 @@ export class SmilesBlock extends MarkdownRenderChild {
 		);
 		if (this.settings.options.scale == 0)
 			svg.style.width = `${this.settings.imgWidth.toString()}px`;
+		svg.setAttribute('versions', '1.1');
+		svg.setAttribute('baseProfile', 'full');
+		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 		return svg;
+	};
+
+	private handleContextMenu = (event: MouseEvent) => {
+		const targetEl = event.target as HTMLElement;
+		const closestSVG =
+			targetEl.tagName === 'svg' ? targetEl : targetEl.closest('svg');
+
+		if (!closestSVG) {
+			return;
+		}
+
+		const menu = new Menu();
+		menu.addItem((item) => {
+			item.setTitle(i18n.t('menus.copy.title'))
+				.setIcon('copy')
+				.onClick(async () => {
+					svgToPng(closestSVG.outerHTML, (imageData) => {
+						let image = new Image();
+						image.crossOrigin = 'anonymous';
+						document.body.appendChild(image);
+						image.src = imageData;
+
+						image.onload = () => {
+							const canvas = document.createElement('canvas');
+
+							canvas.width = image.width;
+							canvas.height = image.height;
+							const ctx = canvas.getContext('2d');
+							if (!ctx) {
+								new Notice('context not found');
+								return;
+							}
+							ctx.fillStyle = '#fff'; // follow light/dark settings
+							ctx.fillRect(0, 0, canvas.width, canvas.height);
+							ctx.drawImage(image, 0, 0);
+							try {
+								canvas.toBlob(async (blob: Blob) => {
+									await navigator.clipboard
+										.write([
+											new ClipboardItem({
+												'image/png': blob,
+											}),
+										])
+										.then(
+											() =>
+												new Notice(
+													i18n.t('menus.copy.success')
+												),
+											() =>
+												new Notice(
+													i18n.t('menus.copy.error')
+												)
+										);
+								});
+							} catch (error) {
+								new Notice(i18n.t('menus.copy.error'));
+							}
+						};
+						image.onerror = () => {
+							new Notice(i18n.t('menus.copy.error'));
+						};
+					});
+				});
+		});
+		menu.showAtMouseEvent(event);
 	};
 
 	async onload() {
