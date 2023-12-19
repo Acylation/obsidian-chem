@@ -169,6 +169,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 	async onload() {
 		this.render();
+		this.registerDomEvent(this.el, 'contextmenu', this.handleContextMenu);
 	}
 
 	onunload() {
