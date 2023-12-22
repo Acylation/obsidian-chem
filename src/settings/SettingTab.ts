@@ -200,8 +200,6 @@ export class ChemSettingTab extends PluginSettingTab {
 							}
 							this.plugin.settings.options.width =
 								parseInt(value);
-							this.plugin.settings.options.height =
-								parseInt(value);
 							await this.plugin.saveSettings();
 							setDrawer({
 								...DEFAULT_SD_OPTIONS,

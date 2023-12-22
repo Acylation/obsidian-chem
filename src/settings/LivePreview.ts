@@ -108,11 +108,13 @@ export class LivePreview {
 		else if (
 			parseFloat(svg.style.width) > (this.settings.options?.width ?? 300)
 		) {
+			const r =
+				parseFloat(svg.style.width) / parseFloat(svg.style.height);
 			svg.style.width = `${(
 				this.settings.options?.width ?? 300
 			).toString()}px`;
 			svg.style.height = `${(
-				this.settings.options?.height ?? 300
+				this.settings.options?.width ?? 300 / r
 			).toString()}px`;
 		}
 		return parseFloat(svg.style.width);

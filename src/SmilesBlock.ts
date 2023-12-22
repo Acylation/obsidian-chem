@@ -10,8 +10,6 @@ import { addBlock, removeBlock } from './global/blocks';
 
 import { i18n } from 'src/lib/i18n';
 
-import { svgToPng } from './utils';
-
 export class SmilesBlock extends MarkdownRenderChild {
 	constructor(
 		private readonly el: HTMLElement,
@@ -25,7 +23,6 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 	render() {
 		// TODO: rendering animation
-
 		this.el.empty();
 		const rows = this.markdownSource
 			.split('\n')
@@ -42,8 +39,13 @@ export class SmilesBlock extends MarkdownRenderChild {
 			rows.forEach((row) => {
 				const cell = table.createDiv({ cls: 'chem-cell' });
 				const svgcell = this.renderCell(row, cell);
-				if (parseFloat(svgcell.style.width) > maxWidth)
+				if (parseFloat(svgcell.style.width) > maxWidth) {
+					const r =
+						parseFloat(svgcell.style.width) /
+						parseFloat(svgcell.style.height);
 					svgcell.style.width = `${maxWidth.toString()}px`;
+					svgcell.style.height = `${(maxWidth / r).toString()}px`;
+				}
 			});
 
 			table.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
@@ -54,6 +56,36 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 	private renderCell = (source: string, target: HTMLElement) => {
 		const svg = target.createSvg('svg');
+		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+		const errorCb = (
+			error: object & { name: string; message: string },
+			container: HTMLDivElement
+		) => {
+			container
+				.createDiv('error-source')
+				.setText(i18n.t('errors.source.title', { source }));
+			container.createEl('br');
+			const info = container.createEl('details');
+			info.createEl('summary').setText(error.name);
+			info.createEl('div').setText(error.message);
+
+			container.style.wordBreak = `break-word`;
+			container.style.userSelect = `text`;
+
+			if (this.settings.options.scale == 0)
+				container.style.width = `${(
+					this.settings?.imgWidth ?? 300
+				).toString()}px`;
+			else if (
+				container.clientWidth > (this.settings.options?.width ?? 300)
+			) {
+				container.style.width = `${(
+					this.settings.options?.width ?? 300
+				).toString()}px`;
+			}
+		};
+
 		gDrawer.draw(
 			source,
 			svg,
@@ -64,41 +96,11 @@ export class SmilesBlock extends MarkdownRenderChild {
 			null,
 			(error: object & { name: string; message: string }) => {
 				target.empty();
-				const ErrorContainer = target.createEl('div');
-				ErrorContainer.createDiv('error-source').setText(
-					i18n.t('errors.source.title', { source: source })
-				);
-				ErrorContainer.createEl('br');
-				const ErrorInfo = ErrorContainer.createEl('details');
-				ErrorInfo.createEl('summary').setText(error.name);
-				ErrorInfo.createEl('div').setText(error.message);
-
-				ErrorContainer.style.wordBreak = `break-word`;
-				ErrorContainer.style.userSelect = `text`;
-
-				//TODO: in multiline block, keep the width sync with the grid setting
-				if (this.settings.options.scale == 0)
-					ErrorContainer.style.width = `${
-						this.settings?.imgWidth.toString() ?? '300'
-					}px`;
-				else if (
-					ErrorContainer.offsetWidth >
-					(this.settings.options?.width ?? 300)
-				) {
-					ErrorContainer.style.width = `${(
-						this.settings.options?.width ?? 300
-					).toString()}px`;
-					ErrorContainer.style.height = `${(
-						this.settings.options?.height ?? 300
-					).toString()}px`;
-				}
+				errorCb(error, target.createEl('div'));
 			}
 		);
 		if (this.settings.options.scale == 0)
 			svg.style.width = `${this.settings.imgWidth.toString()}px`;
-		svg.setAttribute('versions', '1.1');
-		svg.setAttribute('baseProfile', 'full');
-		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 		return svg;
 	};
 
@@ -115,53 +117,10 @@ export class SmilesBlock extends MarkdownRenderChild {
 		menu.addItem((item) => {
 			item.setTitle(i18n.t('menus.copy.title'))
 				.setIcon('copy')
-				.onClick(async () => {
-					svgToPng(closestSVG.outerHTML, (imageData) => {
-						let image = new Image();
-						image.crossOrigin = 'anonymous';
-						document.body.appendChild(image);
-						image.src = imageData;
-
-						image.onload = () => {
-							const canvas = document.createElement('canvas');
-
-							canvas.width = image.width;
-							canvas.height = image.height;
-							const ctx = canvas.getContext('2d');
-							if (!ctx) {
-								new Notice('context not found');
-								return;
-							}
-							ctx.fillStyle = '#fff'; // follow light/dark settings
-							ctx.fillRect(0, 0, canvas.width, canvas.height);
-							ctx.drawImage(image, 0, 0);
-							try {
-								canvas.toBlob(async (blob: Blob) => {
-									await navigator.clipboard
-										.write([
-											new ClipboardItem({
-												'image/png': blob,
-											}),
-										])
-										.then(
-											() =>
-												new Notice(
-													i18n.t('menus.copy.success')
-												),
-											() =>
-												new Notice(
-													i18n.t('menus.copy.error')
-												)
-										);
-								});
-							} catch (error) {
-								new Notice(i18n.t('menus.copy.error'));
-							}
-						};
-						image.onerror = () => {
-							new Notice(i18n.t('menus.copy.error'));
-						};
-					});
+				.onClick(() => {
+					const svg = closestSVG.outerHTML;
+					const rect = closestSVG.getBoundingClientRect();
+					this.onCopy(svg, rect.width, rect.height);
 				});
 		});
 		menu.showAtMouseEvent(event);
@@ -170,6 +129,55 @@ export class SmilesBlock extends MarkdownRenderChild {
 	async onload() {
 		this.render();
 		this.registerDomEvent(this.el, 'contextmenu', this.handleContextMenu);
+	}
+
+	// Credits to Thom Kiesewetter @ Stack Overflow https://stackoverflow.com/a/58142441
+	// Credits to image-toolkit plugin by Sissilab @ GitHub
+	async onCopy(svg: string, w: number, h: number) {
+		const svgUrl = URL.createObjectURL(
+			new Blob([svg], {
+				type: 'image/svg+xml',
+			})
+		);
+
+		const image = new Image();
+		image.src = svgUrl;
+		image.onload = () => {
+			const canvas = document.createElement('canvas');
+			canvas.width = 2 * w;
+			canvas.height = 2 * h;
+
+			const ctx = canvas.getContext('2d');
+			if (!ctx) {
+				new Notice(i18n.t('menus.copy.error'));
+				URL.revokeObjectURL(svgUrl);
+				return;
+			}
+			ctx.imageSmoothingEnabled = true;
+			ctx.imageSmoothingQuality = 'high';
+
+			ctx.scale(2, 2);
+			ctx.drawImage(image, 0, 0, w, h);
+
+			try {
+				canvas.toBlob(async (blob: Blob) => {
+					await navigator.clipboard
+						.write([new ClipboardItem({ 'image/png': blob })])
+						.then(
+							() => new Notice(i18n.t('menus.copy.success')),
+							() => new Notice(i18n.t('menus.copy.error'))
+						);
+				});
+			} catch (e) {
+				new Notice(i18n.t('menus.copy.error'));
+			}
+
+			URL.revokeObjectURL(svgUrl);
+		};
+		image.onerror = () => {
+			new Notice(i18n.t('menus.copy.error'));
+			URL.revokeObjectURL(svgUrl);
+		};
 	}
 
 	onunload() {
