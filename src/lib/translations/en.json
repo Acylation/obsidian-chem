@@ -8,8 +8,8 @@
         "menus": {
             "copy": {
                 "title": "Copy",
-                "message": "Copied",
-                "error": "Failed"
+                "success": "Copied",
+                "error": "Copy failed"
             }
         },
         "settings": {
@@ -52,6 +52,22 @@
                 "terminal-carbons": {
                     "name": "Show terminal carbons",
                     "description": "Explictly draw terminal carbons like methyl or methylene."
+                }
+            },
+            "copy": {
+                "title": "Copy",
+                "scale": {
+                    "name": "Scale factor",
+                    "description": "Scaling the copied image. Larger scale will yield images with better resolution."
+                },
+                "transparent": {
+                    "name": "Transparent",
+                    "description": "Enable to yield a copied image with transparent background."
+                },
+                "theme": {
+                    "name": "Target theme",
+                    "description": "Set the default theme of copied images.",
+                    "default": "Adapt to Obsidian"
                 }
             }
         }

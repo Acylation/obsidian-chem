@@ -5,12 +5,14 @@ import {
 	Notice,
 } from 'obsidian';
 import { gDrawer } from './global/drawer';
-import { ChemPluginSettings } from './settings/base';
+import { ChemPluginSettings, DEFAULT_SD_OPTIONS } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
 
 import { i18n } from 'src/lib/i18n';
 
 export class SmilesBlock extends MarkdownRenderChild {
+	theme: string;
+
 	constructor(
 		private readonly el: HTMLElement,
 		private readonly markdownSource: string,
@@ -24,6 +26,12 @@ export class SmilesBlock extends MarkdownRenderChild {
 	render() {
 		// TODO: rendering animation
 		this.el.empty();
+		this.theme =
+			document.body.hasClass('theme-dark') &&
+			!document.body.hasClass('theme-light')
+				? this.settings.darkTheme
+				: this.settings.lightTheme;
+
 		const rows = this.markdownSource
 			.split('\n')
 			.filter((row) => row.length > 0)
@@ -31,14 +39,14 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 		if (rows.length == 1) {
 			const div = this.el.createDiv({ cls: 'chem-cell' });
-			this.renderCell(rows[0], div);
+			this.renderCell(rows[0], div, this.theme);
 		} else {
 			const table = this.el.createDiv({ cls: 'chem-table' });
 			const maxWidth = this.settings.options?.width ?? 300;
 
 			rows.forEach((row) => {
 				const cell = table.createDiv({ cls: 'chem-cell' });
-				const svgcell = this.renderCell(row, cell);
+				const svgcell = this.renderCell(row, cell, this.theme);
 				if (parseFloat(svgcell.style.width) > maxWidth) {
 					const r =
 						parseFloat(svgcell.style.width) /
@@ -54,9 +62,14 @@ export class SmilesBlock extends MarkdownRenderChild {
 		}
 	}
 
-	private renderCell = (source: string, target: HTMLElement) => {
+	private renderCell = (
+		source: string,
+		target: HTMLElement,
+		theme: string
+	) => {
 		const svg = target.createSvg('svg');
 		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+		svg.setAttribute('data-smiles', source);
 
 		const errorCb = (
 			error: object & { name: string; message: string },
@@ -72,27 +85,12 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 			container.style.wordBreak = `break-word`;
 			container.style.userSelect = `text`;
-
-			if (this.settings.options.scale == 0)
-				container.style.width = `${(
-					this.settings?.imgWidth ?? 300
-				).toString()}px`;
-			else if (
-				container.clientWidth > (this.settings.options?.width ?? 300)
-			) {
-				container.style.width = `${(
-					this.settings.options?.width ?? 300
-				).toString()}px`;
-			}
 		};
 
 		gDrawer.draw(
 			source,
 			svg,
-			document.body.hasClass('theme-dark') &&
-				!document.body.hasClass('theme-light')
-				? this.settings.darkTheme
-				: this.settings.lightTheme,
+			theme,
 			null,
 			(error: object & { name: string; message: string }) => {
 				target.empty();
@@ -108,10 +106,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 		const targetEl = event.target as HTMLElement;
 		const closestSVG =
 			targetEl.tagName === 'svg' ? targetEl : targetEl.closest('svg');
-
-		if (!closestSVG) {
-			return;
-		}
+		if (!closestSVG) return;
 
 		const menu = new Menu();
 		menu.addItem((item) => {
@@ -119,8 +114,11 @@ export class SmilesBlock extends MarkdownRenderChild {
 				.setIcon('copy')
 				.onClick(() => {
 					const svg = closestSVG.outerHTML;
+					const source =
+						closestSVG.attributes.getNamedItem('data-smiles')
+							?.value ?? '';
 					const rect = closestSVG.getBoundingClientRect();
-					this.onCopy(svg, rect.width, rect.height);
+					this.onCopy(svg, source, rect.width, rect.height);
 				});
 		});
 		menu.showAtMouseEvent(event);
@@ -133,9 +131,20 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 	// Credits to Thom Kiesewetter @ Stack Overflow https://stackoverflow.com/a/58142441
 	// Credits to image-toolkit plugin by Sissilab @ GitHub
-	async onCopy(svg: string, w: number, h: number) {
+	async onCopy(svgString: string, source: string, w: number, h: number) {
+		// Redraw if changing theme
+		const copyTheme = this.settings.copy.theme;
+		if (copyTheme !== 'default' && copyTheme !== this.theme) {
+			const div = this.containerEl.createDiv();
+			div.style.display = 'none';
+
+			const svg = this.renderCell(source, div, copyTheme);
+			svgString = svg.outerHTML;
+			svg.remove();
+		}
+
 		const svgUrl = URL.createObjectURL(
-			new Blob([svg], {
+			new Blob([svgString], {
 				type: 'image/svg+xml',
 			})
 		);
@@ -144,8 +153,10 @@ export class SmilesBlock extends MarkdownRenderChild {
 		image.src = svgUrl;
 		image.onload = () => {
 			const canvas = document.createElement('canvas');
-			canvas.width = 2 * w;
-			canvas.height = 2 * h;
+
+			const f = this.settings.copy.scale;
+			canvas.width = f * w;
+			canvas.height = f * h;
 
 			const ctx = canvas.getContext('2d');
 			if (!ctx) {
@@ -156,7 +167,13 @@ export class SmilesBlock extends MarkdownRenderChild {
 			ctx.imageSmoothingEnabled = true;
 			ctx.imageSmoothingQuality = 'high';
 
-			ctx.scale(2, 2);
+			// Apply background color
+			if (!this.settings.copy.transparent) {
+				ctx.fillStyle = DEFAULT_SD_OPTIONS.themes[copyTheme].BACKGROUND;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+			}
+
+			ctx.scale(f, f);
 			ctx.drawImage(image, 0, 0, w, h);
 
 			try {
