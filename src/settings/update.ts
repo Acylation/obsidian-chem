@@ -20,6 +20,11 @@ interface ChemPluginSettingsV2 {
 	sample2: string;
 	imgWidth: number;
 	options: object;
+	copy: {
+		scale: number;
+		transparent: boolean;
+		theme: string;
+	};
 }
 
 const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
@@ -31,6 +36,11 @@ const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
 		'OC(C(=O)O[C@H]1C[N+]2(CCCOC3=CC=CC=C3)CCC1CC2)(C1=CC=CS1)C1=CC=CS1',
 	imgWidth: 300,
 	options: {},
+	copy: {
+		scale: 2,
+		transparent: true,
+		theme: 'default',
+	},
 };
 
 export const updateSettingsVersion = (stale: ChemPluginSettingsV1) => {
