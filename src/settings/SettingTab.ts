@@ -180,6 +180,53 @@ export class ChemSettingTab extends PluginSettingTab {
 					})
 			);
 
+		new Setting(containerEl)
+			.setName(i18n.t('settings.copy.title'))
+			.setHeading();
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.copy.scale.name'))
+			.setDesc(i18n.t('settings.copy.scale.description'))
+			.addText((text) =>
+				text
+					.setValue(this.plugin.settings.copy.scale.toString())
+					.onChange(async (value) => {
+						this.plugin.settings.copy.scale = parseFloat(value);
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.copy.transparent.name'))
+			.setDesc(i18n.t('settings.copy.transparent.description'))
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.copy.transparent)
+					.onChange(async (value) => {
+						this.plugin.settings.copy.transparent = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.copy.theme.name'))
+			.setDesc(i18n.t('settings.copy.theme.description'))
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({
+						default: i18n.t('settings.copy.theme.default'),
+						...themeList,
+					})
+					.setValue(this.plugin.settings.copy.theme)
+					.onChange(async (value) => {
+						this.plugin.settings.copy.theme = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
 		const onSettingsChange = () => {
 			preview.updateSettings(this.plugin.settings);
 			preview.render();
@@ -201,8 +248,6 @@ export class ChemSettingTab extends PluginSettingTab {
 								value = '300';
 							}
 							this.plugin.settings.options.width =
-								parseInt(value);
-							this.plugin.settings.options.height =
 								parseInt(value);
 							await this.plugin.saveSettings();
 							setDrawer({
@@ -235,7 +280,7 @@ export class ChemSettingTab extends PluginSettingTab {
 				});
 		};
 
-		// initialize
+		// Initialize
 		preview.render();
 		if ((this.plugin.settings.options?.scale ?? 1) == 0) unifyImageWidth();
 		else unifyBondLength();

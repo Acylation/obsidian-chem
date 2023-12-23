@@ -12,6 +12,11 @@ export interface ChemPluginSettings {
 	sample1: string;
 	sample2: string;
 	imgWidth: number;
+	copy: {
+		scale: number;
+		transparent: boolean;
+		theme: string;
+	};
 	options: Partial<SMILES_DRAWER_OPTIONS>;
 }
 
@@ -22,6 +27,11 @@ export const DEFAULT_SETTINGS: ChemPluginSettings = {
 	sample1: SAMPLE_SMILES_1,
 	sample2: SAMPLE_SMILES_2,
 	imgWidth: 300,
+	copy: {
+		scale: 2,
+		transparent: true,
+		theme: 'default',
+	},
 	options: {},
 };
 
@@ -52,7 +62,23 @@ export interface SMILES_DRAWER_OPTIONS {
 	kkMaxIteration: number;
 	kkMaxInnerIteration: number;
 	kkMaxEnergy: number;
-	themes: object;
+	themes: {
+		[key: string]: {
+			C: string;
+			O: string;
+			N: string;
+			F: string;
+			CL: string;
+			BR: string;
+			I: string;
+			P: string;
+			S: string;
+			B: string;
+			SI: string;
+			H: string;
+			BACKGROUND: string;
+		};
+	};
 }
 
 export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {

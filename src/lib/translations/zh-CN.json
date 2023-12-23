@@ -5,6 +5,13 @@
                 "title": "原始 SMILES ： {{source}}"
             }
         },
+        "menus": {
+            "copy": {
+                "title": "复制",
+                "success": "复制成功",
+                "error": "复制失败"
+            }
+        },
         "settings": {
             "scale": {
                 "name": "图像比例",
@@ -45,6 +52,22 @@
                 "terminal-carbons": {
                     "name": "端基碳",
                     "description": "显式绘出末端甲基、亚甲基等端基碳。"
+                }
+            },
+            "copy": {
+                "title": "复制",
+                "scale": {
+                    "name": "缩放比例",
+                    "description": "调整复制所得图像的缩放比例，更大的比例对应更高的分辨率。"
+                },
+                "transparent": {
+                    "name": "透明背景",
+                    "description": "启用以透明化复制所得图像。"
+                },
+                "theme": {
+                    "name": "颜色主题",
+                    "description": "设置复制所得图像的颜色主题。",
+                    "default": "跟随 Obsidian"
                 }
             }
         }

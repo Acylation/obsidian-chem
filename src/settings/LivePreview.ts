@@ -43,9 +43,9 @@ export class LivePreview {
 		);
 
 		if (this.settings.options.scale == 0)
-			this.container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
-				this.settings?.imgWidth.toString() ?? '300'
-			}px, 1fr)`;
+			this.container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${(
+				this.settings?.imgWidth ?? 300
+			).toString()}px, 1fr)`;
 		else
 			this.container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${(lightWidth >
 			darkWidth
@@ -64,6 +64,38 @@ export class LivePreview {
 		style: string
 	) => {
 		const svg = target.createSvg('svg');
+		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+		const errorCb = (
+			error: object & { name: string; message: string },
+			container: HTMLDivElement
+		) => {
+			container
+				.createDiv('error-source')
+				.setText(i18n.t('errors.source.title', { source }));
+			container.createEl('br');
+			const info = container.createEl('details');
+			info.createEl('summary').setText(error.name);
+			info.createEl('div').setText(error.message);
+
+			container.style.wordBreak = `break-word`;
+			container.style.userSelect = `text`;
+			container.style.display = `grid`;
+			container.style.alignContent = `center`;
+
+			if (this.settings.options.scale == 0)
+				container.style.width = `${(
+					this.settings?.imgWidth ?? 300
+				).toString()}px`;
+			else if (
+				container.offsetWidth > (this.settings.options?.width ?? 300)
+			) {
+				container.style.width = `${(
+					this.settings.options?.width ?? 300
+				).toString()}px`;
+			}
+		};
+
 		gDrawer.draw(
 			source,
 			svg,
@@ -71,48 +103,23 @@ export class LivePreview {
 			null,
 			(error: object & { name: string; message: string }) => {
 				target.empty();
-				const ErrorContainer = target.createEl('div');
-				ErrorContainer.createDiv('error-source').setText(
-					i18n.t('errors.source.title', { source: source })
-				);
-				ErrorContainer.createEl('br');
-				const ErrorInfo = ErrorContainer.createEl('details');
-				ErrorInfo.createEl('summary').setText(error.name);
-				ErrorInfo.createEl('div').setText(error.message);
-
-				ErrorContainer.style.wordBreak = `break-word`;
-				ErrorContainer.style.userSelect = `text`;
-				ErrorContainer.style.display = `grid`;
-				ErrorContainer.style.alignContent = `center`;
-				if (this.settings.options.scale == 0)
-					ErrorContainer.style.width = `${
-						this.settings?.imgWidth.toString() ?? '300'
-					}px`;
-				else if (
-					ErrorContainer.offsetWidth >
-					(this.settings.options?.width ?? 300)
-				) {
-					ErrorContainer.style.width = `${(
-						this.settings.options?.width ?? 300
-					).toString()}px`;
-					ErrorContainer.style.height = `${(
-						this.settings.options?.height ?? 300
-					).toString()}px`;
-				}
+				errorCb(error, target.createEl('div'));
 			}
 		);
 		if (this.settings.options.scale == 0)
-			svg.style.width = `${
-				this.settings?.imgWidth.toString() ?? '300'
-			}px`;
+			svg.style.width = `${(
+				this.settings?.imgWidth ?? 300
+			).toString()}px`;
 		else if (
 			parseFloat(svg.style.width) > (this.settings.options?.width ?? 300)
 		) {
+			const r =
+				parseFloat(svg.style.width) / parseFloat(svg.style.height);
 			svg.style.width = `${(
 				this.settings.options?.width ?? 300
 			).toString()}px`;
 			svg.style.height = `${(
-				this.settings.options?.height ?? 300
+				(this.settings.options?.width ?? 300) / r
 			).toString()}px`;
 		}
 		return parseFloat(svg.style.width);
