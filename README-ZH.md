@@ -32,7 +32,7 @@
 
 在插件设置中启用`解析 Dataview`功能后，`smiles` 代码块将逐行被 Dataview 解析，解析结果用于渲染结构图像。内联 Dataview 查询式 (Queries) 和内联 DataviewJS 的启用、前缀等设置与 Dataview 插件本体保持一致。
 
-![在 SMILES 代码块中编写内联 Dataview](https://github.com/Acylation/obsidian-chem/assets/73122375/d227fdb8-9c8f-4c87-965a-73c0f2445993)
+![在 SMILES 代码块中编写内联 Dataview](https://github-production-user-asset-6210df.s3.amazonaws.com/73122375/292734194-d227fdb8-9c8f-4c87-965a-73c0f2445993.png)
 
 > [!Note]
 > 本功能依赖 Dataview 插件本体，若要使用本功能，请确保您已安装并启用 Dataview 插件
