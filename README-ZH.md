@@ -30,7 +30,7 @@
 
 ### 在代码块中调用 Dataview
 
-![在 SMILES 代码块中编写内联 Dataview]()
+![在 SMILES 代码块中编写内联 Dataview](https://github.com/Acylation/obsidian-chem/assets/73122375/d227fdb8-9c8f-4c87-965a-73c0f2445993)
 
 > [!Note]
 > 本功能依赖 Dataview 插件本体，若要使用本功能，请确保您已安装并启用 Dataview 插件
