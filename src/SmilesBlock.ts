@@ -10,7 +10,6 @@ import { ChemPluginSettings, DEFAULT_SD_OPTIONS } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
 
 import { i18n } from 'src/lib/i18n';
-import { DataviewApi } from 'obsidian-dataview';
 
 export class SmilesBlock extends MarkdownRenderChild {
 	theme: string;
