@@ -1,7 +1,7 @@
 import { isPluginEnabled } from 'obsidian-dataview';
 import { i18n } from 'src/lib/i18n';
 
-export let gDataview: object;
+export let gDataview: any;
 export { isPluginEnabled } from 'obsidian-dataview';
 
 export const getDataview = () => {
