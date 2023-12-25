@@ -15,13 +15,6 @@
                 "error": "Copy failed"
             }
         },
-        "menus": {
-            "copy": {
-                "title": "Copy",
-                "success": "Copied",
-                "error": "Copy failed"
-            }
-        },
         "settings": {
             "scale": {
                 "name": "Scale",
