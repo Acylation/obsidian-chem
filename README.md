@@ -32,9 +32,9 @@ The copy feature is accessible through the right-click menu on images. Images ar
 
 ### Utilizing Dataview
 
-Inline Dataview queries and DataviewJS rendering can be enabled in the settings tab. Once enabled, lines within the smiles block will be checked and parsed. The return value from this process is used to render chemical structures, providing users with greater flexibility. The prefix and strategy are fetched directly from the corresponding Dataview plugin settings.
+Inline Dataview queries and DataviewJS rendering can be enabled in the settings tab. Once enabled, lines within the smiles block will be checked and parsed. The return value from this process is used to render chemical structures, providing greater flexibility. The prefix and strategy are fetched directly from the corresponding Dataview plugin settings.
 
-![Dataview lines in smiles block]()
+![Dataview lines in smiles block](https://github.com/Acylation/obsidian-chem/assets/73122375/d227fdb8-9c8f-4c87-965a-73c0f2445993)
 
 > [!Note]
 > This feature is dependent on the Dataview plugin. Please ensure that you have installed and enabled it.
