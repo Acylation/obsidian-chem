@@ -26,6 +26,11 @@ interface ChemPluginSettingsV2 {
 	};
 	dataview: boolean;
 	options: object;
+	copy: {
+		scale: number;
+		transparent: boolean;
+		theme: string;
+	};
 }
 
 const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
@@ -43,6 +48,11 @@ const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
 	},
 	dataview: false,
 	options: {},
+	copy: {
+		scale: 2,
+		transparent: true,
+		theme: 'default',
+	},
 };
 
 export const updateSettingsVersion = (stale: ChemPluginSettingsV1) => {

@@ -15,6 +15,13 @@
                 "error": "复制失败"
             }
         },
+        "menus": {
+            "copy": {
+                "title": "复制",
+                "success": "复制成功",
+                "error": "复制失败"
+            }
+        },
         "settings": {
             "scale": {
                 "name": "图像比例",

@@ -5,6 +5,7 @@ import {
 	Notice,
 } from 'obsidian';
 import { gDrawer } from './global/drawer';
+
 import { gDataview, isPluginEnabled, getDataview } from './global/dataview';
 import { ChemPluginSettings, DEFAULT_SD_OPTIONS } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
@@ -23,7 +24,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 		super(el); // important
 		addBlock(this);
 	}
-
+  
 	// TODO: rendering animation
 	async render() {
 		this.el.empty();
