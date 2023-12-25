@@ -17,6 +17,7 @@ export interface ChemPluginSettings {
 		transparent: boolean;
 		theme: string;
 	};
+	dataview: boolean;
 	options: Partial<SMILES_DRAWER_OPTIONS>;
 }
 
@@ -32,6 +33,7 @@ export const DEFAULT_SETTINGS: ChemPluginSettings = {
 		transparent: true,
 		theme: 'default',
 	},
+	dataview: false,
 	options: {},
 };
 

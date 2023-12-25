@@ -3,6 +3,9 @@
         "errors": {
             "source": {
                 "title": "Source SMILES: \"{{source}}\""
+            },
+            "dataview": {
+                "title": "Dataview plugin is missing or disabled."
             }
         },
         "menus": {
@@ -68,6 +71,13 @@
                     "name": "Target theme",
                     "description": "Set the default theme of copied images.",
                     "default": "Adapt to Obsidian"
+                }
+            },
+            "dataview": {
+                "title": "Dataview",
+                "enable": {
+                    "name": "Inline Dataview",
+                    "description": "Recognize and get return values from Dataview queries and DataviewJS lines as rendering source according to Dataview settings."
                 }
             }
         }

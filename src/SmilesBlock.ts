@@ -5,10 +5,12 @@ import {
 	Notice,
 } from 'obsidian';
 import { gDrawer } from './global/drawer';
+import { gDataview, isPluginEnabled, getDataview } from './global/dataview';
 import { ChemPluginSettings, DEFAULT_SD_OPTIONS } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
 
 import { i18n } from 'src/lib/i18n';
+import { DataviewApi } from 'obsidian-dataview';
 
 export class SmilesBlock extends MarkdownRenderChild {
 	theme: string;
@@ -23,20 +25,23 @@ export class SmilesBlock extends MarkdownRenderChild {
 		addBlock(this);
 	}
 
-	render() {
-		// TODO: rendering animation
+	// TODO: rendering animation
+	async render() {
 		this.el.empty();
-		this.theme =
-			document.body.hasClass('theme-dark') &&
-			!document.body.hasClass('theme-light')
-				? this.settings.darkTheme
-				: this.settings.lightTheme;
 
-		const rows = this.markdownSource
+		const oRows = this.markdownSource
 			.split('\n')
-			.filter((row) => row.length > 0)
-			.map((row) => row.trim());
+			.filter((row) => row.length > 0);
 
+		let rows = oRows;
+		if (this.settings.dataview && isPluginEnabled(app)) {
+			if (!gDataview) getDataview();
+			rows = await Promise.all(
+				oRows.map(async (row) => await this.preprocess(row))
+			);
+		}
+
+		rows = rows.map((row) => row.trim());
 		if (rows.length == 1) {
 			const div = this.el.createDiv({ cls: 'chem-cell' });
 			this.renderCell(rows[0], div, this.theme);
@@ -61,6 +66,50 @@ export class SmilesBlock extends MarkdownRenderChild {
 			}px, 1fr)`;
 		}
 	}
+
+	// TODO：add test cases
+	private preprocess = async (source: string) => {
+		const dvEl = this.el.createDiv();
+		this.el.appendChild(dvEl);
+		const api = gDataview.localApi(this.context.sourcePath, this, dvEl);
+
+		const isDQL = (source: string): boolean => {
+			const prefix = gDataview.settings.inlineQueryPrefix;
+			return source.startsWith(prefix);
+		};
+		const isDataviewJs = (source: string): boolean => {
+			const prefix = gDataview.settings.inlineJsQueryPrefix;
+			return source.startsWith(prefix);
+		};
+		const evaluateDQL = (row: string): string => {
+			const prefix = gDataview.settings.inlineQueryPrefix;
+			const result = api.evaluate(row.substring(prefix.length).trim());
+			return result.successful ? result.value : row;
+		};
+		const executeJs = async (row: string) => {
+			const prefix = gDataview.settings.inlineJsQueryPrefix;
+			const code = row.substring(prefix.length).trim();
+
+			const func = new Function(
+				'api',
+				`return eval("const dv=api;const dataview = api; ${code}")` // await & async exec
+			);
+
+			return func(api)?.toString() ?? 'DataviewJS parsing error';
+		};
+
+		if (gDataview.settings.enableInlineDataview && isDQL(source)) {
+			return evaluateDQL(source);
+		} else if (
+			gDataview.settings.enableDataviewJs &&
+			gDataview.settings.enableInlineDataviewJs &&
+			isDataviewJs(source)
+		) {
+			return await executeJs(source);
+		}
+
+		return source;
+	};
 
 	private renderCell = (
 		source: string,
@@ -125,6 +174,11 @@ export class SmilesBlock extends MarkdownRenderChild {
 	};
 
 	async onload() {
+		this.theme =
+			document.body.hasClass('theme-dark') &&
+			!document.body.hasClass('theme-light')
+				? this.settings.darkTheme
+				: this.settings.lightTheme;
 		this.render();
 		this.registerDomEvent(this.el, 'contextmenu', this.handleContextMenu);
 	}
