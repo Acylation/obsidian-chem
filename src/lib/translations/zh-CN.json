@@ -3,6 +3,9 @@
         "errors": {
             "source": {
                 "title": "原始 SMILES ： {{source}}"
+            },
+            "dataview": {
+                "title": "Dataview 插件未启用。"
             }
         },
         "menus": {
@@ -68,6 +71,13 @@
                     "name": "颜色主题",
                     "description": "设置复制所得图像的颜色主题。",
                     "default": "跟随 Obsidian"
+                }
+            },
+            "dataview": {
+                "title": "Dataview",
+                "enable": {
+                    "name": "解析 Dataview",
+                    "description": "根据 Dataview 插件设置，识别并执行 smiles 代码块中的 Dataview 查询式 (Queries) 和 DataviewJS 代码，依查询结果渲染结构。"
                 }
             }
         }

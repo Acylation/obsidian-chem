@@ -10,6 +10,7 @@ import { SmilesBlock } from './SmilesBlock';
 
 import { setBlocks, clearBlocks } from './global/blocks';
 import { setDrawer, clearDrawer } from './global/drawer';
+import { getDataview, clearDataview } from './global/dataview';
 import { setObserver, detachObserver } from './themeObserver';
 
 export default class ChemPlugin extends Plugin {
@@ -27,12 +28,14 @@ export default class ChemPlugin extends Plugin {
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 		this.registerMarkdownCodeBlockProcessor('smiles', this.smilesProcessor);
+		if (this.settings.dataview) getDataview();
 	}
 
 	async onunload() {
 		detachObserver();
 		clearBlocks();
 		clearDrawer();
+		clearDataview();
 	}
 
 	async loadSettings() {
@@ -56,6 +59,6 @@ export default class ChemPlugin extends Plugin {
 		el: HTMLElement,
 		ctx: MarkdownPostProcessorContext
 	) => {
-		ctx.addChild(new SmilesBlock(el, source, ctx, this.settings)); // pass plugin settings, maybe useful in react settings provider.
+		ctx.addChild(new SmilesBlock(el, source, ctx, this.settings));
 	};
 }

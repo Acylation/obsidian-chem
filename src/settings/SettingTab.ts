@@ -10,6 +10,7 @@ import {
 
 import { setDrawer } from 'src/global/drawer';
 import { refreshBlocks } from 'src/global/blocks';
+import { clearDataview, getDataview } from 'src/global/dataview';
 import { LivePreview } from './LivePreview';
 
 import { i18n } from 'src/lib/i18n';
@@ -226,6 +227,28 @@ export class ChemSettingTab extends PluginSettingTab {
 						onSettingsChange();
 					})
 			);
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.dataview.title'))
+			.setHeading();
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.dataview.enable.name'))
+			.setDesc(i18n.t('settings.dataview.enable.description'))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.dataview)
+					.onChange(async (value) => {
+						this.plugin.settings.dataview = value;
+						if (value) {
+							getDataview();
+						} else {
+							clearDataview();
+						}
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					});
+			});
 
 		const onSettingsChange = () => {
 			preview.updateSettings(this.plugin.settings);
