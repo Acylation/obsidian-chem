@@ -37,7 +37,7 @@
 > [!Warning]
 > 本功能依赖 Dataview 插件本体，若要使用本功能，请确保您已安装并启用 Dataview 插件
 > 
-> 运行 DataviewJS 需要 `eval()` 函数，具有一定的风险。请确保您输入/粘贴的代码是受信任的
+> 运行 DataviewJS 需要调用 `eval()` 函数，具有一定的风险。请确保您输入/粘贴的代码是受信任的
 > 
 > 若您希望在启用 Dataview 查询式 (Queries) 时禁用 DataviewJS，请在 Dataview 插件设置中禁用 `Enable JavaScript Queries` 或 `Enable Inline JavaScript Queries` 选项  
 
