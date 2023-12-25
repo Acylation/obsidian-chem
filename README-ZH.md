@@ -35,9 +35,9 @@
 ![在 SMILES 代码块中编写内联 Dataview](https://github-production-user-asset-6210df.s3.amazonaws.com/73122375/292734194-d227fdb8-9c8f-4c87-965a-73c0f2445993.png)
 
 > [!Note]
-> 本功能依赖 Dataview 插件本体，若要使用本功能，请确保您已安装并启用 Dataview 插件
-> 运行 DataviewJS 语句的功能调用了 `eval()` 函数，具有一定的风险。请确保您输入/粘贴的代码是受信任的，防止意外执行恶意代码
-> 若您希望在启用 Dataview 查询式 (Queries) 时禁用 DataviewJS，请在 Dataview 插件设置中禁用 `Enable JavaScript Queries` 或 `Enable Inline JavaScript Queries`
+> 本功能依赖 Dataview 插件本体，若要使用本功能，请确保您已安装并启用 Dataview 插件  
+> 运行 DataviewJS 需要 `eval()` 函数，具有一定的风险。请确保您输入/粘贴的代码是受信任的  
+> 若您希望在启用 Dataview 查询式 (Queries) 时禁用 DataviewJS，请在 Dataview 插件设置中禁用 `Enable JavaScript Queries` 或 `Enable Inline JavaScript Queries` 选项  
 
 ## SMILES 介绍
 
