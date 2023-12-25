@@ -2,6 +2,20 @@
 
 [简体中文](CONTRIBUTING-ZH.md) | [English](CONTRIBUTING.md)
 
+## Design Philosophy
+
+Before working on a new feature, I will consider the following criteria. The feature should meet at least one of them to be useful.
+
+- It helps with taking notes on chemical research, like experimental records, literature notes, paper writing, etc.
+- It promotes a workflow that integrates well with other chemistry tools.
+- It aids in learning chemistry and related subjects.
+
+As an Obsidian plugin, this project adheres to the following principles:
+
+- Localize: Data should be kept local and standalone packages are preferred over remote services.
+- Leave No Trace: The plugin must not leave plugin-specific content in notes, allowing them to be shared with non-Obsidian users.
+- Plain Text Central: Plain text is preferred over complex formats.
+
 ## How to report a bug or suggest a feature
 
 - Please use the [issue tracker](https://github.com/Acylation/obsidian-chem/issues) to report any problems or suggest new features.

@@ -24,7 +24,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 		super(el); // important
 		addBlock(this);
 	}
-  
+
 	// TODO: rendering animation
 	async render() {
 		this.el.empty();
@@ -92,7 +92,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 			const func = new Function(
 				'api',
-				`return eval("const dv=api;const dataview = api; ${code}")` // await & async exec
+				`return eval(\`const dv=api;const dataview = api; ${code}\`)` // await & async exec
 			);
 
 			return func(api)?.toString() ?? 'DataviewJS parsing error';

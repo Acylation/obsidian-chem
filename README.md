@@ -6,39 +6,58 @@
 
 **Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)).
 
-> **Note**  
-> Latest release: 0.2.1  
-> Document version: 0.2.1  
+> [!Note]
+> Latest release: 0.3.0  
+> Document version: 0.3.0  
 
 ## Features & Usage
 
-### Render SMILES strings as chemical structures
+### Render SMILES Strings as Chemical Structures
 
 You can use this plugin to render chemical structures from SMILES strings. Just type the SMILES strings in a code block with `smiles` as the language. Each line should contain only one string.
 
 The data is stored as plain text, so you won’t lose it. The renderer will always work, even if the plugin changes its cheminfo core.
 
-![Image](https://github.com/Acylation/obsidian-chem/assets/73122375/a9f9a440-dc66-4689-ab1a-1ef265242778)
+![Render SMILES strings into structures](https://github.com/Acylation/obsidian-chem/assets/73122375/a9f9a440-dc66-4689-ab1a-1ef265242778)
+
+### Global Sizing and Theming
 
 You can adjust the structure scale or the image size and configure light/dark themes of the structure images in the plugin’s settings page. The structures in open notes will be automatically updated when the plugin settings or Obsidian color scheme are changed.
 
-![Image](https://github.com/Acylation/obsidian-chem/assets/73122375/fde8d0a4-2c9c-458c-b357-78952480b755)
+![Configure size and theme](https://github.com/Acylation/obsidian-chem/assets/73122375/fde8d0a4-2c9c-458c-b357-78952480b755)
 
-#### What is SMILES?
+### Copy & Export
+
+The copy feature is accessible through the right-click menu on images. Images are copied in `png` format. Despite common applications, you can also paste the copied image into your note, which will then save the image as a file to your attachment folder. The scale of the export, transparency, and theme can be configured to suit your needs.
+
+### Utilizing Dataview
+
+Inline Dataview queries and DataviewJS rendering can be enabled in the settings tab. Once enabled, lines within the smiles block will be checked and parsed. The return value from this process is used to render chemical structures, providing users with greater flexibility. The prefix and strategy are fetched directly from the corresponding Dataview plugin settings.
+
+![Dataview lines in smiles block]()
+
+> [!Note]
+> This feature is dependent on the Dataview plugin. Please ensure that you have installed and enabled it.
+> The execution of DataviewJS is implemented by calling `eval()` at the bottom,which is known to have safety issues.To avoid unintended execution, only trusted code lines should be passed.
+> If you wish to disable DataviewJS rendering, you can toggle off the `Enable JavaScript Queries` or `Enable Inline JavaScript Queries` options through the settings tab of the Dataview plugin.
+
+## Introduction on SMILES
+
+### What is SMILES?
 
 SMILES stands for Simplified Molecular-Input Line-Entry System. It is a specification to describe chemical structures using linear ASCII strings. You can learn more about it from the [official website](http://opensmiles.org/opensmiles.html) or [Wikipedia](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system).
 
-#### Why using SMILES?
+### Why Using SMILES?
 
 Using SMILES strings to represent molecules is easier and more widely supported by chemistry drawing tools than using LaTeX packages like mhchem and chemfig.
 
-#### How to generate SMILES strings?
+### How to Generate SMILES Strings?
 
  For simple structures, you can type them in manually. However, for more complex ones, you may want to use **structure editors**, such as ChemDraw, [ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#), [MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) and [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html). Also, you can use **translators** like [Open Bable](http://openbabel.org/wiki/Main_Page), [JOELib](https://sourceforge.net/projects/joelib/) and the [Chemical Translation Service](https://cts.fiehnlab.ucdavis.edu/) to convert chemical names, CAS numbers and *.mol files into SMILES strings.
 
 ## Installation
 
-> **Note**  
+> [!Note]  
 > Make sure that you are not in the **Restricted Mode**.
 
 The plugin is available in the official plugin market. You can go to Settings → Community plugins → Browse, and search for the `Chem` plugin by Acylation. After installing, you need to enable the plugin to use it.
@@ -63,20 +82,6 @@ I have a lot of ideas for this plugin, but my coding skills and resources are li
 
 I'd love to hear your feedback and suggestions. Actually, the first feature of the plugin, to render SMILES strings, was suggested by community users! I’m very grateful for their input. (See the [acknowledgment](https://github.com/Acylation/obsidian-chem#acknowledgment) section for details)
 
-## Design Philosophy
-
-Before working on a new feature, I will consider the following criteria. The feature should meet at least one of them to be useful.
-
-- It helps with taking notes on chemical research, like experimental records, literature notes, paper writing, etc.
-- It promotes a workflow that integrates well with other chemistry tools.
-- It aids in learning chemistry and related subjects.
-
-As an Obsidian plugin, this project adheres to the following principles:
-
-- Localize: Data should be kept local and standalone packages are preferred over remote services.
-- Leave No Trace: The plugin must not leave plugin-specific content in notes, allowing them to be shared with non-Obsidian users.
-- Plain Text Central: Plain text is preferred over complex formats.
-
 ## Contributing
 
 Thank you for your interest in contributing to this project! We welcome bug reports, feature requests, and pull requests from anyone. For more information on how to contribute to Chem, check out [CONTRIBUTING.md](docs/CONTRIBUTING.md).
@@ -84,6 +89,12 @@ Thank you for your interest in contributing to this project! We welcome bug repo
 ## Roadmap
 
 Check out the [roadmap](https://github.com/users/Acylation/projects/6) to see what's been working on.
+
+## Companion Plugins
+
+`Chem` plugin is now primarily focused on rendering texts into structures. If you want to create complex structures from scratch, the [Ketcher](https://github.com/yuleicul/obsidian-ketcher) plugin has integrated a powerful opensource editor.
+
+[Chemical Structure Renderer](https://github.com/xaya1001/obsidian-Chemical-Structure-Renderer) is a similar plugin, which uses [Ketcher](https://github.com/epam/ketcher), [Indigo](https://github.com/epam/Indigo) online service for parsing and rendering.
 
 ## Acknowledgement
 
