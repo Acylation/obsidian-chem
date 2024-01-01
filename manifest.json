@@ -6,5 +6,6 @@
 	"description": "Providing chemistry supports. Rendering SMILES strings into chemistry structures.",
 	"author": "Acylation",
 	"authorUrl": "https://github.com/Acylation",
+	"fundingUrl": "https://ko-fi.com/Acylation",
 	"isDesktopOnly": false
 }
