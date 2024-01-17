@@ -42,6 +42,8 @@ export default class ChemPlugin extends Plugin {
 		const candidate = Object.assign({}, await this.loadData());
 		if ('version' in candidate && candidate.version == SETTINGS_VERSION)
 			this.settings = Object.assign({}, DEFAULT_SETTINGS, candidate);
+		else if (Object.keys(candidate).length === 0)
+			this.settings = Object.assign({}, DEFAULT_SETTINGS);
 		else
 			this.settings = Object.assign(
 				{},
