@@ -250,6 +250,34 @@ export class ChemSettingTab extends PluginSettingTab {
 					});
 			});
 
+		new Setting(containerEl).setName('Inline').setHeading();
+
+		new Setting(containerEl)
+			.setName('Enable inline smiles')
+			.setDesc('desc')
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.inlineSmiles)
+					.onChange(async (value) => {
+						this.plugin.settings.inlineSmiles = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName('Inline smiles prefix')
+			.setDesc('desc')
+			.addText((text) => {
+				text.setValue(this.plugin.settings.inlineSmilesPrefix).onChange(
+					async (value) => {
+						this.plugin.settings.inlineSmilesPrefix = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					}
+				);
+			});
+
 		const onSettingsChange = () => {
 			preview.updateSettings(this.plugin.settings);
 			preview.render();
