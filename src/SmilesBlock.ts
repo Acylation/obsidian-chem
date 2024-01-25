@@ -75,11 +75,11 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 		const isDQL = (source: string): boolean => {
 			const prefix = gDataview.settings.inlineQueryPrefix;
-			return source.startsWith(prefix);
+			return prefix.length > 0 && source.startsWith(prefix);
 		};
 		const isDataviewJs = (source: string): boolean => {
 			const prefix = gDataview.settings.inlineJsQueryPrefix;
-			return source.startsWith(prefix);
+			return prefix.length > 0 && source.startsWith(prefix);
 		};
 		const evaluateDQL = (row: string): string => {
 			const prefix = gDataview.settings.inlineQueryPrefix;
