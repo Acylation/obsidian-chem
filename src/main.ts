@@ -28,6 +28,7 @@ export default class ChemPlugin extends Plugin {
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 		this.registerMarkdownCodeBlockProcessor('smiles', this.smilesProcessor);
+		this.registerMarkdownPostProcessor(this.inlineSmilesProcessor);
 		if (this.settings.dataview) getDataview();
 	}
 
@@ -62,5 +63,21 @@ export default class ChemPlugin extends Plugin {
 		ctx: MarkdownPostProcessorContext
 	) => {
 		ctx.addChild(new SmilesBlock(el, source, ctx, this.settings));
+	};
+
+	inlineSmilesProcessor = (
+		el: HTMLElement,
+		ctx: MarkdownPostProcessorContext
+	) => {
+		const inlineCodes = el.findAll('code');
+		inlineCodes.forEach((code) => {
+			const text = code.innerText;
+			if (text.startsWith(this.settings.inlineSmilesPrefix)) {
+				const source = text
+					.substring(this.settings.inlineSmilesPrefix.length)
+					.trim();
+				ctx.addChild(new SmilesBlock(code, source, ctx, this.settings));
+			}
+		});
 	};
 }
