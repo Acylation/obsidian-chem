@@ -73,6 +73,7 @@ export default class ChemPlugin extends Plugin {
 		el: HTMLElement,
 		ctx: MarkdownPostProcessorContext
 	) => {
+		//https://docs.obsidian.md/Plugins/Editor/Markdown+post+processing
 		const inlineCodes = el.findAll('code');
 		inlineCodes.forEach((code) => {
 			const text = code.innerText;
@@ -80,7 +81,11 @@ export default class ChemPlugin extends Plugin {
 				const source = text
 					.substring(this.settings.inlineSmilesPrefix.length)
 					.trim();
-				ctx.addChild(new SmilesBlock(code, source, ctx, this.settings));
+				const container = el.createDiv();
+				code.replaceWith(container);
+				ctx.addChild(
+					new SmilesBlock(container, source, ctx, this.settings)
+				);
 			}
 		});
 	};
