@@ -7,6 +7,7 @@ import {
 import { ChemSettingTab } from './settings/SettingTab';
 import { updateSettingsVersion } from './settings/update';
 import { SmilesBlock } from './SmilesBlock';
+import { inlinePlugin } from './SmilesInline';
 
 import { setBlocks, clearBlocks } from './global/blocks';
 import { setDrawer, clearDrawer } from './global/drawer';
@@ -25,6 +26,9 @@ export default class ChemPlugin extends Plugin {
 		setDrawer(this.settings.options);
 		setBlocks();
 		setObserver();
+		// editor extension
+		this.registerEditorExtension(inlinePlugin(this.settings));
+		this.app.workspace.updateOptions();
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 		this.registerMarkdownCodeBlockProcessor('smiles', this.smilesProcessor);
