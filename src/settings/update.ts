@@ -25,6 +25,8 @@ interface ChemPluginSettingsV2 {
 		theme: string;
 	};
 	dataview: boolean;
+	inlineSmiles: boolean;
+	inlineSmilesPrefix: string;
 	options: object;
 }
 
@@ -42,6 +44,8 @@ const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
 		theme: 'default',
 	},
 	dataview: false,
+	inlineSmiles: false,
+	inlineSmilesPrefix: '$smiles=',
 	options: {},
 };
 

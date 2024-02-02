@@ -76,8 +76,19 @@
             "dataview": {
                 "title": "Dataview",
                 "enable": {
-                    "name": "Inline Dataview",
-                    "description": "Recognize and get return values from Dataview queries and DataviewJS lines as rendering source according to Dataview settings."
+                    "name": "Parse Dataview",
+                    "description": "In smiles block, recognize and get return values from Dataview queries and DataviewJS lines as rendering source according to Dataview settings."
+                }
+            },
+            "inline": {
+                "title": "Inline SMILES",
+                "enable": {
+                    "name": "Enable inline SMILES",
+                    "description": "Render SMILES code lines."
+                },
+                "prefix": {
+                    "name": "Inline SMILES Prefix",
+                    "description": "The prefix to inline SMILES."
                 }
             }
         }
