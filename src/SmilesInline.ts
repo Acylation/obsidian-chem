@@ -210,7 +210,7 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 			// checks whether a node should get rendered/unrendered
 			renderNode(view: EditorView, node: SyntaxNode) {
 				const type = node.type;
-				const tokenProps = type.prop<String>(tokenClassNodeProp);
+				const tokenProps = type.prop<string>(tokenClassNodeProp);
 				const props = new Set(tokenProps?.split(' '));
 				if (props.has('inline-code') && !props.has('formatting')) {
 					const start = node.from;
@@ -259,7 +259,6 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 			}
 
 			renderWidget(node: SyntaxNode, view: EditorView) {
-				const type = node.type;
 				// contains the position of inline code
 				const start = node.from;
 				const end = node.to;
@@ -268,7 +267,6 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 					return;
 				}
 				const text = view.state.doc.sliceString(start, end);
-				let code: string = '';
 				const el = createSpan({
 					cls: ['smiles', 'chem-cell-inline', 'chem-cell'],
 				});
@@ -277,6 +275,8 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 				 * This is necessary because {@link InlineWidget.toDOM} is synchronous but some rendering
 				 * asynchronous.
 				 */
+
+				let code = '';
 				if (text.startsWith(settings.inlineSmilesPrefix)) {
 					if (settings.inlineSmiles) {
 						// TODO move validation forward, ensure to call native renderer when no smiles
@@ -296,9 +296,6 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 				} else {
 					return;
 				}
-
-				const tokenProps = type.prop<String>(tokenClassNodeProp);
-				const props = new Set(tokenProps?.split(' '));
 
 				return Decoration.replace({
 					widget: new InlineWidget(code, el, view),
