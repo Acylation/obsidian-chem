@@ -182,6 +182,25 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(i18n.t('settings.advanced.explicit-hydrogen.name'))
+			.setDesc(i18n.t('settings.advanced.explicit-hydrogen.description'))
+			.addToggle((toggle) =>
+				toggle
+					.setValue(
+						this.plugin.settings.options?.explicitHydrogens ?? false
+					)
+					.onChange(async (value) => {
+						this.plugin.settings.options.explicitHydrogens = value;
+						await this.plugin.saveSettings();
+						setDrawer({
+							...DEFAULT_SD_OPTIONS,
+							...this.plugin.settings.options,
+						});
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
 			.setName(i18n.t('settings.copy.title'))
 			.setHeading();
 

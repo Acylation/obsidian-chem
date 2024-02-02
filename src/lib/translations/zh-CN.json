@@ -55,6 +55,10 @@
                 "terminal-carbons": {
                     "name": "端基碳",
                     "description": "显式绘出末端甲基、亚甲基等端基碳。"
+                },
+                "explicit-hydrogen": {
+                    "name": "显式氢",
+                    "description": "启用以绘制显式氢原子。"
                 }
             },
             "copy": {

@@ -55,6 +55,10 @@
                 "terminal-carbons": {
                     "name": "Show terminal carbons",
                     "description": "Explictly draw terminal carbons like methyl or methylene."
+                },
+                "explicit-hydrogen": {
+                    "name": "Explicit hydrogen",
+                    "description": "Enable to show explicit hydrogen."
                 }
             },
             "copy": {
