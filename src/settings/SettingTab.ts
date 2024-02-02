@@ -182,6 +182,25 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(i18n.t('settings.advanced.explicit-hydrogen.name'))
+			.setDesc(i18n.t('settings.advanced.explicit-hydrogen.description'))
+			.addToggle((toggle) =>
+				toggle
+					.setValue(
+						this.plugin.settings.options?.explicitHydrogens ?? false
+					)
+					.onChange(async (value) => {
+						this.plugin.settings.options.explicitHydrogens = value;
+						await this.plugin.saveSettings();
+						setDrawer({
+							...DEFAULT_SD_OPTIONS,
+							...this.plugin.settings.options,
+						});
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
 			.setName(i18n.t('settings.copy.title'))
 			.setHeading();
 
@@ -248,6 +267,36 @@ export class ChemSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						onSettingsChange();
 					});
+			});
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.inline.title'))
+			.setHeading();
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.inline.enable.name'))
+			.setDesc(i18n.t('settings.inline.enable.description'))
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.inlineSmiles)
+					.onChange(async (value) => {
+						this.plugin.settings.inlineSmiles = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.inline.prefix.name'))
+			.setDesc(i18n.t('settings.inline.prefix.description'))
+			.addText((text) => {
+				text.setValue(this.plugin.settings.inlineSmilesPrefix).onChange(
+					async (value) => {
+						this.plugin.settings.inlineSmilesPrefix = value;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					}
+				);
 			});
 
 		const onSettingsChange = () => {

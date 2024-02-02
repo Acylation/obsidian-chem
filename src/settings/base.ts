@@ -18,6 +18,8 @@ export interface ChemPluginSettings {
 		theme: string;
 	};
 	dataview: boolean;
+	inlineSmiles: boolean;
+	inlineSmilesPrefix: string;
 	options: Partial<SMILES_DRAWER_OPTIONS>;
 }
 
@@ -34,6 +36,8 @@ export const DEFAULT_SETTINGS: ChemPluginSettings = {
 		theme: 'default',
 	},
 	dataview: false,
+	inlineSmiles: false,
+	inlineSmilesPrefix: '$smiles=',
 	options: {},
 };
 
