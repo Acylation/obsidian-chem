@@ -232,8 +232,10 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 			}
 
 			isInlineSmiles(view: EditorView, start: number, end: number) {
-				const text = view.state.doc.sliceString(start, end);
-				return text.startsWith(settings.inlineSmilesPrefix);
+				if (settings.inlineSmilesPrefix.length > 0) {
+					const text = view.state.doc.sliceString(start, end);
+					return text.startsWith(settings.inlineSmilesPrefix);
+				} else return false;
 			}
 
 			inlineRender(view: EditorView) {
