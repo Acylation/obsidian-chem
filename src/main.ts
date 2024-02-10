@@ -1,11 +1,7 @@
 import { Plugin, MarkdownPostProcessorContext } from 'obsidian';
-import {
-	DEFAULT_SETTINGS,
-	ChemPluginSettings,
-	SETTINGS_VERSION,
-} from './settings/base';
+import { ChemPluginSettings } from './settings/base';
 import { ChemSettingTab } from './settings/SettingTab';
-import { updateSettingsVersion } from './settings/update';
+import { migrateSettings } from './settings/base';
 import { SmilesBlock } from './SmilesBlock';
 import { inlinePlugin } from './SmilesInline';
 
@@ -23,7 +19,10 @@ export default class ChemPlugin extends Plugin {
 		// this.addRibbonIcon('hexagon', 'This is Chem Plugin', () => {});
 
 		// initialize global variables
-		setDrawer(this.settings.options);
+		setDrawer(
+			this.settings.options.moleculeOptions,
+			this.settings.options.reactionOptions
+		);
 		setBlocks();
 		setObserver();
 		// editor extension
@@ -44,17 +43,7 @@ export default class ChemPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		const candidate = Object.assign({}, await this.loadData());
-		if ('version' in candidate && candidate.version == SETTINGS_VERSION)
-			this.settings = Object.assign({}, DEFAULT_SETTINGS, candidate);
-		else if (Object.keys(candidate).length === 0)
-			this.settings = Object.assign({}, DEFAULT_SETTINGS);
-		else
-			this.settings = Object.assign(
-				{},
-				DEFAULT_SETTINGS,
-				updateSettingsVersion(candidate)
-			);
+		this.settings = migrateSettings(await this.loadData());
 	}
 
 	async saveSettings() {
