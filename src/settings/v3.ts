@@ -19,7 +19,6 @@ export interface ChemPluginSettingsV3 {
 		moleculeOptions: Partial<SD_MoleculeOptions>;
 		reactionOptions: Partial<SD_ReactionOptions>;
 	};
-	rdkitJsOptions: {};
 }
 export const DEFAULT_SETTINGS_V3: ChemPluginSettingsV3 = {
 	version: 'v3',
@@ -41,5 +40,4 @@ export const DEFAULT_SETTINGS_V3: ChemPluginSettingsV3 = {
 		moleculeOptions: {},
 		reactionOptions: {},
 	},
-	rdkitJsOptions: {},
 };
