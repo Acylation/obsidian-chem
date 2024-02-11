@@ -1,12 +1,9 @@
 import { App, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
 
 import ChemPlugin from '../main';
-import {
-	DEFAULT_SD_OPTIONS,
-	SAMPLE_SMILES_1,
-	SAMPLE_SMILES_2,
-	themeList,
-} from './base';
+import { themeList } from './theme';
+import { DEFAULT_SETTINGS } from './base';
+import { DEFAULT_SD_OPTIONS } from './smilesDrawerOptions';
 
 import { setDrawer } from 'src/global/drawer';
 import { refreshBlocks } from 'src/global/blocks';
@@ -14,8 +11,6 @@ import { clearDataview, getDataview } from 'src/global/dataview';
 import { LivePreview } from './LivePreview';
 
 import { i18n } from 'src/lib/i18n';
-
-// Reference: https://smilesdrawer.surge.sh/playground.html
 
 export class ChemSettingTab extends PluginSettingTab {
 	plugin: ChemPlugin;
@@ -40,13 +35,10 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setIcon('rotate-ccw')
 					.setTooltip(i18n.t('settings.scale.description'))
 					.onClick(async () => {
-						this.plugin.settings.options.scale = 1;
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = 1;
 						scaleSlider.setValue(50);
 						await this.plugin.saveSettings();
-						setDrawer({
-							...DEFAULT_SD_OPTIONS,
-							...this.plugin.settings.options,
-						});
+						this.updateDrawer();
 						onSettingsChange();
 						unifyBondLength();
 					});
@@ -54,20 +46,27 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		const scaleLabel = scaleSetting.controlEl.createDiv('slider-readout');
 		scaleLabel.setText(
-			(this.plugin.settings.options.scale ?? 1.0).toFixed(2).toString()
+			(
+				this.plugin.settings.smilesDrawerOptions.moleculeOptions
+					.scale ?? 1.0
+			)
+				.toFixed(2)
+				.toString()
 		);
 
 		const scaleSlider = new SliderComponent(scaleSetting.controlEl)
-			.setValue(50 * (this.plugin.settings.options.scale ?? 1.0))
+			.setValue(
+				50 *
+					(this.plugin.settings.smilesDrawerOptions.moleculeOptions
+						.scale ?? 1.0)
+			)
 			.setLimits(0.0, 100, 0.5)
 			.onChange(async (value) => {
-				this.plugin.settings.options.scale = value / 50;
+				this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale =
+					value / 50;
 				scaleLabel.setText((value / 50).toFixed(2).toString());
 				await this.plugin.saveSettings();
-				setDrawer({
-					...DEFAULT_SD_OPTIONS,
-					...this.plugin.settings.options,
-				});
+				this.updateDrawer();
 				onSettingsChange();
 				if (value == 0) unifyImageWidth();
 				else unifyBondLength();
@@ -112,11 +111,11 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setDesc(i18n.t('settings.preview.sample.description'))
 			.addText((text) =>
 				text
-					.setPlaceholder(SAMPLE_SMILES_1)
+					.setPlaceholder(DEFAULT_SETTINGS.sample1)
 					.setValue(this.plugin.settings.sample1)
 					.onChange(async (value) => {
 						if (value == '') {
-							value = SAMPLE_SMILES_1;
+							value = DEFAULT_SETTINGS.sample1;
 						}
 						this.plugin.settings.sample1 = value;
 						await this.plugin.saveSettings();
@@ -125,11 +124,11 @@ export class ChemSettingTab extends PluginSettingTab {
 			)
 			.addText((text) =>
 				text
-					.setPlaceholder(SAMPLE_SMILES_2)
+					.setPlaceholder(DEFAULT_SETTINGS.sample2)
 					.setValue(this.plugin.settings.sample2)
 					.onChange(async (value) => {
 						if (value == '') {
-							value = SAMPLE_SMILES_2;
+							value = DEFAULT_SETTINGS.sample2;
 						}
 						this.plugin.settings.sample2 = value;
 						await this.plugin.saveSettings();
@@ -149,15 +148,14 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options?.compactDrawing ?? false
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions
+							.compactDrawing ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.compactDrawing = value;
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.compactDrawing =
+							value;
 						await this.plugin.saveSettings();
-						setDrawer({
-							...DEFAULT_SD_OPTIONS,
-							...this.plugin.settings.options,
-						});
+						this.updateDrawer();
 						onSettingsChange();
 					})
 			);
@@ -168,15 +166,14 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options?.terminalCarbons ?? false
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions
+							.terminalCarbons ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.terminalCarbons = value;
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.terminalCarbons =
+							value;
 						await this.plugin.saveSettings();
-						setDrawer({
-							...DEFAULT_SD_OPTIONS,
-							...this.plugin.settings.options,
-						});
+						this.updateDrawer();
 						onSettingsChange();
 					})
 			);
@@ -187,15 +184,14 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options?.explicitHydrogens ?? false
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions
+							.explicitHydrogens ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.explicitHydrogens = value;
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.explicitHydrogens =
+							value;
 						await this.plugin.saveSettings();
-						setDrawer({
-							...DEFAULT_SD_OPTIONS,
-							...this.plugin.settings.options,
-						});
+						this.updateDrawer();
 						onSettingsChange();
 					})
 			);
@@ -312,20 +308,17 @@ export class ChemSettingTab extends PluginSettingTab {
 				.addText((text) =>
 					text
 						.setValue(
-							this.plugin.settings.options.width?.toString() ??
+							this.plugin.settings.smilesDrawerOptions.moleculeOptions.width?.toString() ??
 								'300'
 						)
 						.onChange(async (value) => {
 							if (value == '') {
 								value = '300';
 							}
-							this.plugin.settings.options.width =
+							this.plugin.settings.smilesDrawerOptions.moleculeOptions.width =
 								parseInt(value);
 							await this.plugin.saveSettings();
-							setDrawer({
-								...DEFAULT_SD_OPTIONS,
-								...this.plugin.settings.options,
-							});
+							this.updateDrawer();
 							onSettingsChange();
 						})
 				);
@@ -354,11 +347,27 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		// Initialize
 		preview.render();
-		if ((this.plugin.settings.options?.scale ?? 1) == 0) unifyImageWidth();
+		if (
+			(this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale ??
+				1) == 0
+		)
+			unifyImageWidth();
 		else unifyBondLength();
 	}
 
 	hide(): void {
 		refreshBlocks();
 	}
+
+	updateDrawer = () =>
+		setDrawer(
+			{
+				...DEFAULT_SD_OPTIONS.moleculeOptions,
+				...this.plugin.settings.smilesDrawerOptions.moleculeOptions,
+			},
+			{
+				...DEFAULT_SD_OPTIONS.reactionOptions,
+				...this.plugin.settings.smilesDrawerOptions.reactionOptions,
+			}
+		);
 }

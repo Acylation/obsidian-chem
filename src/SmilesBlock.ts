@@ -7,8 +7,9 @@ import {
 import { gDrawer } from './global/drawer';
 
 import { gDataview, isPluginEnabled, getDataview } from './global/dataview';
-import { ChemPluginSettings, DEFAULT_SD_OPTIONS } from './settings/base';
+import { ChemPluginSettings } from './settings/base';
 import { addBlock, removeBlock } from './global/blocks';
+import { themes } from './settings/theme';
 
 import { i18n } from 'src/lib/i18n';
 
@@ -47,7 +48,8 @@ export class SmilesBlock extends MarkdownRenderChild {
 			this.renderCell(rows[0], div, this.theme);
 		} else {
 			const table = this.el.createDiv({ cls: 'chem-table' });
-			const maxWidth = this.settings.options?.width ?? 300;
+			const maxWidth =
+				this.settings.smilesDrawerOptions.moleculeOptions.width ?? 300;
 
 			rows.forEach((row) => {
 				const cell = table.createDiv({ cls: 'chem-cell' });
@@ -62,7 +64,8 @@ export class SmilesBlock extends MarkdownRenderChild {
 			});
 
 			table.style.gridTemplateColumns = `repeat(auto-fill, minmax(${
-				this.settings.options.width?.toString() ?? '300'
+				this.settings.smilesDrawerOptions.moleculeOptions.width?.toString() ??
+				'300'
 			}px, 1fr)`;
 		}
 	}
@@ -146,7 +149,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 				errorCb(error, target.createEl('div'));
 			}
 		);
-		if (this.settings.options.scale == 0)
+		if (this.settings.smilesDrawerOptions.moleculeOptions.scale == 0)
 			svg.style.width = `${this.settings.imgWidth.toString()}px`;
 		return svg;
 	};
@@ -223,7 +226,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 			// Apply background color
 			if (!this.settings.copy.transparent) {
-				ctx.fillStyle = DEFAULT_SD_OPTIONS.themes[copyTheme].BACKGROUND;
+				ctx.fillStyle = themes.copyTheme.BACKGROUND;
 				ctx.fillRect(0, 0, canvas.width, canvas.height);
 			}
 

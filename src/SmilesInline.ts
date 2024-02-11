@@ -112,7 +112,7 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 				errorCb(error, target.createEl('div'));
 			}
 		);
-		if (settings.options.scale == 0)
+		if (settings.smilesDrawerOptions.moleculeOptions.scale == 0)
 			svg.style.width = `${settings.imgWidth.toString()}px`;
 		return svg;
 	};
