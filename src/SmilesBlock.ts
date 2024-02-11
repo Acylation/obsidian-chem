@@ -8,7 +8,6 @@ import { gDrawer } from './global/drawer';
 
 import { gDataview, isPluginEnabled, getDataview } from './global/dataview';
 import { ChemPluginSettings } from './settings/base';
-import { DEFAULT_SD_OPTIONS } from './settings/smilesDrawerOptions';
 import { addBlock, removeBlock } from './global/blocks';
 import { themes } from './settings/theme';
 
