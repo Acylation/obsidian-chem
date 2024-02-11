@@ -20,8 +20,8 @@ export default class ChemPlugin extends Plugin {
 
 		// initialize global variables
 		setDrawer(
-			this.settings.options.moleculeOptions,
-			this.settings.options.reactionOptions
+			this.settings.smilesDrawerOptions.moleculeOptions,
+			this.settings.smilesDrawerOptions.reactionOptions
 		);
 		setBlocks();
 		setObserver();

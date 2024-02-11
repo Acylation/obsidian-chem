@@ -35,7 +35,7 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setIcon('rotate-ccw')
 					.setTooltip(i18n.t('settings.scale.description'))
 					.onClick(async () => {
-						this.plugin.settings.options.moleculeOptions.scale = 1;
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = 1;
 						scaleSlider.setValue(50);
 						await this.plugin.saveSettings();
 						this.updateDrawer();
@@ -46,18 +46,24 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		const scaleLabel = scaleSetting.controlEl.createDiv('slider-readout');
 		scaleLabel.setText(
-			(this.plugin.settings.options.moleculeOptions.scale ?? 1.0)
+			(
+				this.plugin.settings.smilesDrawerOptions.moleculeOptions
+					.scale ?? 1.0
+			)
 				.toFixed(2)
 				.toString()
 		);
 
 		const scaleSlider = new SliderComponent(scaleSetting.controlEl)
 			.setValue(
-				50 * (this.plugin.settings.options.moleculeOptions.scale ?? 1.0)
+				50 *
+					(this.plugin.settings.smilesDrawerOptions.moleculeOptions
+						.scale ?? 1.0)
 			)
 			.setLimits(0.0, 100, 0.5)
 			.onChange(async (value) => {
-				this.plugin.settings.options.moleculeOptions.scale = value / 50;
+				this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale =
+					value / 50;
 				scaleLabel.setText((value / 50).toFixed(2).toString());
 				await this.plugin.saveSettings();
 				this.updateDrawer();
@@ -142,11 +148,11 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options.moleculeOptions
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions
 							.compactDrawing ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.moleculeOptions.compactDrawing =
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.compactDrawing =
 							value;
 						await this.plugin.saveSettings();
 						this.updateDrawer();
@@ -160,11 +166,11 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options.moleculeOptions
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions
 							.terminalCarbons ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.moleculeOptions.terminalCarbons =
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.terminalCarbons =
 							value;
 						await this.plugin.saveSettings();
 						this.updateDrawer();
@@ -178,11 +184,11 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.options.moleculeOptions
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions
 							.explicitHydrogens ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.options.moleculeOptions.explicitHydrogens =
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.explicitHydrogens =
 							value;
 						await this.plugin.saveSettings();
 						this.updateDrawer();
@@ -302,14 +308,14 @@ export class ChemSettingTab extends PluginSettingTab {
 				.addText((text) =>
 					text
 						.setValue(
-							this.plugin.settings.options.moleculeOptions.width?.toString() ??
+							this.plugin.settings.smilesDrawerOptions.moleculeOptions.width?.toString() ??
 								'300'
 						)
 						.onChange(async (value) => {
 							if (value == '') {
 								value = '300';
 							}
-							this.plugin.settings.options.moleculeOptions.width =
+							this.plugin.settings.smilesDrawerOptions.moleculeOptions.width =
 								parseInt(value);
 							await this.plugin.saveSettings();
 							this.updateDrawer();
@@ -341,7 +347,10 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		// Initialize
 		preview.render();
-		if ((this.plugin.settings.options.moleculeOptions.scale ?? 1) == 0)
+		if (
+			(this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale ??
+				1) == 0
+		)
 			unifyImageWidth();
 		else unifyBondLength();
 	}
@@ -354,11 +363,11 @@ export class ChemSettingTab extends PluginSettingTab {
 		setDrawer(
 			{
 				...DEFAULT_SD_OPTIONS.moleculeOptions,
-				...this.plugin.settings.options.moleculeOptions,
+				...this.plugin.settings.smilesDrawerOptions.moleculeOptions,
 			},
 			{
 				...DEFAULT_SD_OPTIONS.reactionOptions,
-				...this.plugin.settings.options.reactionOptions,
+				...this.plugin.settings.smilesDrawerOptions.reactionOptions,
 			}
 		);
 }

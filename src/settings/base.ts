@@ -45,18 +45,21 @@ const migrate_2_3 = (v2: ChemPluginSettingsV2): ChemPluginSettingsV3 => {
 		dataview: v2.dataview,
 		inlineSmiles: v2.inlineSmiles,
 		inlineSmilesPrefix: v2.inlineSmilesPrefix,
-		options: {
+		smilesDrawerOptions: {
 			moleculeOptions: v2.options,
 			reactionOptions: {},
 		},
 	};
 };
 
-export const migrateSettings = (draft: any) => {
+const migrate_3_3 = (draft: ChemPluginSettingsV3): ChemPluginSettingsV3 => {
+	return { ...DEFAULT_SETTINGS, ...draft };
+};
+
+export const migrateSettings = (draft: any): ChemPluginSettingsV3 => {
 	if (Object.keys(draft).length === 0) return DEFAULT_SETTINGS;
-	else if (!('version' in draft)) return migrate_1_3(draft);
-	else if ('version' in draft && draft.version === 'v2')
-		return migrate_2_3({ ...draft, ...DEFAULT_SETTINGS_V2 });
-	else if ('version' in draft && draft.version === SETTINGS_VERSION)
-		return { ...DEFAULT_SETTINGS, ...draft };
+	if (!('version' in draft)) return migrate_1_3(draft); // v1
+	else if (draft.version === 'v2') return migrate_2_3(draft);
+	else if (draft.version === 'v3') return migrate_3_3(draft); // current
+	return DEFAULT_SETTINGS; // consider branch coverage rate
 };

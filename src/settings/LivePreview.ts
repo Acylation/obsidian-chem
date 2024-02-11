@@ -42,7 +42,7 @@ export class LivePreview {
 			this.settings.darkTheme
 		);
 
-		if (this.settings.options.moleculeOptions.scale == 0)
+		if (this.settings.smilesDrawerOptions.moleculeOptions.scale == 0)
 			this.container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${(
 				this.settings?.imgWidth ?? 300
 			).toString()}px, 1fr)`;
@@ -83,16 +83,18 @@ export class LivePreview {
 			container.style.display = `grid`;
 			container.style.alignContent = `center`;
 
-			if (this.settings.options.moleculeOptions.scale == 0)
+			if (this.settings.smilesDrawerOptions.moleculeOptions.scale == 0)
 				container.style.width = `${(
 					this.settings?.imgWidth ?? 300
 				).toString()}px`;
 			else if (
 				container.offsetWidth >
-				(this.settings.options.moleculeOptions?.width ?? 300)
+				(this.settings.smilesDrawerOptions.moleculeOptions?.width ??
+					300)
 			) {
 				container.style.width = `${(
-					this.settings.options.moleculeOptions?.width ?? 300
+					this.settings.smilesDrawerOptions.moleculeOptions?.width ??
+					300
 				).toString()}px`;
 			}
 		};
@@ -107,21 +109,22 @@ export class LivePreview {
 				errorCb(error, target.createEl('div'));
 			}
 		);
-		if (this.settings.options.moleculeOptions.scale == 0)
+		if (this.settings.smilesDrawerOptions.moleculeOptions.scale == 0)
 			svg.style.width = `${(
 				this.settings?.imgWidth ?? 300
 			).toString()}px`;
 		else if (
 			parseFloat(svg.style.width) >
-			(this.settings.options.moleculeOptions?.width ?? 300)
+			(this.settings.smilesDrawerOptions.moleculeOptions?.width ?? 300)
 		) {
 			const r =
 				parseFloat(svg.style.width) / parseFloat(svg.style.height);
 			svg.style.width = `${(
-				this.settings.options.moleculeOptions?.width ?? 300
+				this.settings.smilesDrawerOptions.moleculeOptions?.width ?? 300
 			).toString()}px`;
 			svg.style.height = `${(
-				(this.settings.options.moleculeOptions?.width ?? 300) / r
+				(this.settings.smilesDrawerOptions.moleculeOptions?.width ??
+					300) / r
 			).toString()}px`;
 		}
 		return parseFloat(svg.style.width);
