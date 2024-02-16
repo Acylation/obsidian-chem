@@ -54,8 +54,8 @@ export class LivePreview {
 			).toString()}px, 1fr)`;
 	};
 
-	updateSettings = (argSettings: ChemPluginSettings) => {
-		this.settings = argSettings;
+	updateSettings = (newSettings: ChemPluginSettings) => {
+		this.settings = newSettings;
 	};
 
 	private renderCell = (
