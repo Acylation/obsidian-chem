@@ -5,7 +5,7 @@ import { themeList } from './theme';
 import { DEFAULT_SETTINGS } from './base';
 import { DEFAULT_SD_OPTIONS } from './smilesDrawerOptions';
 
-import { setDrawer } from 'src/global/drawer';
+import { setCore } from 'src/global/chemCore';
 import { refreshBlocks } from 'src/global/blocks';
 import { clearDataview, getDataview } from 'src/global/dataview';
 import { LivePreview } from './LivePreview';

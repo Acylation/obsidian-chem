@@ -1,6 +1,6 @@
 import { ChemPluginSettings } from '../settings/base';
-import { gDrawer } from 'src/global/drawer';
 import { i18n } from 'src/lib/i18n';
+import { gDrawer } from 'src/global/chemCore';
 
 export class LivePreview {
 	container: HTMLDivElement;

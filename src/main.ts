@@ -6,7 +6,7 @@ import { SmilesBlock } from './SmilesBlock';
 import { inlinePlugin } from './SmilesInline';
 
 import { setBlocks, clearBlocks } from './global/blocks';
-import { setDrawer, clearDrawer } from './global/drawer';
+import { setCore } from './global/chemCore';
 import { getDataview, clearDataview } from './global/dataview';
 import { setObserver, detachObserver } from './themeObserver';
 

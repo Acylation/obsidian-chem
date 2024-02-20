@@ -4,7 +4,7 @@ import {
 	Menu,
 	Notice,
 } from 'obsidian';
-import { gDrawer } from './global/drawer';
+import { gDrawer } from './global/chemCore';
 
 import { gDataview, isPluginEnabled, getDataview } from './global/dataview';
 import { ChemPluginSettings } from './settings/base';

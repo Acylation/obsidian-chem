@@ -19,8 +19,8 @@ import { ChemPluginSettings } from './settings/base';
 import { Component, editorInfoField, editorLivePreviewField } from 'obsidian';
 import { SyntaxNode } from '@lezer/common';
 
-import { gDrawer } from './global/drawer';
 import { i18n } from './lib/i18n';
+import { gDrawer } from './global/chemCore';
 
 function selectionAndRangeOverlap(
 	selection: EditorSelection,
