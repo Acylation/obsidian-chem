@@ -299,8 +299,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		const onSettingsChange = (debounced?: boolean) => {
 			preview.updateSettings(this.plugin.settings);
-			if (debounced) debouncedRender();
-			else preview.render();
+			debounced ? debouncedRender() : preview.render();
 		};
 
 		const debouncedRender = debounce(preview.render, 100, false); // throttle
