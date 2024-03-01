@@ -12,6 +12,8 @@ import { LivePreview } from './LivePreview';
 
 import { i18n } from 'src/lib/i18n';
 
+import { debounce } from 'obsidian';
+
 export class ChemSettingTab extends PluginSettingTab {
 	plugin: ChemPlugin;
 
@@ -67,7 +69,7 @@ export class ChemSettingTab extends PluginSettingTab {
 				scaleLabel.setText((value / 50).toFixed(2).toString());
 				await this.plugin.saveSettings();
 				this.updateDrawer();
-				onSettingsChange();
+				onSettingsChange(true);
 				if (value == 0) unifyImageWidth();
 				else unifyBondLength();
 			});
@@ -295,10 +297,13 @@ export class ChemSettingTab extends PluginSettingTab {
 				);
 			});
 
-		const onSettingsChange = () => {
+		const onSettingsChange = (debounced?: boolean) => {
 			preview.updateSettings(this.plugin.settings);
-			preview.render();
+			if (debounced) debouncedRender();
+			else preview.render();
 		};
+
+		const debouncedRender = debounce(preview.render, 100, false); // throttle
 
 		const unifyBondLength = () => {
 			widthSettings.controlEl.empty();
