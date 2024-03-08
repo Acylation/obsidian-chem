@@ -12,8 +12,6 @@ import { LivePreview } from './LivePreview';
 
 import { i18n } from 'src/lib/i18n';
 
-import { debounce } from 'obsidian';
-
 export class ChemSettingTab extends PluginSettingTab {
 	plugin: ChemPlugin;
 
@@ -38,7 +36,7 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setTooltip(i18n.t('settings.scale.description'))
 					.onClick(async () => {
 						this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = 1;
-						scaleSlider.setValue(50);
+						scaleSlider.setValue(1.0);
 						await this.plugin.saveSettings();
 						this.updateDrawer();
 						onSettingsChange();
@@ -58,18 +56,17 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		const scaleSlider = new SliderComponent(scaleSetting.controlEl)
 			.setValue(
-				50 *
-					(this.plugin.settings.smilesDrawerOptions.moleculeOptions
-						.scale ?? 1.0)
+				this.plugin.settings.smilesDrawerOptions.moleculeOptions
+					.scale ?? 1.0
 			)
-			.setLimits(0.0, 100, 0.5)
+			.setLimits(0.0, 2, 0.01)
+			.setDynamicTooltip()
 			.onChange(async (value) => {
 				this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale =
-					value / 50;
-				scaleLabel.setText((value / 50).toFixed(2).toString());
+					value;
 				await this.plugin.saveSettings();
 				this.updateDrawer();
-				onSettingsChange(true);
+				onSettingsChange();
 				if (value == 0) unifyImageWidth();
 				else unifyBondLength();
 			});
@@ -297,12 +294,10 @@ export class ChemSettingTab extends PluginSettingTab {
 				);
 			});
 
-		const onSettingsChange = (debounced?: boolean) => {
+		const onSettingsChange = () => {
 			preview.updateSettings(this.plugin.settings);
-			debounced ? debouncedRender() : preview.render();
+			preview.render();
 		};
-
-		const debouncedRender = debounce(preview.render, 100, false); // throttle
 
 		const unifyBondLength = () => {
 			widthSettings.controlEl.empty();
