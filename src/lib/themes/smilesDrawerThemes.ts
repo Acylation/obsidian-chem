@@ -1,4 +1,4 @@
-export interface theme {
+export interface SDTheme extends Record<string, string> {
 	C: string;
 	O: string;
 	N: string;
@@ -14,22 +14,7 @@ export interface theme {
 	BACKGROUND: string;
 }
 
-export const themeList = {
-	light: 'Light',
-	dark: 'Dark',
-	oldschool: 'Oldschool',
-	'oldschool-dark': 'Oldschool Dark',
-	solarized: 'Solarized',
-	'solarized-dark': 'Solarized Dark',
-	matrix: 'Matrix',
-	github: 'GitHub',
-	carbon: 'Carbon',
-	cyberpunk: 'Cyberpunk',
-	gruvbox: 'Gruvbox',
-	'gruvbox-dark': 'Gruvbox Dark',
-};
-
-export const themes: Record<string, theme> = {
+export const SDThemes: Record<string, SDTheme> = {
 	dark: {
 		C: '#fff',
 		O: '#e74c3c',

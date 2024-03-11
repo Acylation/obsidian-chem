@@ -1,14 +1,14 @@
 import { Plugin, MarkdownPostProcessorContext } from 'obsidian';
-import { ChemPluginSettings } from './settings/base';
+import { ChemPluginSettings, migrateSettings } from './settings/base';
 import { ChemSettingTab } from './settings/SettingTab';
-import { migrateSettings } from './settings/base';
+
 import { SmilesBlock } from './SmilesBlock';
 import { inlinePlugin } from './SmilesInline';
 
+import { setCore, clearCore } from './global/chemCore';
 import { setBlocks, clearBlocks } from './global/blocks';
-import { setDrawer, clearDrawer } from './global/drawer';
 import { getDataview, clearDataview } from './global/dataview';
-import { setObserver, detachObserver } from './themeObserver';
+import { setObserver, detachObserver } from './lib/themes/themeObserver';
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
@@ -16,29 +16,26 @@ export default class ChemPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		// this.addRibbonIcon('hexagon', 'This is Chem Plugin', () => {});
-
 		// initialize global variables
-		setDrawer(
-			this.settings.smilesDrawerOptions.moleculeOptions,
-			this.settings.smilesDrawerOptions.reactionOptions
-		);
 		setBlocks();
 		setObserver();
-		// editor extension
-		this.registerEditorExtension(inlinePlugin(this.settings));
-		this.app.workspace.updateOptions();
+		await setCore(this.settings);
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
+
+		// render modules
 		this.registerMarkdownCodeBlockProcessor('smiles', this.smilesProcessor);
-		this.registerMarkdownPostProcessor(this.inlineSmilesProcessor);
+		this.registerMarkdownPostProcessor(this.inlineSmilesProcessor); // nested inline render
+		this.registerEditorExtension(inlinePlugin(this.settings)); // editor extension for patching live-preview inline
+		this.app.workspace.updateOptions(); // Auto render existing pages when plugin loaded
+
 		if (this.settings.dataview) getDataview();
 	}
 
 	async onunload() {
 		detachObserver();
 		clearBlocks();
-		clearDrawer();
+		clearCore();
 		clearDataview();
 	}
 
@@ -58,6 +55,7 @@ export default class ChemPlugin extends Plugin {
 		ctx.addChild(new SmilesBlock(el, source, ctx, this.settings));
 	};
 
+	//TODO: fix extra br in inline code
 	inlineSmilesProcessor = (
 		el: HTMLElement,
 		ctx: MarkdownPostProcessorContext

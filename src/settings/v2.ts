@@ -1,3 +1,5 @@
+import { MoleculeOptions } from '../lib/core/smilesDrawerOptions';
+
 export interface ChemPluginSettingsV2 {
 	version: string;
 	darkTheme: string;
@@ -13,7 +15,7 @@ export interface ChemPluginSettingsV2 {
 	dataview: boolean;
 	inlineSmiles: boolean;
 	inlineSmilesPrefix: string;
-	options: object;
+	options: Partial<MoleculeOptions>;
 }
 export const DEFAULT_SETTINGS_V2: ChemPluginSettingsV2 = {
 	version: 'v2',

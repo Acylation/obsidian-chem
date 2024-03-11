@@ -6,6 +6,9 @@
             },
             "dataview": {
                 "title": "Dataview plugin is missing or disabled."
+            },
+            "rdkit": {
+                "title": "RDKit failed to parse the SMILES."
             }
         },
         "menus": {
@@ -48,6 +51,10 @@
             },
             "advanced": {
                 "title": "Advanced",
+                "core": {
+                    "name": "Core configuration",
+                    "description": "Select render core."
+                },
                 "compact-drawing": {
                     "name": "Compact drawing",
                     "description": "Linearize simple structures and functional groups."

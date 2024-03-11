@@ -24,7 +24,10 @@ const migrate_1_3 = (v1: ChemPluginSettingsV1): ChemPluginSettingsV3 => {
 		darkTheme: v1.darkTheme,
 		lightTheme: v1.lightTheme,
 		sample1: v1.sample,
-		imgWidth: parseInt(v1.width),
+		commonOptions: {
+			...DEFAULT_SETTINGS_V3.commonOptions,
+			unifiedWidth: parseInt(v1.width),
+		},
 	};
 };
 
@@ -36,7 +39,6 @@ const migrate_2_3 = (v2: ChemPluginSettingsV2): ChemPluginSettingsV3 => {
 		lightTheme: v2.lightTheme,
 		sample1: v2.sample1,
 		sample2: v2.sample2,
-		imgWidth: v2.imgWidth,
 		copy: {
 			scale: v2.copy.scale,
 			transparent: v2.copy.transparent,
@@ -45,9 +47,20 @@ const migrate_2_3 = (v2: ChemPluginSettingsV2): ChemPluginSettingsV3 => {
 		dataview: v2.dataview,
 		inlineSmiles: v2.inlineSmiles,
 		inlineSmilesPrefix: v2.inlineSmilesPrefix,
+		commonOptions: {
+			width: v2.options.width,
+			scale: v2.options.scale,
+			unifiedWidth: v2.imgWidth,
+			compactDrawing: v2.options.compactDrawing,
+			explicitHydrogens: v2.options.explicitHydrogens,
+			explicitMethyl: v2.options.terminalCarbons,
+		},
 		smilesDrawerOptions: {
+			...DEFAULT_SETTINGS_V3.smilesDrawerOptions,
 			moleculeOptions: v2.options,
-			reactionOptions: {},
+		},
+		rdkitOptions: {
+			explicitMethyl: v2.options.terminalCarbons,
 		},
 	};
 };
@@ -57,7 +70,7 @@ const migrate_3_3 = (draft: ChemPluginSettingsV3): ChemPluginSettingsV3 => {
 };
 
 export const migrateSettings = (draft: any): ChemPluginSettingsV3 => {
-	if (Object.keys(draft).length === 0) return DEFAULT_SETTINGS;
+	if (!draft || Object.keys(draft).length === 0) return DEFAULT_SETTINGS;
 	if (!('version' in draft)) return migrate_1_3(draft); // v1
 	else if (draft.version === 'v2') return migrate_2_3(draft);
 	else if (draft.version === 'v3') return migrate_3_3(draft); // current
