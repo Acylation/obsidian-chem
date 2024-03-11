@@ -4,7 +4,7 @@
 
 ## 设计原则
 
-本插件计划提供的功能需要至少满足下列条件中的一条：
+本插件计划提供的功能需要满足下列条件中的至少一条：
 
 - 助力化学科研笔记，如实验记录、文献阅读笔记、论文大纲撰写等
 - 帮助构建与常用化学工具紧密协作的工作流
@@ -23,6 +23,8 @@
 - 本仓库提供了 issue 模板，请按照模板指引填写，以提供必要的内容
 - 为您需要的功能点赞👍！投票人数更多的功能请求将被优先考虑
 
+同样欢迎通过 issue 咨询插件使用问题，以及展示您的使用样例！
+
 ## 提交 PR
 
 ### 注意事项
@@ -37,7 +39,7 @@
 cd [你的工作文件夹]
 ```
 
-> **Note**
+> [!Note]
 > 建议使用一个开发 vault 的配置文件夹作为本插件的工作文件夹。例如 `.obsidian\plugins\)`.
 
 ```cmd
@@ -45,7 +47,7 @@ git clone https://github.com/Acylation/obsidian-chem.git chem
 cd chem
 ```
 
-> **Note**  
+> [!Note]
 > 本插件的 id 是 `chem` 而不是 `obsidian-chem`
 
 ### Install dependencies
@@ -60,7 +62,7 @@ npm install
 npm run dev
 ```
 
-> **Note**  
+> [!Note]  
 > 该命令执行后，将监听源代码的更改，并在保存更改时自动编译出一个新版的`main.js`  
 > 下载并启用 [Hot-Reload](https://github.com/pjeby/hot-reload) 插件以获得流畅的开发体验  
 
@@ -81,10 +83,5 @@ npm run build
 - 代码中的注释仅用于解释特殊代码行为、声明并链接引用/复制的代码以及概述函数/模块的功能
 - 需要针对特定代码提出疑问、提供建议等，请在提交 PR 后使用 GitHub 的 code review 功能
 - 您提交的PR将在审核后被合并，或被要求修改
-
-## 仍有疑问?
-
-- 如果您有任何疑问，或需要帮助，请在本仓库下的 [Discussions](https://github.com/Acylation/obsidian-chem/discussions) 栏目中发帖询问
-- 若您希望展示您的使用案例，也欢迎前往 [Discussions](https://github.com/Acylation/obsidian-chem/discussions) 栏目
 
 感谢您成为本项目的一份子！🙌
