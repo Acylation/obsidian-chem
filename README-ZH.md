@@ -2,13 +2,15 @@
 
 ![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22chem%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)
 
+![Powered by RDKit](https://img.shields.io/badge/Powered%20by-RDKit-3838ff.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAFVBMVEXc3NwUFP8UPP9kZP+MjP+0tP////9ZXZotAAAAAXRSTlMAQObYZgAAAAFiS0dEBmFmuH0AAAAHdElNRQfmAwsPGi+MyC9RAAAAQElEQVQI12NgQABGQUEBMENISUkRLKBsbGwEEhIyBgJFsICLC0iIUdnExcUZwnANQWfApKCK4doRBsKtQFgKAQC5Ww1JEHSEkAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wMy0xMVQxNToyNjo0NyswMDowMDzr2J4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDMtMTFUMTU6MjY6NDcrMDA6MDBNtmAiAAAAAElFTkSuQmCC)
+
 [English](README.md) | [简体中文](README-ZH.md)
 
-**Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)）
+**Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) 与 [RDKit.js](https://github.com/rdkit/rdkit-js)）
 
 > [!Note]
-> 最新插件版本: 0.3.0  
-> 文档版本: 0.3.0  
+> 最新插件版本: 0.4.0  
+> 文档版本: 0.4.0  
 
 ## 功能介绍
 
@@ -69,6 +71,9 @@ SMILES 使用 ASCII 字符串表示化学结构的特性与 Obsidian 的纯文�
 1. 在本仓库的最新 [release](https://github.com/Acylation/obsidian-chem/releases/latest) 页面中下载 `main.js`，`style.css` 和 `manifest.json` 三个文件，或者下载压缩包后解压
 2. 将上述文件复制到您本地的笔记库的插件路径，如 `[yourvault]/.obsidian/plugins/chem/`。您可能需要自行新建 `chem` 这个文件夹
 3. 打开/重启 Obsidian 或刷新插件列表，您将看到 `Chem` 插件，点击启用，安装完成！
+
+> [!Note]
+> 若您希望使用 `RDKit.js` 作为渲染器，插件会访问 [release](https://github.com/Acylation/obsidian-chem/releases/latest) 页面，尝试下载 `RDKit_minimal` 和 `RDKit_minimal.wasm` 两个文件。若您无法连接到 GitHub，请在 [release](https://github.com/Acylation/obsidian-chem/releases/latest) 页面中手动下载它们，并放在 `[yourvault]/.obsidian/plugins/chem/rdkit/` 路径下，以供插件识别、加载
 
 ## 插件定位
 
