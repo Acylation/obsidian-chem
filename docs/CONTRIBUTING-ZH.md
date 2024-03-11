@@ -50,13 +50,13 @@ cd chem
 > [!Note]
 > 本插件的 id 是 `chem` 而不是 `obsidian-chem`
 
-### Install dependencies
+### 安装依赖
 
 ```cmd
 npm install
 ```
 
-### Developing
+### 进行开发
 
 ```cmd
 npm run dev
