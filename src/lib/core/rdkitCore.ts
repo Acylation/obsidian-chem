@@ -132,6 +132,10 @@ const loadRDKit = async () => {
 	const assetPath = normalizePath(
 		path.join(app.vault.configDir, 'plugins', 'chem', 'rdkit')
 	);
+	if (!(await app.vault.adapter.exists(assetPath))) {
+		console.log(assetPath);
+		await app.vault.adapter.mkdir(assetPath);
+	}
 
 	const jsPath = path.join(assetPath, 'RDKit_minimal.js');
 	await checkOrDownload('RDKit_minimal.js');
@@ -166,7 +170,7 @@ const fetchAsset = async (target: string, localPath: string) => {
 	res = requestUrl(
 		`https://api.github.com/repos/acylation/obsidian-chem/releases/tags/${
 			app.plugins.getPlugin('chem')?.manifest.version ?? '0.4.0'
-		}}`
+		}`
 	);
 	data = await res.json;
 	const asset = data.assets.find((v: any) => v.name == target);
