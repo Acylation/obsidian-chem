@@ -8,7 +8,13 @@ import { clearDataview, getDataview } from 'src/global/dataview';
 
 import { LivePreview } from './LivePreview';
 
-import { App, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
+import {
+	App,
+	Platform,
+	PluginSettingTab,
+	Setting,
+	SliderComponent,
+} from 'obsidian';
 import { i18n } from 'src/lib/i18n';
 
 export class ChemSettingTab extends PluginSettingTab {
@@ -128,6 +134,7 @@ export class ChemSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName(i18n.t('settings.advanced.core.name'))
 			.setDesc(i18n.t('settings.advanced.core.description'))
+			.setDisabled(Platform.isIosApp)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
