@@ -134,13 +134,13 @@ export class ChemSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName(i18n.t('settings.advanced.core.name'))
 			.setDesc(i18n.t('settings.advanced.core.description'))
-			.setDisabled(Platform.isIosApp)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
 						rdkit: 'RDKit.js',
 						'smiles-drawer': 'Smiles Drawer',
 					})
+					.setDisabled(Platform.isIosApp)
 					.setValue(this.plugin.settings.core ?? false)
 					.onChange(async (value: 'rdkit' | 'smiles-drawer') => {
 						this.plugin.settings.core = value;
