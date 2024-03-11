@@ -2,13 +2,15 @@
 
 ![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22chem%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)
 
+![Powered by RDKit](https://img.shields.io/badge/Powered%20by-RDKit-3838ff.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAFVBMVEXc3NwUFP8UPP9kZP+MjP+0tP////9ZXZotAAAAAXRSTlMAQObYZgAAAAFiS0dEBmFmuH0AAAAHdElNRQfmAwsPGi+MyC9RAAAAQElEQVQI12NgQABGQUEBMENISUkRLKBsbGwEEhIyBgJFsICLC0iIUdnExcUZwnANQWfApKCK4doRBsKtQFgKAQC5Ww1JEHSEkAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wMy0xMVQxNToyNjo0NyswMDowMDzr2J4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDMtMTFUMTU6MjY6NDcrMDA6MDBNtmAiAAAAAElFTkSuQmCC)
+
 [简体中文](README-ZH.md) | [English](README.md)
 
-**Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer)).
+**Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) & [RDKit.js](https://github.com/rdkit/rdkit-js)).
 
 > [!Note]
-> Latest release: 0.3.0  
-> Document version: 0.3.0  
+> Latest release: 0.4.0  
+> Document version: 0.4.0  
 
 ## Features & Usage
 
@@ -72,6 +74,9 @@ You can also follow the steps below to install the plugin manually.
 2. Copy these files to your local path `[yourvault]/.obsidian/plugins/chem/`. You may need to create the folder `chem` by yourself.
 3. Launch/restart Obsidian, or refresh the plugin list, you will see this plugin.
 4. In the plugin list, enable `Chem` and enjoy!
+
+> [!Note]
+> If you want to utilize `RDKit.js`, Chem plugin would try to fetch `RDKit_minimal` and `RDKit_minimal.wasm` files from [release](https://github.com/Acylation/obsidian-chem/releases/latest). If you have problem connecting GitHub, please download them manully and put them in the directory `[yourvault]/.obsidian/plugins/chem/rdkit/` for recognization and loading.
 
 ## Plugin Scope
 
