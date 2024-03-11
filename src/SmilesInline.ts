@@ -1,4 +1,4 @@
-/*
+/**
 	Adapted from https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/ui/lp-render.ts
 	Refered to https://github.com/blacksmithgu/obsidian-dataview/pull/1247
 	More upstream from https://github.com/artisticat1/obsidian-latex-suite/blob/main/src/editor_extensions/conceal.ts
@@ -14,13 +14,13 @@ import {
 } from '@codemirror/view';
 import { EditorSelection, Range } from '@codemirror/state';
 import { syntaxTree, tokenClassNodeProp } from '@codemirror/language';
-import { ChemPluginSettings } from './settings/base';
-
-import { Component, editorInfoField, editorLivePreviewField } from 'obsidian';
 import { SyntaxNode } from '@lezer/common';
 
-import { i18n } from './lib/i18n';
-import { gDrawer } from './global/chemCore';
+import { gRenderCore } from './global/chemCore';
+import { ChemPluginSettings } from './settings/base';
+import { getCurrentTheme } from './lib/themes/getCurrentTheme';
+
+import { Component, editorInfoField, editorLivePreviewField } from 'obsidian';
 
 function selectionAndRangeOverlap(
 	selection: EditorSelection,
@@ -52,7 +52,6 @@ class InlineWidget extends WidgetType {
 		return this.el;
 	}
 
-	// TODO: adjust this behavior
 	/* Make queries only editable when shift is pressed (or navigated inside with the keyboard
 	 * or the mouse is placed at the end, but that is always possible regardless of this method).
 	 * Mostly useful for links, and makes results selectable.
@@ -80,40 +79,20 @@ class InlineWidget extends WidgetType {
 	}
 }
 
+// TODO: update these on settings change refer to main.ts
 export function inlinePlugin(settings: ChemPluginSettings) {
-	const renderCell = (source: string, target: HTMLElement, theme: string) => {
-		const svg = target.createSvg('svg');
-		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-		svg.setAttribute('data-smiles', source);
+	const renderCell = async (
+		source: string,
+		target: HTMLElement,
+		theme?: string
+	) => {
+		const svg = await gRenderCore.draw(source, theme);
+		target.appendChild(svg);
 
-		const errorCb = (
-			error: object & { name: string; message: string },
-			container: HTMLDivElement
-		) => {
-			container
-				.createDiv('error-source')
-				.setText(i18n.t('errors.source.title', { source }));
-			container.createEl('br');
-			const info = container.createEl('details');
-			info.createEl('summary').setText(error.name);
-			info.createEl('div').setText(error.message);
-
-			container.style.wordBreak = `break-word`;
-			container.style.userSelect = `text`;
-		};
-
-		gDrawer.draw(
-			source,
-			svg,
-			theme,
-			null,
-			(error: object & { name: string; message: string }) => {
-				target.empty();
-				errorCb(error, target.createEl('div'));
-			}
-		);
-		if (settings.smilesDrawerOptions.moleculeOptions.scale == 0)
-			svg.style.width = `${settings.imgWidth.toString()}px`;
+		if (settings.commonOptions.scale == 0)
+			svg.style.width = `${
+				settings.commonOptions.unifiedWidth?.toString() ?? 300
+			}px`;
 		return svg;
 	};
 
@@ -272,31 +251,22 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 				const el = createSpan({
 					cls: ['smiles', 'chem-cell-inline', 'chem-cell'],
 				});
+
 				/* If the query result is predefined text (e.g. in the case of errors), set innerText to it.
 				 * Otherwise, pass on an empty element and fill it in later.
 				 * This is necessary because {@link InlineWidget.toDOM} is synchronous but some rendering
 				 * asynchronous.
 				 */
-
 				let code = '';
-				if (text.startsWith(settings.inlineSmilesPrefix)) {
-					if (settings.inlineSmiles) {
-						// TODO move validation forward, ensure to call native renderer when no smiles
-						code = text
-							.substring(settings.inlineSmilesPrefix.length)
-							.trim();
+				if (
+					settings.inlineSmiles &&
+					text.startsWith(settings.inlineSmilesPrefix)
+				) {
+					code = text
+						.substring(settings.inlineSmilesPrefix.length)
+						.trim();
 
-						renderCell(
-							code,
-							el.createDiv(),
-							document.body.hasClass('theme-dark') &&
-								!document.body.hasClass('theme-light')
-								? settings.darkTheme
-								: settings.lightTheme
-						);
-					}
-				} else {
-					return;
+					renderCell(code, el.createDiv(), getCurrentTheme(settings));
 				}
 
 				return Decoration.replace({

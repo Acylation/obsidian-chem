@@ -1,10 +1,11 @@
 // from https://rdkit.org/docs/cppapi/MolDraw2DHelpers_8h_source.html
 // 201 is for hydrogens when atom symbols are not being drawn.
 
-export interface RDKitTheme {
+import { RGBDecimal } from './helpers';
+
+export interface RDKitTheme extends Record<number, RGBDecimal> {
 	'-1': [number, number, number];
 	'0': [number, number, number];
-	'5'?: [number, number, number];
 	'6': [number, number, number];
 	'7': [number, number, number];
 	'8': [number, number, number];
@@ -18,7 +19,7 @@ export interface RDKitTheme {
 }
 
 export const RDKitThemes: Record<string, RDKitTheme> = {
-	default: {
+	'rdkit-default': {
 		'-1': [0, 0, 0],
 		'0': [0.1, 0.1, 0.1],
 		'6': [0.0, 0.0, 0.0],
@@ -32,7 +33,7 @@ export const RDKitThemes: Record<string, RDKitTheme> = {
 		'53': [0.63, 0.12, 0.94],
 		'201': [0.68, 0.85, 0.9],
 	},
-	avalon: {
+	'rdkit-avalon': {
 		'-1': [0, 0, 0],
 		'0': [0.1, 0.1, 0.1],
 		'6': [0.0, 0.0, 0.0],
@@ -46,7 +47,7 @@ export const RDKitThemes: Record<string, RDKitTheme> = {
 		'53': [0.247, 0.0, 0.498],
 		'201': [0.68, 0.85, 0.9],
 	},
-	cdk: {
+	'rdkit-cdk': {
 		'-1': [0, 0, 0],
 		'0': [0.1, 0.1, 0.1],
 		'6': [0.0, 0.0, 0.0],
@@ -61,7 +62,7 @@ export const RDKitThemes: Record<string, RDKitTheme> = {
 		'5': [1.0, 0.71, 0.71],
 		'201': [0.68, 0.85, 0.9],
 	},
-	dark: {
+	'rdkit-dark': {
 		'-1': [0.8, 0.8, 0.8],
 		'0': [0.9, 0.9, 0.9],
 		'6': [0.9, 0.9, 0.9],

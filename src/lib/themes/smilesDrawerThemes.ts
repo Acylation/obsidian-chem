@@ -1,4 +1,4 @@
-export interface SDTheme {
+export interface SDTheme extends Record<string, string> {
 	C: string;
 	O: string;
 	N: string;

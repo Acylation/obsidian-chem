@@ -1,11 +1,13 @@
-import { theme, themes } from './theme';
+import { convertToSDTheme } from 'src/lib/themes/theme';
+import { RDKitThemes } from 'src/lib/themes/rdkitThemes';
+import { SDTheme, SDThemes } from 'src/lib/themes/smilesDrawerThemes';
 
 // Smiles-drawer options
 // Reference: https://smilesdrawer.surge.sh/playground.html
-export interface SD_MoleculeOptions {
-	width: number;
-	height: number;
-	scale: number;
+export interface MoleculeOptions {
+	width: number; // levelup
+	height: number; // levelup
+	scale: number; // levelup
 	bondThickness: number;
 	shortBondLength: number;
 	bondSpacing: number;
@@ -27,10 +29,10 @@ export interface SD_MoleculeOptions {
 	kkMaxIteration: number;
 	kkMaxInnerIteration: number;
 	kkMaxEnergy: number;
-	themes: Record<string, theme>;
+	themes: Record<string, SDTheme>;
 }
 
-export interface SD_ReactionOptions {
+export interface ReactionOptions {
 	fontSize: number;
 	fontFamily: string; // comma separated font descriptions.
 	spacing: number;
@@ -46,12 +48,28 @@ export interface SD_ReactionOptions {
 	};
 }
 
-export interface SMILES_DRAWER_OPTIONS {
-	moleculeOptions: SD_MoleculeOptions;
-	reactionOptions: SD_ReactionOptions;
+export interface SmilesDrawerOptions {
+	moleculeOptions: Partial<MoleculeOptions>;
+	reactionOptions: Partial<ReactionOptions>;
 }
 
-export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {
+const collectThemes = () => {
+	const newThemes: Record<string, SDTheme> = {};
+	Object.keys(RDKitThemes).forEach(
+		(name) =>
+			(newThemes[name] = {
+				...SDThemes['light'], // TODO: 0.4.2 check this override
+				...convertToSDTheme(name),
+			})
+	);
+
+	return {
+		...SDThemes,
+		...newThemes,
+	};
+};
+
+export const DEFAULT_SD_OPTIONS: SmilesDrawerOptions = {
 	moleculeOptions: {
 		width: 300,
 		height: 300,
@@ -77,7 +95,7 @@ export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {
 		kkMaxIteration: 20000,
 		kkMaxInnerIteration: 50,
 		kkMaxEnergy: 1000000000,
-		themes: themes,
+		themes: collectThemes(),
 	},
 	reactionOptions: {
 		fontSize: 9,

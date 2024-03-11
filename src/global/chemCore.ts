@@ -1,26 +1,32 @@
-import SmilesDrawerCore from 'src/global/smilesDrawer';
-import RDKitCore from './rdkit';
 import { ChemPluginSettings } from 'src/settings/base';
 
-export let gDrawer: ChemCore;
+import type { ChemCore } from 'src/lib/core/ChemCore';
+import SmilesDrawerCore from '../lib/core/smilesDrawerCore';
+import RDKitCore from '../lib/core/rdkitCore';
 
-export const setCore = (
-	core: 'smiles-drawer' | 'rdkit',
-	settings: ChemPluginSettings
-) => {
-	if (core == 'smiles-drawer') gDrawer = new SmilesDrawerCore(settings);
-	if (core == 'rdkit') gDrawer = new RDKitCore(settings);
+export let gRenderCore: ChemCore;
+
+export const setCore = async (settings: ChemPluginSettings) => {
+	if (!gRenderCore || settings.core !== gRenderCore.id) {
+		if (settings.core == 'smiles-drawer')
+			gRenderCore = new SmilesDrawerCore(settings);
+		if (settings.core == 'rdkit') {
+			gRenderCore = await RDKitCore.init(settings);
+		}
+	}
+	gRenderCore.settings = settings;
 };
 
-export interface ChemCore {
-	id: string;
-	settings: ChemPluginSettings;
-	core: unknown;
+export const clearCore = () => {
+	const rdkitBundler = document.getElementById('chem-rdkit-bundler');
+	if (rdkitBundler) document.body.removeChild(rdkitBundler);
 
-	// setDrawer: () => void;
-	draw: (
-		source: string,
-		container: HTMLElement,
-		theme?: string
-	) => HTMLDivElement | SVGSVGElement;
-}
+	//@ts-ignore
+	delete window.RDKit;
+	//@ts-ignore
+	delete window.initRDKitModule;
+	//@ts-ignore
+	delete window.SmilesDrawer;
+	//@ts-ignore
+	delete window.SmiDrawer;
+};
