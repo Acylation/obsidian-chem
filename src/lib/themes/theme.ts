@@ -17,6 +17,8 @@ export const themeList = {
 	cyberpunk: 'Cyberpunk',
 	gruvbox: 'Gruvbox',
 	'gruvbox-dark': 'Gruvbox Dark',
+	'catppuccin-light': 'Catppuccin Latte',
+	'catppuccin-dark': 'Catppuccin Mocha',
 
 	// from RDKit
 	'rdkit-default': 'Light (RDKit)',
