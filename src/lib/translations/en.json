@@ -101,6 +101,13 @@
                     "name": "Inline SMILES Prefix",
                     "description": "The prefix to inline SMILES."
                 }
+            },
+            "modals": {
+                "core-fallback": {
+                    "title": "Switch core failed",
+                    "confirm": "Confirm",
+                    "message": "Failed to switch to the target package, and will fallback to the default Smiles Drawer core."
+                }
             }
         }
     }

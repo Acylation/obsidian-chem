@@ -1,21 +1,18 @@
 import ChemPlugin from '../main';
 import { DEFAULT_SETTINGS } from './base';
 import { themeList } from '../lib/themes/theme';
-
-import { setCore } from 'src/global/chemCore';
+import {
+	setCore,
+	updateCoreSettings,
+	setFallbackCore,
+} from 'src/global/chemCore';
 import { refreshBlocks } from 'src/global/blocks';
 import { clearDataview, getDataview } from 'src/global/dataview';
 
-import { LivePreview } from './LivePreview';
-
-import {
-	App,
-	Platform,
-	PluginSettingTab,
-	Setting,
-	SliderComponent,
-} from 'obsidian';
+import { App, PluginSettingTab, Setting, SliderComponent } from 'obsidian';
 import { i18n } from 'src/lib/i18n';
+import { LivePreview } from './LivePreview';
+import { CoreFallbackModal } from '../lib/core/coreFallbackModal';
 
 export class ChemSettingTab extends PluginSettingTab {
 	plugin: ChemPlugin;
@@ -140,12 +137,22 @@ export class ChemSettingTab extends PluginSettingTab {
 						rdkit: 'RDKit.js',
 						'smiles-drawer': 'Smiles Drawer',
 					})
-					.setDisabled(Platform.isIosApp)
 					.setValue(this.plugin.settings.core ?? false)
 					.onChange(async (value: 'rdkit' | 'smiles-drawer') => {
 						this.plugin.settings.core = value;
 						await this.plugin.saveSettings();
-						await this.updateCore();
+						await setCore(
+							this.plugin.settings,
+							async (error: string) => {
+								new CoreFallbackModal(app, error, async () => {
+									dropdown.setValue('smiles-drawer');
+									this.plugin.settings.core = 'smiles-drawer';
+									await this.plugin.saveSettings();
+									setFallbackCore(this.plugin.settings);
+									onSettingsChange();
+								}).open();
+							}
+						);
 						onSettingsChange();
 					})
 			);
@@ -379,5 +386,5 @@ export class ChemSettingTab extends PluginSettingTab {
 		refreshBlocks();
 	}
 
-	updateCore = async () => await setCore(this.plugin.settings);
+	updateCore = () => updateCoreSettings(this.plugin.settings);
 }

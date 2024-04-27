@@ -5,10 +5,11 @@ import { ChemSettingTab } from './settings/SettingTab';
 import { SmilesBlock } from './SmilesBlock';
 import { inlinePlugin } from './SmilesInline';
 
-import { setCore, clearCore } from './global/chemCore';
+import { setCore, clearCore, setFallbackCore } from './global/chemCore';
 import { setBlocks, clearBlocks } from './global/blocks';
 import { getDataview, clearDataview } from './global/dataview';
 import { setObserver, detachObserver } from './lib/themes/themeObserver';
+import { CoreFallbackModal } from './lib/core/coreFallbackModal';
 
 export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
@@ -19,7 +20,13 @@ export default class ChemPlugin extends Plugin {
 		// initialize global variables
 		setBlocks();
 		setObserver();
-		await setCore(this.settings);
+		setCore(this.settings, (error: string) => {
+			new CoreFallbackModal(this.app, error, async () => {
+				this.settings.core = 'smiles-drawer';
+				await this.saveSettings();
+				await setFallbackCore(this.settings);
+			}).open();
+		});
 
 		this.addSettingTab(new ChemSettingTab({ app: this.app, plugin: this }));
 

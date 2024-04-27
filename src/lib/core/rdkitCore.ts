@@ -8,7 +8,7 @@ import { getCurrentTheme } from 'src/lib/themes/getCurrentTheme';
 
 import { normalizePath, requestUrl, Notice } from 'obsidian';
 import { i18n } from '../i18n';
-import * as path from 'path';
+import { githubAsset } from 'typings/githubAsset';
 
 export default class RDKitCore implements ChemCore {
 	id: 'rdkit';
@@ -24,7 +24,19 @@ export default class RDKitCore implements ChemCore {
 	}
 
 	static async init(settings: ChemPluginSettings) {
-		if (!window.RDKit) window.RDKit = await loadRDKit();
+		if (!window.RDKit) {
+			try {
+				window.RDKit = await loadRDKit();
+			} catch (e) {
+				try {
+					window.RDKit = await loadRDKitUnpkg();
+				} catch (e) {
+					throw Error(
+						"Initializing rdkit failed: Can't fetch resources from unpkg."
+					);
+				}
+			}
+		}
 		return new RDKitCore(settings, window.RDKit);
 	}
 
@@ -39,7 +51,7 @@ export default class RDKitCore implements ChemCore {
 			if (!rxn) return this.logError(source);
 			svgstr = await this.drawReaction(rxn);
 		} else {
-			const mol = this.core.get_mol(source);
+			const mol = this.core.get_mol(source, JSON.stringify({}));
 			if (!mol) return this.logError(source);
 
 			// https://greglandrum.github.io/rdkit-blog/posts/2024-01-11-using-abbreviations.html
@@ -119,9 +131,13 @@ export default class RDKitCore implements ChemCore {
 
 	private logError = (source: string) => {
 		const div = createDiv();
-		div.createDiv().setText(i18n.t('errors.source.title', { source }));
+		div.createDiv('error-source').setText(
+			i18n.t('errors.source.title', { source })
+		);
 		div.createEl('br');
 		div.createDiv().setText(i18n.t('errors.rdkit.title'));
+		div.style.wordBreak = `break-word`;
+		div.style.userSelect = `text`;
 		return div;
 	};
 }
@@ -130,24 +146,22 @@ export default class RDKitCore implements ChemCore {
 // Initialize reference: https://github.com/rdkit/rdkit-js/tree/master/typescript
 const loadRDKit = async () => {
 	const assetPath = normalizePath(
-		path.join(app.vault.configDir, 'plugins', 'chem', 'rdkit')
+		[app.vault.configDir, 'plugins', 'chem', 'rdkit'].join('/')
 	);
 	if (!(await app.vault.adapter.exists(assetPath))) {
-		console.log(assetPath);
 		await app.vault.adapter.mkdir(assetPath);
 	}
 
-	const jsPath = path.join(assetPath, 'RDKit_minimal.js');
+	const jsPath = [assetPath, 'RDKit_minimal.js'].join('/');
 	await checkOrDownload('RDKit_minimal.js');
 
-	const wasmPath = path.join(assetPath, 'RDKit_minimal.wasm');
+	const wasmPath = [assetPath, 'RDKit_minimal.wasm'].join('/');
 	await checkOrDownload('RDKit_minimal.wasm');
 
 	const rdkitBundler = document.body.createEl('script');
 	rdkitBundler.type = 'text/javascript';
 	rdkitBundler.id = 'chem-rdkit-bundler';
 	rdkitBundler.innerHTML = await app.vault.adapter.read(jsPath);
-	// backup rdkitBundler.src = 'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js'
 
 	const getWasmURL = async () =>
 		URL.createObjectURL(
@@ -155,7 +169,7 @@ const loadRDKit = async () => {
 				type: 'application/wasm',
 			})
 		);
-	const url = await getWasmURL(); //backup: https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.wasm
+	const url = await getWasmURL();
 	const RDKit = await window.initRDKitModule({
 		locateFile: () => url,
 	});
@@ -163,32 +177,42 @@ const loadRDKit = async () => {
 	return RDKit;
 };
 
-const fetchAsset = async (target: string, localPath: string) => {
-	let res;
-	let data;
+// See https://github.com/rdkit/rdkit-js/issues/160
+const loadRDKitUnpkg = async () => {
+	const rdkitBundler = document.body.createEl('script');
+	new Notice('Fetching RDKit.js from unpkg...');
 
-	res = requestUrl(
+	rdkitBundler.innerHTML = await requestUrl(
+		'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js'
+	).text;
+
+	const RDKit = await window.initRDKitModule({
+		locateFile: () =>
+			'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.wasm',
+	});
+	new Notice('RDKit.js has been successfully loaded.');
+	return RDKit;
+};
+
+const fetchAsset = async (target: string, localPath: string) => {
+	const assetInfo = await requestUrl(
 		`https://api.github.com/repos/acylation/obsidian-chem/releases/tags/${
 			app.plugins.getPlugin('chem')?.manifest.version ?? '0.4.0'
 		}`
-	);
-	data = await res.json;
-	const asset = data.assets.find((v: any) => v.name == target);
-	if (asset == undefined) {
-		throw 'Could not find the online asset!';
-	}
-	res = requestUrl({
+	).json;
+	const asset = assetInfo.assets.find((a: githubAsset) => a.name == target);
+	if (asset === undefined) throw Error('Could not find the online asset!');
+
+	const data = await requestUrl({
 		url: asset.url,
 		headers: { Accept: 'application/octet-stream' },
-	});
-	data = await res.arrayBuffer;
+	}).arrayBuffer;
 	await app.vault.adapter.writeBinary(localPath, data);
 };
 
-// TODO: i18n
 const checkOrDownload = async (target: string) => {
 	const assetPath = normalizePath(
-		path.join(app.vault.configDir, 'plugins', 'chem', 'rdkit', target)
+		[app.vault.configDir, 'plugins', 'chem', 'rdkit', target].join('/')
 	);
 
 	if (!(await app.vault.adapter.exists(assetPath))) {
@@ -196,11 +220,14 @@ const checkOrDownload = async (target: string) => {
 		try {
 			await fetchAsset(target, assetPath);
 			new Notice(
-				`Chem: Resource ${target} successfully downloaded!`,
+				`Chem: Resource ${target} successfully downloaded! ✔️`,
 				5000
 			);
 		} catch (error) {
-			new Notice(`Chem: Failed to fetch ${target}: ` + error);
+			new Notice(`Chem: Failed to fetch ${target}: ${error} ❌`);
+			throw Error(
+				`Failed to fetch resource ${target} from GitHub release.`
+			);
 		}
 	}
 };

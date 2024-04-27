@@ -102,6 +102,13 @@
                     "description": "行内 SMILES 的前缀。"
                 }
             }
+        },
+        "modals": {
+            "core-fallback": {
+                "title": "切换渲染器失败",
+                "confirm": "确认",
+                "message": "切换目标渲染器失败，将回退为默认渲染器 Smiles Drawer。"
+            }
         }
     }
 }
