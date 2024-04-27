@@ -7,16 +7,22 @@
 **Chem** 是一个旨在提升化学相关笔记记录体验的 [Obsidian.md](https://obsidian.md/) 插件。目前，本插件能够将您笔记中的SMILES字符串渲染为化学结构式。（基于 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) 与 [RDKit.js](https://github.com/rdkit/rdkit-js)）
 
 > [!Note]
-> 最新插件版本: 0.4.0  
-> 文档版本: 0.4.0  
+> 最新插件版本: 0.4.1  
+> 文档版本: 0.4.1  
 
 ## 功能介绍
 
-### 渲染 SMILES 字符串为化学结构式
+### 将 SMILES 字符串渲染为化学结构式
+
+#### 代码块渲染
 
 如图所示，本插件能够识别语言被标记为 `smiles` 的代码块，并将其中的 SMILES 字符串逐行转化为化学结构式。得益于 SMILES 的纯文本特性，数据能够持久保存，该功能将得到稳定支持；此外，由于 SMILES 是一个通用标准，即使本插件换用了其他化学信息学工具包，SMILES 字符串仍能够被正确解析和渲染
 
 ![渲染 SMILES 字符串](https://github.com/Acylation/obsidian-chem/assets/73122375/a9f9a440-dc66-4689-ab1a-1ef265242778)
+
+#### 行内渲染
+
+行内渲染功能可以在插件设置页中启用。具有特定前缀的代码行将被 Chem 插件识别、解析。默认的语法格式是 `$smiles=C1=CC=CC=C1`，前缀同样可以在插件设置页中调整
 
 #### 设置结构图像大小和样式主题
 
@@ -38,7 +44,7 @@
 > 本功能依赖 Dataview 插件本体，若要使用本功能，请确保您已安装并启用 Dataview 插件
 >
 > 运行 DataviewJS 需要调用 `eval()` 函数，具有一定的风险。请确保您输入/粘贴的代码是受信任的
->  
+>
 > 若您希望在启用 Dataview 查询式 (Queries) 时禁用 DataviewJS，请在 Dataview 插件设置中禁用 `Enable JavaScript Queries` 或 `Enable Inline JavaScript Queries` 选项  
 
 ## SMILES 介绍
@@ -53,9 +59,9 @@ SMILES 使用 ASCII 字符串表示化学结构的特性与 Obsidian 的纯文�
 
 ### 如何生成 SMILES 字符串？
 
- 对于简单结构，您在初步学习 SMILES 知识后即可手动输入。对于复杂结构，您可以使用 ChemDraw，[ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#)，[MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) 或 [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html) 等**结构编辑器**先行绘制，再导出 SMILES 字符串。您可以使用 [Obsidian Ketcher](https://github.com/yuleicul/obsidian-ketcher) 插件在 Obsidian 中直接绘制化学结构，并导出 SMILES 字符串。
+对于简单结构，您在初步学习 SMILES 知识后即可手动输入。对于复杂结构，您可以使用 ChemDraw，[ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#)，[MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) 或 [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html) 等**结构编辑器**先行绘制，再导出 SMILES 字符串。您可以使用 [Obsidian Ketcher](https://github.com/yuleicul/obsidian-ketcher) 插件在 Obsidian 中直接绘制化学结构，并导出 SMILES 字符串。
 
- 您也可以使用 [Open Babel](https://openbabel.org/)，[JOELib](https://sourceforge.net/projects/joelib/) 或 [Chemical Translation Service](https://cts.fiehnlab.ucdavis.edu/) 等**化学语言转换工具**/**化学数据库**，将化合物名称、CAS 号、`*.mol` 文件等转化为 SMILES 格式
+您也可以使用 [Open Babel](https://openbabel.org/)，[JOELib](https://sourceforge.net/projects/joelib/) 或 [Chemical Translation Service](https://cts.fiehnlab.ucdavis.edu/) 等**化学语言转换工具**/**化学数据库**，将化合物名称、CAS 号、`*.mol` 文件等转化为 SMILES 格式
 
 ## 安装步骤
 
@@ -105,7 +111,7 @@ SMILES 使用 ASCII 字符串表示化学结构的特性与 Obsidian 的纯文�
 
 ## 致谢
 
-本插件依赖 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) 实现 SMILES 字符串的解析以及结构式绘制的功能，导入这个包的例子来源于 [Mathpix](https://github.com/Mathpix/mathpix-markdown-it)。在此向这些杰出的工作表示感谢!
+本插件依赖 [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) 和 [RDKit.js](https://github.com/rdkit/rdkit-js) 实现 SMILES 字符串的解析以及结构式绘制的功能。[Mathpix](https://github.com/Mathpix/mathpix-markdown-it) 展示了导入 Smiles Drawer 包以及使用代码块语法的实例。向这些杰出的工作表示感谢!
 
 在整个开发过程中，官方[开发者文档](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)提供了非常详细的指引，感谢 [@marcusolsson](https://github.com/marcusolsson) 的早期非官方文档，以及对官方开发者文档整理工作的领导!
 

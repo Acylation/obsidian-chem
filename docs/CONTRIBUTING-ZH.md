@@ -40,7 +40,7 @@ cd [你的工作文件夹]
 ```
 
 > [!Note]
-> 建议使用一个开发 vault 的配置文件夹作为本插件的工作文件夹。例如 `.obsidian\plugins\)`.
+> 建议使用一个开发 vault 的配置文件夹作为本插件的工作文件夹。例如 `.obsidian\plugins\`.
 
 ```cmd
 git clone https://github.com/Acylation/obsidian-chem.git chem
