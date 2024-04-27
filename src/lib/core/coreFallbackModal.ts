@@ -12,7 +12,7 @@ export class CoreFallbackModal extends Modal {
 	}
 
 	onOpen() {
-		let { contentEl } = this;
+		const { contentEl } = this;
 
 		contentEl.createEl('h3', {
 			text: i18n.t('modals.core-fallback.title'),
