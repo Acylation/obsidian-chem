@@ -44,7 +44,7 @@ export class CoreFallbackModal extends Modal {
 
 	onClose() {
 		this.onConfirm();
-		let { contentEl } = this;
+		const { contentEl } = this;
 		contentEl.empty();
 	}
 }
