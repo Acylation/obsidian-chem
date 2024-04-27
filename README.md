@@ -9,18 +9,24 @@
 **Chem** is a plugin for [Obsidian.md](https://obsidian.md/) providing chemistry support. It allows you to insert chemical structures into your notes through code blocks containing SMILES strings (powered by [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) & [RDKit.js](https://github.com/rdkit/rdkit-js)).
 
 > [!Note]
-> Latest release: 0.4.0  
-> Document version: 0.4.0  
+> Latest release: 0.4.1  
+> Document version: 0.4.1  
 
 ## Features & Usage
 
 ### Render SMILES Strings as Chemical Structures
+
+#### Render via Code Block
 
 You can use this plugin to render chemical structures from SMILES strings. Just type the SMILES strings in a code block with `smiles` as the language. Each line should contain only one string.
 
 The data is stored as plain text, so you won’t lose it. The renderer will always work, even if the plugin changes its cheminfo core.
 
 ![Render SMILES strings into structures](https://github.com/Acylation/obsidian-chem/assets/73122375/a9f9a440-dc66-4689-ab1a-1ef265242778)
+
+#### Inline Render
+
+You can enable inline render feature in plugin settings. Code lines with specified prefix would be recognized. The default syntax is `$smiles=C1=CC=CC=C1` and the prefix is configurable.
 
 #### Global Sizing and Theming
 
@@ -57,9 +63,9 @@ Using SMILES strings to represent molecules is easier and more widely supported 
 
 ### How to Generate SMILES Strings?
 
- For simple structures, you can type them in manually. However, for more complex ones, you may want to use **structure editors**, such as ChemDraw, [ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#), [MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) and [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html). There's a Ketcher editor integration plugin [Obsidian Ketcher](https://github.com/yuleicul/obsidian-ketcher) available right in Obsidian.
+For simple structures, you can type them in manually. However, for more complex ones, you may want to use **structure editors**, such as ChemDraw, [ChemDrawJS](https://chemdrawdirect.perkinelmer.cloud/js/sample/index.html#), [MarvinJS](https://marvinjs-demo.chemaxon.com/latest/index.html) and [Ketcher](https://lifescience.opensource.epam.com/KetcherDemoSA/index.html). There's a Ketcher editor integration plugin [Obsidian Ketcher](https://github.com/yuleicul/obsidian-ketcher) available right in Obsidian.
 
- Also, you can use **translators** like [Open Babel](https://openbabel.org/), [JOELib](https://sourceforge.net/projects/joelib/) and the [Chemical Translation Service](https://cts.fiehnlab.ucdavis.edu/) to convert chemical names, CAS numbers and `*.mol` files into SMILES strings.
+Also, you can use **translators** like [Open Babel](https://openbabel.org/), [JOELib](https://sourceforge.net/projects/joelib/) and the [Chemical Translation Service](https://cts.fiehnlab.ucdavis.edu/) to convert chemical names, CAS numbers and `*.mol` files into SMILES strings.
 
 ## Installation
 
@@ -105,9 +111,9 @@ Check out the [roadmap](https://github.com/users/Acylation/projects/6) to see wh
 
 [Chemical Structure Renderer](https://github.com/xaya1001/obsidian-Chemical-Structure-Renderer) is a similar plugin of `Chem`, which uses [Ketcher](https://github.com/epam/ketcher), [Indigo](https://github.com/epam/Indigo) online service for parsing and rendering, while `Chem` plugin integrates standalone packages and runs locally.
 
-## Acknowledgement
+## Credits
 
-The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) as the parsing and drawing core, and uses [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as an example on how to integrate the package. Thank you very much!
+The plugin relies on [Smiles Drawer](https://github.com/reymond-group/smilesDrawer) and [RDKit.js](https://github.com/rdkit/rdkit-js) as the parsing and drawing cores, and takes [Mathpix](https://github.com/Mathpix/mathpix-markdown-it) as a good example on integrating Smiles Drawer and use codeblock to decorate the note. Thank you very much!
 
 During the whole process of development, I found the [developer documentation](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) super helpful. Massive thanks to [@marcusolsson](https://github.com/marcusolsson) for leading this project!
 
