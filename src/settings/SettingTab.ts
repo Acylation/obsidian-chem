@@ -46,8 +46,8 @@ export class ChemSettingTab extends PluginSettingTab {
 			});
 
 		const scaleSlider = new SliderComponent(scaleSetting.controlEl)
-			.setValue(this.plugin.settings.commonOptions.scale ?? 1.0)
 			.setLimits(0.0, 2, 0.01)
+			.setValue(this.plugin.settings.commonOptions.scale ?? 1.0)
 			.setDynamicTooltip()
 			.onChange(async (value) => {
 				this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale =
