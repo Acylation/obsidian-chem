@@ -6,6 +6,9 @@
             },
             "dataview": {
                 "title": "Dataview plugin is missing or disabled."
+            },
+            "rdkit": {
+                "title": "RDKit failed to parse the SMILES."
             }
         },
         "menus": {
@@ -48,6 +51,10 @@
             },
             "advanced": {
                 "title": "Advanced",
+                "core": {
+                    "name": "Core configuration",
+                    "description": "Select render core."
+                },
                 "compact-drawing": {
                     "name": "Compact drawing",
                     "description": "Linearize simple structures and functional groups."
@@ -55,6 +62,10 @@
                 "terminal-carbons": {
                     "name": "Show terminal carbons",
                     "description": "Explictly draw terminal carbons like methyl or methylene."
+                },
+                "explicit-hydrogen": {
+                    "name": "Explicit hydrogen",
+                    "description": "Enable to show explicit hydrogen."
                 }
             },
             "copy": {
@@ -76,8 +87,26 @@
             "dataview": {
                 "title": "Dataview",
                 "enable": {
-                    "name": "Inline Dataview",
-                    "description": "Recognize and get return values from Dataview queries and DataviewJS lines as rendering source according to Dataview settings."
+                    "name": "Parse Dataview",
+                    "description": "In smiles block, recognize and get return values from Dataview queries and DataviewJS lines as rendering source according to Dataview settings."
+                }
+            },
+            "inline": {
+                "title": "Inline SMILES",
+                "enable": {
+                    "name": "Enable inline SMILES",
+                    "description": "Render SMILES code lines."
+                },
+                "prefix": {
+                    "name": "Inline SMILES Prefix",
+                    "description": "The prefix to inline SMILES."
+                }
+            },
+            "modals": {
+                "core-fallback": {
+                    "title": "Switch core failed",
+                    "confirm": "Confirm",
+                    "message": "Failed to switch to the target package, and will fallback to the default Smiles Drawer core."
                 }
             }
         }

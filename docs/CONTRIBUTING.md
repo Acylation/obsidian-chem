@@ -23,6 +23,8 @@ As an Obsidian plugin, this project adheres to the following principles:
 - When creating a new issue, please follow the templates to provide necessary information.
 - You can also vote for existing issues by adding a 👍 reaction to show your support.
 
+You are also welcome to raise questions that you came across when using this plugin, or provide awesome showcases through issue!
+
 ## How to submit a pull request
 
 ### General
@@ -37,7 +39,7 @@ As an Obsidian plugin, this project adheres to the following principles:
 cd [your-working-folder]
 ```
 
-> **Note**
+> [!Note]
 > It is recommended to use the config directory of a dev vault (e.g., .obsidian\plugins\\) as the working directory.
 
 ```cmd
@@ -45,7 +47,7 @@ git clone https://github.com/Acylation/obsidian-chem.git chem
 cd chem
 ```
 
-> **Note**  
+> [!Note]
 > The plugin id in the manifest is `chem` rather than `obsidian-chem`.  
 
 ### Install dependencies
@@ -60,7 +62,7 @@ npm install
 npm run dev
 ```
 
-> **Note**  
+> [!Note]
 > This command will listen for changes to the source code and provide a new build when you save changes.  
 > Download and enable the [Hot-Reload](https://github.com/pjeby/hot-reload) plugin to experience a smooth debugging workflow.  
 
@@ -81,9 +83,5 @@ npm run build
 - In source code, comments should only be used to explain unidiomatic code, declare and provide links to copied code, and describe the feature of a function or module.
 - For raising questions, providing suggestions, or explaining a specific line of code, please use GitHub’s code review feature.
 - Please wait for a review before your pull request being merged.
-
-## Still have questions?
-
-- If you still have any questions or need help with using or developing this project, please join our [Discussions](https://github.com/Acylation/obsidian-chem/discussions) right here in the repo.
 
 Thank you for being a part of this project! 🙌

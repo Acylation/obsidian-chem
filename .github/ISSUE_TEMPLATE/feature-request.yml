@@ -13,5 +13,3 @@ body:
       id: rationale
       attributes:
           label: Why is this needed?
-      validations:
-          required: true

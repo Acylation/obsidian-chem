@@ -19,12 +19,14 @@ export const removeBlock = (block: SmilesBlock) => {
 // however, we only want to see the instances refreshed when the file is activated
 // file info is in the ctx of the block, and activate attribute is in the leaf metadata
 export const refreshBlocks = () => {
+	if (!gBlocks) return;
 	gBlocks.forEach((block) => {
 		block.render();
 	});
 };
 
 export const clearBlocks = () => {
+	if (!gBlocks) return;
 	gBlocks.forEach((block) => {
 		removeBlock(block);
 	});

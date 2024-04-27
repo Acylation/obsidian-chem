@@ -6,14 +6,12 @@ export { isPluginEnabled } from 'obsidian-dataview';
 
 export const getDataview = () => {
 	if (isPluginEnabled(app)) {
-		//@ts-ignore
-		gDataview = app.plugins.plugins.dataview;
+		gDataview = app.plugins.getPlugin('dataview');
 	} else {
-		gDataview;
 		throw new Error(i18n.t('errors.dataview.title'));
 	}
 };
 
 export const clearDataview = () => {
-	gDataview = {};
+	gDataview = null;
 };

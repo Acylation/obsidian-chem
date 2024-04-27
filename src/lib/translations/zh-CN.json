@@ -6,6 +6,9 @@
             },
             "dataview": {
                 "title": "Dataview 插件未启用。"
+            },
+            "rdkit": {
+                "title": "RDKit 无法识别该 SMILES 字符串"
             }
         },
         "menus": {
@@ -18,7 +21,7 @@
         "settings": {
             "scale": {
                 "name": "图像比例",
-                "description": "调整全局图像比例。该值为 0 时，所有图像将具有相同的大小；若非 0，所有结构将具有相同的键长，但图像尺寸将随结构式的大小变化。",
+                "description": "调整全局图像比例。该值为 0 时，所有图像将具有相同的大小；若非 0，所有结构将具有相同的键长，图像尺寸将适应结构式的大小。",
                 "tooltip": "恢复默认"
             },
             "unify-bond-length": {
@@ -48,6 +51,10 @@
             },
             "advanced": {
                 "title": "高级",
+                "core": {
+                    "name": "渲染器",
+                    "description": "选择渲染器。"
+                },
                 "compact-drawing": {
                     "name": "紧凑绘制",
                     "description": "简化羧基、硝基、磺酸基等简单官能团的绘制。"
@@ -55,10 +62,14 @@
                 "terminal-carbons": {
                     "name": "端基碳",
                     "description": "显式绘出末端甲基、亚甲基等端基碳。"
+                },
+                "explicit-hydrogen": {
+                    "name": "显式氢",
+                    "description": "启用以绘制显式氢原子。"
                 }
             },
             "copy": {
-                "title": "复制",
+                "title": "复制选项",
                 "scale": {
                     "name": "缩放比例",
                     "description": "调整复制所得图像的缩放比例，更大的比例对应更高的分辨率。"
@@ -69,16 +80,34 @@
                 },
                 "theme": {
                     "name": "颜色主题",
-                    "description": "设置复制所得图像的颜色主题。",
+                    "description": "设置复制所得图像的颜色主题",
                     "default": "跟随 Obsidian"
                 }
             },
             "dataview": {
-                "title": "Dataview",
+                "title": "Dataview 集成",
                 "enable": {
                     "name": "解析 Dataview",
                     "description": "根据 Dataview 插件设置，识别并执行 smiles 代码块中的 Dataview 查询式 (Queries) 和 DataviewJS 代码，依查询结果渲染结构。"
                 }
+            },
+            "inline": {
+                "title": "行内 SMILES 渲染",
+                "enable": {
+                    "name": "启用行内 SMILES",
+                    "description": "渲染行内代码形式的 SMILES 字符串。"
+                },
+                "prefix": {
+                    "name": "前缀",
+                    "description": "行内 SMILES 的前缀。"
+                }
+            }
+        },
+        "modals": {
+            "core-fallback": {
+                "title": "切换渲染器失败",
+                "confirm": "确认",
+                "message": "切换目标渲染器失败，将回退为默认渲染器 Smiles Drawer。"
             }
         }
     }

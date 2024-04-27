@@ -1,355 +1,78 @@
-// Global consts
-export const SAMPLE_SMILES_1 = 'OC(=O)C(C)=CC1=CC=CC=C1';
-export const SAMPLE_SMILES_2 =
-	'OC(C(=O)O[C@H]1C[N+]2(CCCOC3=CC=CC=C3)CCC1CC2)(C1=CC=CS1)C1=CC=CS1';
-export const SETTINGS_VERSION = 'v2';
+import { ChemPluginSettingsV1, DEFAULT_SETTINGS_V1 } from './v1';
+import { ChemPluginSettingsV2, DEFAULT_SETTINGS_V2 } from './v2';
+import { ChemPluginSettingsV3, DEFAULT_SETTINGS_V3 } from './v3';
 
-// Plugin settings
-export interface ChemPluginSettings {
-	version: string;
-	darkTheme: string;
-	lightTheme: string;
-	sample1: string;
-	sample2: string;
-	imgWidth: number;
-	copy: {
-		scale: number;
-		transparent: boolean;
-		theme: string;
+export type ChemPluginSettings = ChemPluginSettingsV3;
+export const DEFAULT_SETTINGS = DEFAULT_SETTINGS_V3;
+export const SETTINGS_VERSION = 'v3';
+
+// const migrate_1_2 = (v1: ChemPluginSettingsV1): ChemPluginSettingsV2 => {
+// 	v1 = { ...DEFAULT_SETTINGS_V1, ...v1 };
+// 	return {
+// 		...DEFAULT_SETTINGS_V2,
+// 		darkTheme: v1.darkTheme,
+// 		lightTheme: v1.lightTheme,
+// 		sample1: v1.sample,
+// 		imgWidth: parseInt(v1.width),
+// 	};
+// };
+
+const migrate_1_3 = (v1: ChemPluginSettingsV1): ChemPluginSettingsV3 => {
+	v1 = { ...DEFAULT_SETTINGS_V1, ...v1 };
+	return {
+		...DEFAULT_SETTINGS_V3,
+		darkTheme: v1.darkTheme,
+		lightTheme: v1.lightTheme,
+		sample1: v1.sample,
+		commonOptions: {
+			...DEFAULT_SETTINGS_V3.commonOptions,
+			unifiedWidth: parseInt(v1.width),
+		},
 	};
-	dataview: boolean;
-	options: Partial<SMILES_DRAWER_OPTIONS>;
-}
-
-export const DEFAULT_SETTINGS: ChemPluginSettings = {
-	version: SETTINGS_VERSION,
-	darkTheme: 'dark',
-	lightTheme: 'light',
-	sample1: SAMPLE_SMILES_1,
-	sample2: SAMPLE_SMILES_2,
-	imgWidth: 300,
-	copy: {
-		scale: 2,
-		transparent: true,
-		theme: 'default',
-	},
-	dataview: false,
-	options: {},
 };
 
-// Smiles-drawer options
-// Reference: https://smilesdrawer.surge.sh/playground.html
-export interface SMILES_DRAWER_OPTIONS {
-	width: number;
-	height: number;
-	scale: number;
-	bondThickness: number;
-	shortBondLength: number;
-	bondSpacing: number;
-	atomVisualization: 'default' | 'balls' | 'allballs';
-	isomeric: boolean;
-	debug: boolean;
-	terminalCarbons: boolean;
-	explicitHydrogens: boolean;
-	overlapSensitivity: number;
-	overlapResolutionIterations: number;
-	compactDrawing: boolean;
-	fontFamily: string;
-	fontSizeLarge: number;
-	fontSizeSmall: number;
-	padding: number;
-	experimentalSSSR: boolean;
-	kkThreshold: number;
-	kkInnerThreshold: number;
-	kkMaxIteration: number;
-	kkMaxInnerIteration: number;
-	kkMaxEnergy: number;
-	themes: {
-		[key: string]: {
-			C: string;
-			O: string;
-			N: string;
-			F: string;
-			CL: string;
-			BR: string;
-			I: string;
-			P: string;
-			S: string;
-			B: string;
-			SI: string;
-			H: string;
-			BACKGROUND: string;
-		};
+const migrate_2_3 = (v2: ChemPluginSettingsV2): ChemPluginSettingsV3 => {
+	v2 = { ...DEFAULT_SETTINGS_V2, ...v2 };
+	return {
+		...DEFAULT_SETTINGS_V3,
+		darkTheme: v2.darkTheme,
+		lightTheme: v2.lightTheme,
+		sample1: v2.sample1,
+		sample2: v2.sample2,
+		copy: {
+			scale: v2.copy.scale,
+			transparent: v2.copy.transparent,
+			theme: v2.copy.theme,
+		},
+		dataview: v2.dataview,
+		inlineSmiles: v2.inlineSmiles,
+		inlineSmilesPrefix: v2.inlineSmilesPrefix,
+		commonOptions: {
+			width: v2.options.width,
+			scale: v2.options.scale,
+			unifiedWidth: v2.imgWidth,
+			compactDrawing: v2.options.compactDrawing,
+			explicitHydrogens: v2.options.explicitHydrogens,
+			explicitMethyl: v2.options.terminalCarbons,
+		},
+		smilesDrawerOptions: {
+			...DEFAULT_SETTINGS_V3.smilesDrawerOptions,
+			moleculeOptions: v2.options,
+		},
+		rdkitOptions: {
+			explicitMethyl: v2.options.terminalCarbons,
+		},
 	};
-}
-
-export const DEFAULT_SD_OPTIONS: SMILES_DRAWER_OPTIONS = {
-	width: 300,
-	height: 300,
-	scale: 1.0,
-	bondThickness: 1,
-	shortBondLength: 0.8,
-	bondSpacing: 5.1,
-	atomVisualization: 'default',
-	isomeric: true,
-	debug: false,
-	terminalCarbons: false,
-	explicitHydrogens: true,
-	overlapSensitivity: 0.42,
-	overlapResolutionIterations: 1,
-	compactDrawing: false,
-	fontFamily: 'Arial, Helvetica, sans-serif',
-	fontSizeLarge: 11,
-	fontSizeSmall: 3,
-	padding: 2,
-	experimentalSSSR: true,
-	kkThreshold: 0.1,
-	kkInnerThreshold: 0.1,
-	kkMaxIteration: 20000,
-	kkMaxInnerIteration: 50,
-	kkMaxEnergy: 1000000000,
-	themes: {
-		dark: {
-			C: '#fff',
-			O: '#e74c3c',
-			N: '#3498db',
-			F: '#27ae60',
-			CL: '#16a085',
-			BR: '#d35400',
-			I: '#8e44ad',
-			P: '#d35400',
-			S: '#f1c40f',
-			B: '#e67e22',
-			SI: '#e67e22',
-			H: '#aaa',
-			BACKGROUND: '#141414',
-		},
-		light: {
-			C: '#222',
-			O: '#e74c3c',
-			N: '#3498db',
-			F: '#27ae60',
-			CL: '#16a085',
-			BR: '#d35400',
-			I: '#8e44ad',
-			P: '#d35400',
-			S: '#f1c40f',
-			B: '#e67e22',
-			SI: '#e67e22',
-			H: '#666',
-			BACKGROUND: '#fff',
-		},
-		oldschool: {
-			C: '#000',
-			O: '#000',
-			N: '#000',
-			F: '#000',
-			CL: '#000',
-			BR: '#000',
-			I: '#000',
-			P: '#000',
-			S: '#000',
-			B: '#000',
-			SI: '#000',
-			H: '#000',
-			BACKGROUND: '#fff',
-		},
-		'oldschool-dark': {
-			C: '#fff',
-			O: '#fff',
-			N: '#fff',
-			F: '#fff',
-			CL: '#fff',
-			BR: '#fff',
-			I: '#fff',
-			P: '#fff',
-			S: '#fff',
-			B: '#fff',
-			SI: '#fff',
-			H: '#fff',
-			BACKGROUND: '#000',
-		},
-		solarized: {
-			C: '#586e75',
-			O: '#dc322f',
-			N: '#268bd2',
-			F: '#859900',
-			CL: '#16a085',
-			BR: '#cb4b16',
-			I: '#6c71c4',
-			P: '#d33682',
-			S: '#b58900',
-			B: '#2aa198',
-			SI: '#2aa198',
-			H: '#657b83',
-			BACKGROUND: '#fff',
-		},
-		'solarized-dark': {
-			C: '#93a1a1',
-			O: '#dc322f',
-			N: '#268bd2',
-			F: '#859900',
-			CL: '#16a085',
-			BR: '#cb4b16',
-			I: '#6c71c4',
-			P: '#d33682',
-			S: '#b58900',
-			B: '#2aa198',
-			SI: '#2aa198',
-			H: '#839496',
-			BACKGROUND: '#fff',
-		},
-		matrix: {
-			C: '#678c61',
-			O: '#2fc079',
-			N: '#4f7e7e',
-			F: '#90d762',
-			CL: '#82d967',
-			BR: '#23755a',
-			I: '#409931',
-			P: '#c1ff8a',
-			S: '#faff00',
-			B: '#50b45a',
-			SI: '#409931',
-			H: '#426644',
-			BACKGROUND: '#fff',
-		},
-		github: {
-			C: '#24292f',
-			O: '#cf222e',
-			N: '#0969da',
-			F: '#2da44e',
-			CL: '#6fdd8b',
-			BR: '#bc4c00',
-			I: '#8250df',
-			P: '#bf3989',
-			S: '#d4a72c',
-			B: '#fb8f44',
-			SI: '#bc4c00',
-			H: '#57606a',
-			BACKGROUND: '#fff',
-		},
-		carbon: {
-			C: '#161616',
-			O: '#da1e28',
-			N: '#0f62fe',
-			F: '#198038',
-			CL: '#007d79',
-			BR: '#fa4d56',
-			I: '#8a3ffc',
-			P: '#ff832b',
-			S: '#f1c21b',
-			B: '#8a3800',
-			SI: '#e67e22',
-			H: '#525252',
-			BACKGROUND: '#fff',
-		},
-		cyberpunk: {
-			C: '#ea00d9',
-			O: '#ff3131',
-			N: '#0abdc6',
-			F: '#00ff9f',
-			CL: '#00fe00',
-			BR: '#fe9f20',
-			I: '#ff00ff',
-			P: '#fe7f00',
-			S: '#fcee0c',
-			B: '#ff00ff',
-			SI: '#ffffff',
-			H: '#913cb1',
-			BACKGROUND: '#fff',
-		},
-		gruvbox: {
-			C: '#665c54',
-			O: '#cc241d',
-			N: '#458588',
-			F: '#98971a',
-			CL: '#79740e',
-			BR: '#d65d0e',
-			I: '#b16286',
-			P: '#af3a03',
-			S: '#d79921',
-			B: '#689d6a',
-			SI: '#427b58',
-			H: '#7c6f64',
-			BACKGROUND: '#fbf1c7',
-		},
-		'gruvbox-dark': {
-			C: '#ebdbb2',
-			O: '#cc241d',
-			N: '#458588',
-			F: '#98971a',
-			CL: '#b8bb26',
-			BR: '#d65d0e',
-			I: '#b16286',
-			P: '#fe8019',
-			S: '#d79921',
-			B: '#8ec07c',
-			SI: '#83a598',
-			H: '#bdae93',
-			BACKGROUND: '#282828',
-		},
-		'catppuccin-dark': {
-			C: '#cdd6f4',
-			O: '#f38ba8',
-			N: '#89b4fa',
-			F: '#f9e2af',
-			CL: '#cba6f7',
-			BR: '#a6e3a1',
-			I: '#b4befe',
-			P: '#fab387',
-			S: '#f5e0dc',
-			B: '#eba0ac',
-			SI: '#89dceb',
-			H: '#94e2d5',
-			BACKGROUND: '#1e1e2e',
-		},
-		'catppuccin-light': {
-			C: '#4c4f69',
-			O: '#d20f39',
-			N: '#1e66f5',
-			F: '#df8e1d',
-			CL: '#8839ef',
-			BR: '#40a02b',
-			I: '#7287fd',
-			P: '#fe640b',
-			S: '#dc8a78',
-			B: '#e64553',
-			SI: '#04a5e5',
-			H: '#179299',
-			BACKGROUND: '#eff1f5',
-		},
-		custom: {
-			C: '#222',
-			O: '#e74c3c',
-			N: '#3498db',
-			F: '#27ae60',
-			CL: '#16a085',
-			BR: '#d35400',
-			I: '#8e44ad',
-			P: '#d35400',
-			S: '#f1c40f',
-			B: '#e67e22',
-			SI: '#e67e22',
-			H: '#666',
-			BACKGROUND: '#fff',
-		},
-	},
 };
 
-export const themeList = {
-	light: 'Light',
-	dark: 'Dark',
-	oldschool: 'Oldschool',
-	'oldschool-dark': 'Oldschool Dark',
-	solarized: 'Solarized',
-	'solarized-dark': 'Solarized Dark',
-	matrix: 'Matrix',
-	github: 'GitHub',
-	carbon: 'Carbon',
-	cyberpunk: 'Cyberpunk',
-	gruvbox: 'Gruvbox',
-	'gruvbox-dark': 'Gruvbox Dark',
-	'catppuccin-light': 'Catppuccin Latte',
-	'catppuccin-dark': 'Catppuccin Mocha',
+const migrate_3_3 = (draft: ChemPluginSettingsV3): ChemPluginSettingsV3 => {
+	return { ...DEFAULT_SETTINGS, ...draft };
+};
+
+export const migrateSettings = (draft: any): ChemPluginSettingsV3 => {
+	if (!draft || Object.keys(draft).length === 0) return DEFAULT_SETTINGS;
+	if (!('version' in draft)) return migrate_1_3(draft); // v1
+	else if (draft.version === 'v2') return migrate_2_3(draft);
+	else if (draft.version === 'v3') return migrate_3_3(draft); // current
+	return DEFAULT_SETTINGS; // consider branch coverage rate
 };

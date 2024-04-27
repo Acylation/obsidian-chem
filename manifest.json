@@ -1,10 +1,11 @@
 {
 	"id": "chem",
 	"name": "Chem",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"minAppVersion": "1.0.0",
 	"description": "Providing chemistry supports. Rendering SMILES strings into chemistry structures.",
 	"author": "Acylation",
 	"authorUrl": "https://github.com/Acylation",
+	"fundingUrl": "https://ko-fi.com/Acylation",
 	"isDesktopOnly": false
 }
