@@ -111,6 +111,7 @@ export default class RDKitCore implements ChemCore {
 			JSON.stringify({
 				...DEFAULT_RDKIT_OPTIONS,
 				...this.settings.rdkitOptions,
+				legend: mol.has_prop('_Name') ? mol.get_prop('_Name') : '',
 				atomColourPalette: palette,
 				queryColour: palette['6'],
 				highlightColour: palette['6'],
