@@ -64,7 +64,7 @@ npm run dev
 
 > [!Note]  
 > 该命令执行后，将监听源代码的更改，并在保存更改时自动编译出一个新版的`main.js`  
-> 下载并启用 [Hot-Reload](https://github.com/pjeby/hot-reload) 插件以获得流畅的开发体验  
+> 下载并启用 [Hot-Reload](https://github.com/pjeby/hot-reload) 插件以获得流畅的开发体验
 
 ### 检查并构建插件
 

@@ -71,7 +71,8 @@ const migrate_3_3 = (draft: ChemPluginSettingsV3): ChemPluginSettingsV3 => {
 
 export const migrateSettings = (draft: any): ChemPluginSettingsV3 => {
 	if (!draft || Object.keys(draft).length === 0) return DEFAULT_SETTINGS;
-	if (!('version' in draft)) return migrate_1_3(draft); // v1
+	if (!('version' in draft))
+		return migrate_1_3(draft); // v1
 	else if (draft.version === 'v2') return migrate_2_3(draft);
 	else if (draft.version === 'v3') return migrate_3_3(draft); // current
 	return DEFAULT_SETTINGS; // consider branch coverage rate

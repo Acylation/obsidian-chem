@@ -55,11 +55,9 @@ export default class SmilesDrawerCore implements ChemCore {
 				this.settings?.commonOptions.unifiedWidth ?? 300
 			).toString()}px`;
 		else if (
-			parseFloat(svg.style.width) >
-			(this.settings.commonOptions?.width ?? 300)
+			parseFloat(svg.style.width) > (this.settings.commonOptions?.width ?? 300)
 		) {
-			const r =
-				parseFloat(svg.style.width) / parseFloat(svg.style.height);
+			const r = parseFloat(svg.style.width) / parseFloat(svg.style.height);
 			svg.style.width = `${(
 				this.settings.commonOptions?.width ?? 300
 			).toString()}px`;

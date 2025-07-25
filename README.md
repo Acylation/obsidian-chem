@@ -8,7 +8,7 @@
 
 > [!Note]
 > Latest release: 0.4.1  
-> Document version: 0.4.1  
+> Document version: 0.4.1
 
 ## Features & Usage
 
@@ -45,9 +45,9 @@ Inline Dataview queries and DataviewJS rendering can be enabled in the settings 
 > [!Warning]
 > This feature is dependent on the Dataview plugin. Please ensure that you have installed and enabled it.
 >
-> The execution of DataviewJS is implemented by calling `eval()` at the bottom, which is known to have security issues. To avoid unintended execution, only trusted code lines should be passed.  
+> The execution of DataviewJS is implemented by calling `eval()` at the bottom, which is known to have security issues. To avoid unintended execution, only trusted code lines should be passed.
 >
-> If you wish to keep inline Dataview queries rendering and only disable DataviewJS, you can toggle off the `Enable JavaScript Queries` or `Enable Inline JavaScript Queries` options through the Dataview plugin settings.  
+> If you wish to keep inline Dataview queries rendering and only disable DataviewJS, you can toggle off the `Enable JavaScript Queries` or `Enable Inline JavaScript Queries` options through the Dataview plugin settings.
 
 ## Introduction on SMILES
 

@@ -8,25 +8,25 @@ If your plugin does not need CSS, delete this file.
 */
 
 .chemcard {
-    background-color: var(--background-secondary-alt);
-    color: var(--color-base-100);
-    border-radius: var(--radius-m);
-    border: 1px solid var(--background-modifier-border);
-    margin: 0 10px;
-    padding: 15px 10px;
-    display: grid;
-    place-content: center;
-    place-items: center;
-    user-select: none;
+	background-color: var(--background-secondary-alt);
+	color: var(--color-base-100);
+	border-radius: var(--radius-m);
+	border: 1px solid var(--background-modifier-border);
+	margin: 0 10px;
+	padding: 15px 10px;
+	display: grid;
+	place-content: center;
+	place-items: center;
+	user-select: none;
 }
 
 .chem-table {
-    border-collapse: collapse;
-    display: grid;
-    place-items: center;
+	border-collapse: collapse;
+	display: grid;
+	place-items: center;
 }
 
 .chem-cell {
-    padding: 15px 10px;
-    user-select: none;
+	padding: 15px 10px;
+	user-select: none;
 }

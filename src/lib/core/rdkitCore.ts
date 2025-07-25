@@ -131,9 +131,9 @@ export default class RDKitCore implements ChemCore {
 
 	private logError = (source: string) => {
 		const div = createDiv();
-		div.createDiv('error-source').setText(
-			i18n.t('errors.source.title', { source })
-		);
+		div
+			.createDiv('error-source')
+			.setText(i18n.t('errors.source.title', { source }));
 		div.createEl('br');
 		div.createDiv().setText(i18n.t('errors.rdkit.title'));
 		div.style.wordBreak = `break-word`;
@@ -187,8 +187,7 @@ const loadRDKitUnpkg = async () => {
 	).text;
 
 	const RDKit = await window.initRDKitModule({
-		locateFile: () =>
-			'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.wasm',
+		locateFile: () => 'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.wasm',
 	});
 	new Notice('RDKit.js has been successfully loaded.');
 	return RDKit;
@@ -219,15 +218,10 @@ const checkOrDownload = async (target: string) => {
 		new Notice(`Chem: Downloading ${target}!`, 5000);
 		try {
 			await fetchAsset(target, assetPath);
-			new Notice(
-				`Chem: Resource ${target} successfully downloaded! ✔️`,
-				5000
-			);
+			new Notice(`Chem: Resource ${target} successfully downloaded! ✔️`, 5000);
 		} catch (error) {
 			new Notice(`Chem: Failed to fetch ${target}: ${error} ❌`);
-			throw Error(
-				`Failed to fetch resource ${target} from GitHub release.`
-			);
+			throw Error(`Failed to fetch resource ${target} from GitHub release.`);
 		}
 	}
 };

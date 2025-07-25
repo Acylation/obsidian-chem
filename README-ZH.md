@@ -8,7 +8,7 @@
 
 > [!Note]
 > 最新插件版本: 0.4.1  
-> 文档版本: 0.4.1  
+> 文档版本: 0.4.1
 
 ## 功能介绍
 
@@ -45,7 +45,7 @@
 >
 > 运行 DataviewJS 需要调用 `eval()` 函数，具有一定的风险。请确保您输入/粘贴的代码是受信任的
 >
-> 若您希望在启用 Dataview 查询式 (Queries) 时禁用 DataviewJS，请在 Dataview 插件设置中禁用 `Enable JavaScript Queries` 或 `Enable Inline JavaScript Queries` 选项  
+> 若您希望在启用 Dataview 查询式 (Queries) 时禁用 DataviewJS，请在 Dataview 插件设置中禁用 `Enable JavaScript Queries` 或 `Enable Inline JavaScript Queries` 选项
 
 ## SMILES 介绍
 

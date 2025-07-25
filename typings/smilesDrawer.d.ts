@@ -62,10 +62,7 @@ declare module 'smiles-drawer' {
 			weights: number[] | object,
 			callback: CallableFunction
 		): void;
-		svgToCanvas(
-			svg: SVGElement,
-			canvas?: HTMLCanvasElement
-		): HTMLCanvasElement;
+		svgToCanvas(svg: SVGElement, canvas?: HTMLCanvasElement): HTMLCanvasElement;
 		svgToImg(svg: SVGElement, img?: HTMLImageElement): HTMLImageElement;
 		getDimensions(
 			element: HTMLImageElement | HTMLCanvasElement | SVGElement,

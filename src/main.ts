@@ -77,9 +77,7 @@ export default class ChemPlugin extends Plugin {
 					.trim();
 				const container = el.createDiv();
 				code.replaceWith(container);
-				ctx.addChild(
-					new SmilesBlock(container, source, ctx, this.settings)
-				);
+				ctx.addChild(new SmilesBlock(container, source, ctx, this.settings));
 			}
 		});
 	};

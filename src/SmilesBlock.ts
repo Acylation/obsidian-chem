@@ -56,8 +56,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 				const svgcell = await this.renderCell(row, cell);
 				if (parseFloat(svgcell.style.width) > maxWidth) {
 					const r =
-						parseFloat(svgcell.style.width) /
-						parseFloat(svgcell.style.height);
+						parseFloat(svgcell.style.width) / parseFloat(svgcell.style.height);
 					svgcell.style.width = `${maxWidth.toString()}px`;
 					svgcell.style.height = `${(maxWidth / r).toString()}px`;
 				}
@@ -136,13 +135,13 @@ export class SmilesBlock extends MarkdownRenderChild {
 
 		const menu = new Menu();
 		menu.addItem((item) => {
-			item.setTitle(i18n.t('menus.copy.title'))
+			item
+				.setTitle(i18n.t('menus.copy.title'))
 				.setIcon('copy')
 				.onClick(() => {
 					const svg = closestSVG.outerHTML;
 					const source =
-						closestSVG.attributes.getNamedItem('data-smiles')
-							?.value ?? '';
+						closestSVG.attributes.getNamedItem('data-smiles')?.value ?? '';
 					const rect = closestSVG.getBoundingClientRect();
 					this.onCopy(svg, source, rect.width, rect.height);
 				});

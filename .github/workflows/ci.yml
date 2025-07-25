@@ -23,3 +23,6 @@ jobs:
               run: npm run build
             - name: Lint plugin (ESLint)
               run: npm run lint
+            - name: Format code (Prettier)
+              run: npm run format
+

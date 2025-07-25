@@ -119,8 +119,7 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 				} else if (update.selectionSet) {
 					this.updateTree(update.view);
 				} else if (update.viewportChanged /*|| update.selectionSet*/) {
-					this.decorations =
-						this.inlineRender(update.view) ?? Decoration.none;
+					this.decorations = this.inlineRender(update.view) ?? Decoration.none;
 				}
 			}
 
@@ -130,10 +129,7 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 						from,
 						to,
 						enter: ({ node }) => {
-							const { render, isQuery } = this.renderNode(
-								view,
-								node
-							);
+							const { render, isQuery } = this.renderNode(view, node);
 							if (!render && isQuery) {
 								this.removeDeco(node);
 								return;
@@ -195,9 +191,7 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 					const start = node.from;
 					const end = node.to;
 					const selection = view.state.selection;
-					if (
-						selectionAndRangeOverlap(selection, start - 1, end + 1)
-					) {
+					if (selectionAndRangeOverlap(selection, start - 1, end + 1)) {
 						if (this.isInlineSmiles(view, start, end)) {
 							return { render: false, isQuery: true };
 						} else {
@@ -262,9 +256,7 @@ export function inlinePlugin(settings: ChemPluginSettings) {
 					settings.inlineSmiles &&
 					text.startsWith(settings.inlineSmilesPrefix)
 				) {
-					code = text
-						.substring(settings.inlineSmilesPrefix.length)
-						.trim();
+					code = text.substring(settings.inlineSmilesPrefix.length).trim();
 
 					renderCell(code, el.createDiv(), getCurrentTheme(settings));
 				}
