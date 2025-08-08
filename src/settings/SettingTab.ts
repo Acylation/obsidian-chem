@@ -141,7 +141,7 @@ export class ChemSettingTab extends PluginSettingTab {
 						this.plugin.settings.core = value;
 						await this.plugin.saveSettings();
 						await setCore(this.plugin.settings, async (error: string) => {
-							new CoreFallbackModal(app, error, async () => {
+							new CoreFallbackModal(this.app, error, async () => {
 								dropdown.setValue('smiles-drawer');
 								this.plugin.settings.core = 'smiles-drawer';
 								await this.plugin.saveSettings();

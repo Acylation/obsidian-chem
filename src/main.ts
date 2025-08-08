@@ -5,6 +5,7 @@ import { ChemSettingTab } from './settings/SettingTab';
 import { SmilesBlock } from './SmilesBlock';
 import { inlinePlugin } from './SmilesInline';
 
+import { setApp, clearApp } from './global/app';
 import { setCore, clearCore, setFallbackCore } from './global/chemCore';
 import { setBlocks, clearBlocks } from './global/blocks';
 import { getDataview, clearDataview } from './global/dataview';
@@ -15,6 +16,8 @@ export default class ChemPlugin extends Plugin {
 	settings: ChemPluginSettings;
 
 	async onload() {
+		setApp(this.app);
+
 		await this.loadSettings();
 
 		// initialize global variables
@@ -44,6 +47,7 @@ export default class ChemPlugin extends Plugin {
 		clearBlocks();
 		clearCore();
 		clearDataview();
+		clearApp();
 	}
 
 	async loadSettings() {

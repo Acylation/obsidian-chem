@@ -13,6 +13,7 @@ import {
 	Notice,
 } from 'obsidian';
 import { i18n } from 'src/lib/i18n';
+import { getApp } from 'src/global/app';
 
 export class SmilesBlock extends MarkdownRenderChild {
 	theme: string;
@@ -36,7 +37,7 @@ export class SmilesBlock extends MarkdownRenderChild {
 			.filter((row) => row.length > 0);
 
 		let rows = oRows;
-		if (this.settings.dataview && isPluginEnabled(app)) {
+		if (this.settings.dataview && isPluginEnabled(getApp())) {
 			if (!gDataview) getDataview();
 			rows = await Promise.all(
 				oRows.map(async (row) => await this.preprocess(row))
