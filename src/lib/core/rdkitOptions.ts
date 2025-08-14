@@ -17,6 +17,7 @@ export interface RDKitOptions {
 	explicitMethyl: boolean;
 	fixedBondLength: number;
 	fixedScale: number;
+	bondLineWidth: number;
 	atomColourPalette: Record<number, RGBDecimal>; // any atom index is a valid palette key
 	includeRadicals: boolean;
 	clearBackground: boolean;
@@ -30,6 +31,7 @@ export const DEFAULT_RDKIT_OPTIONS: RDKitOptions = {
 	explicitMethyl: false,
 	fixedBondLength: -1,
 	fixedScale: -1,
+	bondLineWidth: 1,
 	atomColourPalette: convertToRDKitTheme('rdkit-default'),
 	includeRadicals: true,
 	clearBackground: false,

@@ -66,6 +66,10 @@
 				"explicit-hydrogen": {
 					"name": "显式氢",
 					"description": "启用以绘制显式氢原子。"
+				},
+				"bond-thickness": {
+					"name": "键宽",
+					"description": "Set the bond line width."
 				}
 			},
 			"copy": {
