@@ -66,6 +66,10 @@
 				"explicit-hydrogen": {
 					"name": "Explicit hydrogen",
 					"description": "Enable to show explicit hydrogen."
+				},
+				"bond-thickness": {
+					"name": "Bond thickness",
+					"description": "Set the bond line width."
 				}
 			},
 			"copy": {

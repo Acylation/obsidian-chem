@@ -212,6 +212,27 @@ export class ChemSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(i18n.t('settings.advanced.bond-thickness.name'))
+			.setDesc(i18n.t('settings.advanced.bond-thickness.description'))
+			.addText((text) =>
+				text
+					.setValue(
+						(
+							this.plugin.settings.smilesDrawerOptions.moleculeOptions
+								.bondThickness ?? 1
+						).toString()
+					)
+					.onChange(async (value) => {
+						const fVal = parseFloat(value);
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.bondThickness =
+							fVal;
+						this.plugin.settings.rdkitOptions.bondLineWidth = fVal;
+						await this.plugin.saveSettings();
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
 			.setName(i18n.t('settings.copy.title'))
 			.setHeading();
 
