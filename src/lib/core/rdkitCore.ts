@@ -9,6 +9,7 @@ import { getCurrentTheme } from 'src/lib/themes/getCurrentTheme';
 import { normalizePath, requestUrl, Notice } from 'obsidian';
 import { i18n } from '../i18n';
 import { githubAsset } from 'typings/githubAsset';
+import { getApp } from 'src/global/app';
 
 export default class RDKitCore implements ChemCore {
 	id: 'rdkit';
@@ -146,6 +147,7 @@ export default class RDKitCore implements ChemCore {
 // Credits to fenjalien/obsidian-typst for the idea of loading local wasm by building object url.
 // Initialize reference: https://github.com/rdkit/rdkit-js/tree/master/typescript
 const loadRDKit = async () => {
+	const app = getApp();
 	const assetPath = normalizePath(
 		[app.vault.configDir, 'plugins', 'chem', 'rdkit'].join('/')
 	);
@@ -195,6 +197,7 @@ const loadRDKitUnpkg = async () => {
 };
 
 const fetchAsset = async (target: string, localPath: string) => {
+	const app = getApp();
 	const assetInfo = await requestUrl(
 		`https://api.github.com/repos/acylation/obsidian-chem/releases/tags/${
 			app.plugins.getPlugin('chem')?.manifest.version ?? '0.4.0'
@@ -211,6 +214,7 @@ const fetchAsset = async (target: string, localPath: string) => {
 };
 
 const checkOrDownload = async (target: string) => {
+	const app = getApp();
 	const assetPath = normalizePath(
 		[app.vault.configDir, 'plugins', 'chem', 'rdkit', target].join('/')
 	);
