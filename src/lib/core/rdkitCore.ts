@@ -27,15 +27,9 @@ export default class RDKitCore implements ChemCore {
 	static async init(settings: ChemPluginSettings) {
 		if (!window.RDKit) {
 			try {
-				window.RDKit = await loadRDKit();
+				window.RDKit = await loadLocal();
 			} catch (e) {
-				try {
-					window.RDKit = await loadRDKitUnpkg();
-				} catch (e) {
-					throw Error(
-						"Initializing rdkit failed: Can't fetch resources from unpkg."
-					);
-				}
+				//may add unpkg via script tag, but only works on desktop
 			}
 		}
 		return new RDKitCore(settings, window.RDKit);
@@ -146,8 +140,9 @@ export default class RDKitCore implements ChemCore {
 
 // Credits to fenjalien/obsidian-typst for the idea of loading local wasm by building object url.
 // Initialize reference: https://github.com/rdkit/rdkit-js/tree/master/typescript
-const loadRDKit = async () => {
+const loadLocal = async () => {
 	const app = getApp();
+
 	const assetPath = normalizePath(
 		[app.vault.configDir, 'plugins', 'chem', 'rdkit'].join('/')
 	);
@@ -155,49 +150,86 @@ const loadRDKit = async () => {
 		await app.vault.adapter.mkdir(assetPath);
 	}
 
-	const jsPath = [assetPath, 'RDKit_minimal.js'].join('/');
-	await checkOrDownload('RDKit_minimal.js');
+	await Promise.all([
+		checkOrDownload('RDKit_minimal.js'),
+		checkOrDownload('RDKit_minimal.wasm'),
+	]);
 
-	const wasmPath = [assetPath, 'RDKit_minimal.wasm'].join('/');
-	await checkOrDownload('RDKit_minimal.wasm');
+	const jsScript = await app.vault.adapter.read(
+		[assetPath, 'RDKit_minimal.js'].join('/')
+	);
+	const wasmBinary = new Uint8Array(
+		await app.vault.adapter.readBinary(
+			[assetPath, 'RDKit_minimal.wasm'].join('/')
+		)
+	);
 
-	const rdkitBundler = document.body.createEl('script');
-	rdkitBundler.type = 'text/javascript';
-	rdkitBundler.id = 'chem-rdkit-bundler';
-	rdkitBundler.innerHTML = await app.vault.adapter.read(jsPath);
+	return loadRDKit(jsScript, wasmBinary);
+};
 
-	const getWasmURL = async () =>
-		URL.createObjectURL(
-			new Blob([await app.vault.adapter.readBinary(wasmPath)], {
-				type: 'application/wasm',
+// Offline loading examples https://github.com/rdkit/rdkit-js/issues/160
+const loadRDKit = async (jsScript: string, wasmBinary: Uint8Array) => {
+	await new Promise<void>((resolve, reject) => {
+		const rdkitScriptUrl = URL.createObjectURL(
+			new Blob([jsScript], {
+				type: 'application/javascript',
 			})
 		);
-	const url = await getWasmURL();
-	const RDKit = await window.initRDKitModule({
-		locateFile: () => url,
+
+		const bundler = document.createElement('script');
+		bundler.src = rdkitScriptUrl;
+		bundler.onload = () => {
+			URL.revokeObjectURL(rdkitScriptUrl);
+			resolve();
+		};
+		bundler.onerror = reject;
+		document.body.appendChild(bundler);
 	});
-	URL.revokeObjectURL(url);
+
+	const RDKit = await window.initRDKitModule({
+		locateFile: () =>
+			`data:application/wasm;base64,${uint8ToBase64(wasmBinary)}`,
+	});
+
+	new Notice('RDKit.js successfully loaded.');
+
 	return RDKit;
 };
 
-// See https://github.com/rdkit/rdkit-js/issues/160
-const loadRDKitUnpkg = async () => {
-	const rdkitBundler = document.body.createEl('script');
-	new Notice('Fetching RDKit.js from unpkg...');
-
-	rdkitBundler.innerHTML = await requestUrl(
-		'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js'
-	).text;
-
-	const RDKit = await window.initRDKitModule({
-		locateFile: () => 'https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.wasm',
-	});
-	new Notice('RDKit.js has been successfully loaded.');
-	return RDKit;
-};
-
-const fetchAsset = async (target: string, localPath: string) => {
+const checkOrDownload = async (target: string) => {
 	const app = getApp();
+	const assetPath = normalizePath(
+		[app.vault.configDir, 'plugins', 'chem', 'rdkit', target].join('/')
+	);
+
+	if (!(await app.vault.adapter.exists(assetPath))) {
+		new Notice(`Chem: Downloading ${target}!`, 5000);
+
+		for (const fetcher of [fetchGHAsset, fetchUnpkg]) {
+			try {
+				await fetcher(target, assetPath);
+				new Notice(
+					`Chem: Resource ${target} successfully downloaded! ✔️`,
+					5000
+				);
+				return;
+			} catch (e) {
+				throw Error(`Failed to fetch resource ${target}. Error: ${e}`);
+			}
+		}
+	}
+};
+
+const fetchUnpkg = async (target: string, localPath: string) => {
+	const app = getApp();
+	const data = await requestUrl(`https://unpkg.com/@rdkit/rdkit/dist/${target}`)
+		.arrayBuffer;
+	await app.vault.adapter.writeBinary(localPath, data);
+};
+
+const fetchGHAsset = async (target: string, localPath: string) => {
+	const app = getApp();
+
 	const assetInfo = await requestUrl(
 		`https://api.github.com/repos/acylation/obsidian-chem/releases/tags/${
 			app.plugins.getPlugin('chem')?.manifest.version ?? '0.4.0'
@@ -210,23 +242,11 @@ const fetchAsset = async (target: string, localPath: string) => {
 		url: asset.url,
 		headers: { Accept: 'application/octet-stream' },
 	}).arrayBuffer;
+
 	await app.vault.adapter.writeBinary(localPath, data);
 };
 
-const checkOrDownload = async (target: string) => {
-	const app = getApp();
-	const assetPath = normalizePath(
-		[app.vault.configDir, 'plugins', 'chem', 'rdkit', target].join('/')
-	);
-
-	if (!(await app.vault.adapter.exists(assetPath))) {
-		new Notice(`Chem: Downloading ${target}!`, 5000);
-		try {
-			await fetchAsset(target, assetPath);
-			new Notice(`Chem: Resource ${target} successfully downloaded! ✔️`, 5000);
-		} catch (error) {
-			new Notice(`Chem: Failed to fetch ${target}: ${error} ❌`);
-			throw Error(`Failed to fetch resource ${target} from GitHub release.`);
-		}
-	}
-};
+// 4x space overhead comparing to direct blob url
+// shall migrate to wasmBinary.toBase64()
+const uint8ToBase64 = (arr: Uint8Array): string =>
+	btoa(arr.reduce((binary, byte) => binary + String.fromCharCode(byte), ''));
