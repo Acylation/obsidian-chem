@@ -53,10 +53,6 @@ export class LivePreview {
 			).toString()}px, 1fr)`;
 	};
 
-	updateSettings = (newSettings: ChemPluginSettings) => {
-		this.settings = newSettings;
-	};
-
 	private renderCell = async (
 		source: string,
 		target: HTMLElement,

@@ -38,8 +38,6 @@ export class ChemSettingTab extends PluginSettingTab {
 						this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = 1;
 						this.plugin.settings.commonOptions.scale = 1;
 						scaleSlider.setValue(1.0);
-						await this.plugin.saveSettings();
-						this.updateCore();
 						onSettingsChange();
 						unifyBondLength();
 					});
@@ -52,8 +50,6 @@ export class ChemSettingTab extends PluginSettingTab {
 			.onChange(async (value) => {
 				this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = value;
 				this.plugin.settings.commonOptions.scale = value;
-				await this.plugin.saveSettings();
-				this.updateCore();
 				onSettingsChange();
 				value === 0 ? unifyImageWidth() : unifyBondLength();
 			});
@@ -69,7 +65,6 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.lightTheme)
 					.onChange(async (value) => {
 						this.plugin.settings.lightTheme = value;
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			);
@@ -83,7 +78,6 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.darkTheme)
 					.onChange(async (value) => {
 						this.plugin.settings.darkTheme = value;
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			);
@@ -104,7 +98,6 @@ export class ChemSettingTab extends PluginSettingTab {
 							value = DEFAULT_SETTINGS.sample1;
 						}
 						this.plugin.settings.sample1 = value;
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			)
@@ -117,7 +110,6 @@ export class ChemSettingTab extends PluginSettingTab {
 							value = DEFAULT_SETTINGS.sample2;
 						}
 						this.plugin.settings.sample2 = value;
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			);
@@ -139,13 +131,12 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.core ?? false)
 					.onChange(async (value: 'rdkit' | 'smiles-drawer') => {
 						this.plugin.settings.core = value;
-						await this.plugin.saveSettings();
+
 						await setCore(this.plugin.settings, async (error: string) => {
 							new CoreFallbackModal(this.app, error, async () => {
 								dropdown.setValue('smiles-drawer');
 								this.plugin.settings.core = 'smiles-drawer';
-								await this.plugin.saveSettings();
-								setFallbackCore(this.plugin.settings);
+								setFallbackCore(this.plugin.settings); //TODO: review
 								onSettingsChange();
 							}).open();
 						});
@@ -166,8 +157,6 @@ export class ChemSettingTab extends PluginSettingTab {
 						this.plugin.settings.smilesDrawerOptions.moleculeOptions.compactDrawing =
 							value;
 						this.plugin.settings.commonOptions.compactDrawing = value;
-						await this.plugin.saveSettings();
-						this.updateCore();
 						onSettingsChange();
 					})
 			);
@@ -186,8 +175,6 @@ export class ChemSettingTab extends PluginSettingTab {
 							value;
 						this.plugin.settings.rdkitOptions.explicitMethyl = value;
 						this.plugin.settings.commonOptions.explicitMethyl = value;
-						await this.plugin.saveSettings();
-						this.updateCore();
 						onSettingsChange();
 					})
 			);
@@ -205,8 +192,26 @@ export class ChemSettingTab extends PluginSettingTab {
 						this.plugin.settings.smilesDrawerOptions.moleculeOptions.explicitHydrogens =
 							value;
 						this.plugin.settings.commonOptions.explicitHydrogens = value;
-						await this.plugin.saveSettings();
-						this.updateCore();
+						onSettingsChange();
+					})
+			);
+
+		new Setting(containerEl)
+			.setName(i18n.t('settings.advanced.bond-thickness.name'))
+			.setDesc(i18n.t('settings.advanced.bond-thickness.description'))
+			.addText((text) =>
+				text
+					.setValue(
+						(
+							this.plugin.settings.smilesDrawerOptions.moleculeOptions
+								.bondThickness ?? 1
+						).toString()
+					)
+					.onChange(async (value) => {
+						const fVal = parseFloat(value);
+						this.plugin.settings.smilesDrawerOptions.moleculeOptions.bondThickness =
+							fVal;
+						this.plugin.settings.rdkitOptions.bondLineWidth = fVal;
 						onSettingsChange();
 					})
 			);
@@ -223,7 +228,6 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.copy.scale.toString())
 					.onChange(async (value) => {
 						this.plugin.settings.copy.scale = parseFloat(value);
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			);
@@ -236,7 +240,6 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.copy.transparent)
 					.onChange(async (value) => {
 						this.plugin.settings.copy.transparent = value;
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			);
@@ -253,7 +256,6 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.copy.theme)
 					.onChange(async (value) => {
 						this.plugin.settings.copy.theme = value;
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					})
 			);
@@ -275,7 +277,6 @@ export class ChemSettingTab extends PluginSettingTab {
 						} else {
 							clearDataview();
 						}
-						await this.plugin.saveSettings();
 						onSettingsChange();
 					});
 			});
@@ -292,7 +293,7 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.inlineSmiles)
 					.onChange(async (value) => {
 						this.plugin.settings.inlineSmiles = value;
-						await this.plugin.saveSettings();
+
 						onSettingsChange();
 					});
 			});
@@ -305,13 +306,14 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.inlineSmilesPrefix)
 					.onChange(async (value) => {
 						this.plugin.settings.inlineSmilesPrefix = value;
-						await this.plugin.saveSettings();
+
 						onSettingsChange();
 					});
 			});
 
-		const onSettingsChange = () => {
-			preview.updateSettings(this.plugin.settings);
+		const onSettingsChange = async () => {
+			await this.plugin.saveSettings();
+			this.updateCore();
 			preview.render();
 		};
 
@@ -332,8 +334,7 @@ export class ChemSettingTab extends PluginSettingTab {
 							this.plugin.settings.commonOptions.width = parseInt(value);
 							this.plugin.settings.smilesDrawerOptions.moleculeOptions.width =
 								parseInt(value);
-							await this.plugin.saveSettings();
-							this.updateCore();
+
 							onSettingsChange();
 						})
 				);
@@ -356,7 +357,7 @@ export class ChemSettingTab extends PluginSettingTab {
 								value = '300';
 							}
 							this.plugin.settings.commonOptions.unifiedWidth = parseInt(value);
-							await this.plugin.saveSettings();
+
 							onSettingsChange();
 						});
 				});
