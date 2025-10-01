@@ -28,6 +28,7 @@ interface CommonOptions {
 	compactDrawing: boolean;
 	explicitHydrogens: boolean;
 	explicitMethyl: boolean;
+	bondThickness: number;
 }
 
 export const DEFAULT_SETTINGS_V3: ChemPluginSettingsV3 = {
@@ -52,6 +53,7 @@ export const DEFAULT_SETTINGS_V3: ChemPluginSettingsV3 = {
 		compactDrawing: false,
 		explicitHydrogens: false,
 		explicitMethyl: false,
+		bondThickness: 2,
 	},
 	smilesDrawerOptions: {
 		moleculeOptions: {},

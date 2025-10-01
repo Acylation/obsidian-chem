@@ -8,7 +8,7 @@ export interface MoleculeOptions {
 	width: number; // levelup
 	height: number; // levelup
 	scale: number; // levelup
-	bondThickness: number;
+	bondThickness: number; // levelup
 	shortBondLength: number;
 	bondSpacing: number;
 	atomVisualization: 'default' | 'balls' | 'allballs';

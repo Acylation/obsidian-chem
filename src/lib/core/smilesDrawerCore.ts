@@ -11,25 +11,57 @@ export default class SmilesDrawerCore implements ChemCore {
 	id: 'smiles-drawer';
 	settings: ChemPluginSettings;
 	core: SmilesDrawer.SmiDrawer;
+	private optionsSignature: string;
 
 	constructor(settings: ChemPluginSettings) {
 		this.settings = settings;
-		this.core = new SmilesDrawer.SmiDrawer(
-			{
-				...DEFAULT_SD_OPTIONS.moleculeOptions,
-				...this.settings.smilesDrawerOptions.moleculeOptions,
-			},
-			{
-				...DEFAULT_SD_OPTIONS.reactionOptions,
-				...this.settings.smilesDrawerOptions.reactionOptions,
-			}
-		);
+		const { moleculeOptions, reactionOptions, signature } =
+			this.buildOptions(settings);
+		this.core = new SmilesDrawer.SmiDrawer(moleculeOptions, reactionOptions);
+		this.optionsSignature = signature;
 	}
+
+	private syncDrawer() {
+		const { moleculeOptions, reactionOptions, signature } = this.buildOptions(
+			this.settings
+		);
+		if (signature !== this.optionsSignature) {
+			this.core = new SmilesDrawer.SmiDrawer(moleculeOptions, reactionOptions);
+			this.optionsSignature = signature;
+		}
+	}
+
+	buildOptions = (settings: ChemPluginSettings) => {
+		const common = settings.commonOptions ?? {};
+
+		const moleculeOverrides =
+			settings.smilesDrawerOptions?.moleculeOptions ?? {};
+		const reactionOverrides =
+			settings.smilesDrawerOptions?.reactionOptions ?? {};
+
+		const moleculeOptions = {
+			...DEFAULT_SD_OPTIONS.moleculeOptions,
+			...moleculeOverrides,
+			...common,
+		};
+
+		const reactionOptions = {
+			...DEFAULT_SD_OPTIONS.reactionOptions,
+			...reactionOverrides,
+		};
+
+		return {
+			moleculeOptions,
+			reactionOptions,
+			signature: JSON.stringify({ moleculeOptions, reactionOptions }),
+		};
+	};
 
 	draw = async (
 		source: string,
 		theme: string = getCurrentTheme(this.settings)
 	) => {
+		this.syncDrawer();
 		const svg = createSvg('svg');
 		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 		svg.setAttribute('data-smiles', source);

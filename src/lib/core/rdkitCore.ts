@@ -41,6 +41,21 @@ export default class RDKitCore implements ChemCore {
 		return new RDKitCore(settings, window.RDKit);
 	}
 
+	buildOptions = (
+		settings: ChemPluginSettings,
+		preset: Record<string, unknown>
+	) => {
+		const common = settings.commonOptions ?? {};
+		const overrides = settings.rdkitOptions ?? {};
+
+		return {
+			...DEFAULT_RDKIT_OPTIONS,
+			...overrides,
+			...common,
+			...preset,
+		};
+	};
+
 	draw = async (
 		source: string,
 		theme: string = getCurrentTheme(this.settings)
@@ -108,25 +123,21 @@ export default class RDKitCore implements ChemCore {
 	private drawMolecule = async (mol: JSMol, theme: string) => {
 		//TODO: AbbrColour -> palette[0]
 		const palette = convertToRDKitTheme(theme);
+		const preset = {
+			legend: mol.has_prop('_Name') ? mol.get_prop('_Name') : '',
+			atomColourPalette: palette,
+			queryColour: palette['6'],
+			highlightColour: palette['6'],
+			drawMolsSameScale: true,
+			width: -1,
+			height: -1,
+			symbolColour: palette['-1'],
+			legendColour: palette['-1'],
+			annotationColour: palette['-1'],
+			variableAttachmentColour: palette['-1'],
+		};
 		const svgstr = mol.get_svg_with_highlights(
-			JSON.stringify({
-				...DEFAULT_RDKIT_OPTIONS,
-				...this.settings.rdkitOptions,
-				legend: mol.has_prop('_Name') ? mol.get_prop('_Name') : '',
-				atomColourPalette: palette,
-				queryColour: palette['6'],
-				highlightColour: palette['6'],
-				drawMolsSameScale: true,
-				width: -1,
-				height: -1,
-				addChiralHs: this.settings.commonOptions.explicitHydrogens,
-
-				//https://rdkit.org/docs/cppapi/MolDraw2D_8h_source.html#l00547
-				symbolColour: palette['-1'], // the color used for reaction arrows and single-color wedged bonds
-				legendColour: palette['-1'],
-				annotationColour: palette['-1'],
-				variableAttachmentColour: palette['-1'],
-			})
+			JSON.stringify(this.buildOptions(this.settings, preset))
 		);
 		return svgstr;
 	};

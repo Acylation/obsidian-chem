@@ -5,6 +5,11 @@ export interface ChemCore {
 	settings: ChemPluginSettings;
 	core: unknown;
 
+	buildOptions: (
+		settings: ChemPluginSettings,
+		overrides?: Record<string, unknown>
+	) => Record<string, unknown>;
+
 	draw: (
 		source: string,
 		theme?: string

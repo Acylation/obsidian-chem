@@ -35,7 +35,6 @@ export class ChemSettingTab extends PluginSettingTab {
 					.setIcon('rotate-ccw')
 					.setTooltip(i18n.t('settings.scale.tooltip'))
 					.onClick(async () => {
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = 1;
 						this.plugin.settings.commonOptions.scale = 1;
 						scaleSlider.setValue(1.0);
 						onSettingsChange();
@@ -48,7 +47,7 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setValue(this.plugin.settings.commonOptions.scale ?? 1.0)
 			.setDynamicTooltip()
 			.onChange(async (value) => {
-				this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = value;
+				// this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale = value;
 				this.plugin.settings.commonOptions.scale = value;
 				onSettingsChange();
 				value === 0 ? unifyImageWidth() : unifyBondLength();
@@ -149,13 +148,8 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setDesc(i18n.t('settings.advanced.compact-drawing.description'))
 			.addToggle((toggle) =>
 				toggle
-					.setValue(
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions
-							.compactDrawing ?? false
-					)
+					.setValue(this.plugin.settings.commonOptions.compactDrawing ?? false)
 					.onChange(async (value) => {
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions.compactDrawing =
-							value;
 						this.plugin.settings.commonOptions.compactDrawing = value;
 						onSettingsChange();
 					})
@@ -166,14 +160,8 @@ export class ChemSettingTab extends PluginSettingTab {
 			.setDesc(i18n.t('settings.advanced.terminal-carbons.description'))
 			.addToggle((toggle) =>
 				toggle
-					.setValue(
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions
-							.terminalCarbons ?? false
-					)
+					.setValue(this.plugin.settings.commonOptions.explicitMethyl ?? false)
 					.onChange(async (value) => {
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions.terminalCarbons =
-							value;
-						this.plugin.settings.rdkitOptions.explicitMethyl = value;
 						this.plugin.settings.commonOptions.explicitMethyl = value;
 						onSettingsChange();
 					})
@@ -185,12 +173,9 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle
 					.setValue(
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions
-							.explicitHydrogens ?? false
+						this.plugin.settings.commonOptions.explicitHydrogens ?? false
 					)
 					.onChange(async (value) => {
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions.explicitHydrogens =
-							value;
 						this.plugin.settings.commonOptions.explicitHydrogens = value;
 						onSettingsChange();
 					})
@@ -202,16 +187,11 @@ export class ChemSettingTab extends PluginSettingTab {
 			.addText((text) =>
 				text
 					.setValue(
-						(
-							this.plugin.settings.smilesDrawerOptions.moleculeOptions
-								.bondThickness ?? 1
-						).toString()
+						(this.plugin.settings.commonOptions.bondThickness ?? 1).toString()
 					)
 					.onChange(async (value) => {
 						const fVal = parseFloat(value);
-						this.plugin.settings.smilesDrawerOptions.moleculeOptions.bondThickness =
-							fVal;
-						this.plugin.settings.rdkitOptions.bondLineWidth = fVal;
+						this.plugin.settings.commonOptions.bondThickness = fVal;
 						onSettingsChange();
 					})
 			);
@@ -332,8 +312,8 @@ export class ChemSettingTab extends PluginSettingTab {
 								value = '300';
 							}
 							this.plugin.settings.commonOptions.width = parseInt(value);
-							this.plugin.settings.smilesDrawerOptions.moleculeOptions.width =
-								parseInt(value);
+							// this.plugin.settings.smilesDrawerOptions.moleculeOptions.width =
+							// 	parseInt(value);
 
 							onSettingsChange();
 						})
@@ -365,10 +345,7 @@ export class ChemSettingTab extends PluginSettingTab {
 
 		// Initialize
 		preview.render();
-		if (
-			(this.plugin.settings.smilesDrawerOptions.moleculeOptions.scale ?? 1) == 0
-		)
-			unifyImageWidth();
+		if ((this.plugin.settings.commonOptions.scale ?? 1) == 0) unifyImageWidth();
 		else unifyBondLength();
 	}
 

@@ -24,6 +24,7 @@ export interface RDKitOptions {
 	annotationColour: RGBDecimal;
 	singleColourWedgeBonds: boolean; // the color of wedged would be controlled by `symbolColour`
 	addChiralHs: boolean;
+	bondLineWidth: number;
 }
 
 export const DEFAULT_RDKIT_OPTIONS: RDKitOptions = {
@@ -37,6 +38,7 @@ export const DEFAULT_RDKIT_OPTIONS: RDKitOptions = {
 	annotationColour: [0.63, 0.12, 0.94], // chiral RS annotations
 	singleColourWedgeBonds: true, // a company option with `symbolColour`
 	addChiralHs: true, // test case: C1C[C@H]2CCCC[C@H]2CC1
+	bondLineWidth: 2.0,
 	// wedgeBonds: true,
 	// wavyBonds: true,
 	// kekulize: false,
